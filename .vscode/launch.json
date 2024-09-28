@@ -1,0 +1,305 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    
+    
+    {
+      "type": "java",
+      "name": "Codechef",
+      "request": "launch",
+      "mainClass": "Codechef",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "main",
+      "request": "launch",
+      "mainClass": "main",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "OsuMania",
+      "request": "launch",
+      "mainClass": "OsuMania",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "SPF",
+      "request": "launch",
+      "mainClass": "SPF",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "SegmentMinimizer",
+      "request": "launch",
+      "mainClass": "SegmentMinimizer",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "LexicographicallySmallestString",
+      "request": "launch",
+      "mainClass": "LexicographicallySmallestString",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "TLE",
+      "request": "launch",
+      "mainClass": "TLE",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "TemplateMatching",
+      "request": "launch",
+      "mainClass": "TemplateMatching",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "Game",
+      "request": "launch",
+      "mainClass": "Game",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "FischlMEX",
+      "request": "launch",
+      "mainClass": "FischlMEX",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "PairsWithProductEqualSumOfIndices",
+      "request": "launch",
+      "mainClass": "PairsWithProductEqualSumOfIndices",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "MakeStringEqual",
+      "request": "launch",
+      "mainClass": "MakeStringEqual",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "MikeAndMikeProblem",
+      "request": "launch",
+      "mainClass": "MikeAndMikeProblem",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "EqualizeArraySolution",
+      "request": "launch",
+      "mainClass": "EqualizeArraySolution",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "GoodArraySolution",
+      "request": "launch",
+      "mainClass": "GoodArraySolution",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "GoodArray",
+      "request": "launch",
+      "mainClass": "GoodArray",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "m",
+      "request": "launch",
+      "mainClass": "m",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "MinOperations",
+      "request": "launch",
+      "mainClass": "MinOperations",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "TinaGridReduction",
+      "request": "launch",
+      "mainClass": "TinaGridReduction",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "sulabh2",
+      "request": "launch",
+      "mainClass": "sulabh2",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "Solution",
+      "request": "launch",
+      "mainClass": "Solution",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "BinarySearchSolution",
+      "request": "launch",
+      "mainClass": "BinarySearchSolution",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "Code",
+      "request": "launch",
+      "mainClass": "Code",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "Coder",
+      "request": "launch",
+      "mainClass": "Coder",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "GoodPrefixes",
+      "request": "launch",
+      "mainClass": "GoodPrefixes",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "cppppp",
+      "request": "launch",
+      "mainClass": "cppppp",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "Sulabh",
+      "request": "launch",
+      "mainClass": "Sulabh",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "sulabh",
+      "request": "launch",
+      "mainClass": "sulabh",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "cpppp",
+      "request": "launch",
+      "mainClass": "cpppp",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "Contest1",
+      "request": "launch",
+      "mainClass": "Contest1",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "Main",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "cp",
+      "request": "launch",
+      "mainClass": "cp",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "cppp",
+      "request": "launch",
+      "mainClass": "cppp",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "cpppppppppp",
+      "request": "launch",
+      "mainClass": "cpppppppppp",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "maincf",
+      "request": "launch",
+      "mainClass": "maincf",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "mainn",
+      "request": "launch",
+      "mainClass": "mainn",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "makeEqual",
+      "request": "launch",
+      "mainClass": "makeEqual",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
+      "name": "negpos",
+      "request": "launch",
+      "mainClass": "negpos",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "name": "C/C++: gcc.exe build and debug active file",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "D:\\MinGW\\bin",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb.exe",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "C/C++: gcc.exe build active file"
+    }
+  ]
+}
