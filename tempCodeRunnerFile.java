@@ -20,63 +20,7 @@ public class TLE {
    */
 
   private static void Accepted(Scanner in) {
-    long b = in.nextLong();
-    long c = in.nextLong();
-    long d = in.nextLong();
-    long a = 0;
 
-    Map<tuple, Integer> arr = new HashMap<>();
-
-    arr.put(new tuple(0, 0, 0), 0);
-    arr.put(new tuple(0, 0, 1), 1);
-    arr.put(new tuple(0, 1, 0), 0);
-    arr.put(new tuple(0, 1, 1), -1);
-    arr.put(new tuple(1, 0, 0), -1);
-    arr.put(new tuple(1, 0, 1), 0);
-    arr.put(new tuple(1, 1, 0), 1);
-    arr.put(new tuple(1, 1, 1), 0);
-
-    for (int i = 60; i >= 0; i--) {
-      int I = (int) ((b >> i) & 1);
-      int J = (int) ((c >> i) & 1);
-      int K = (int) ((d >> i) & 1);
-
-      int X = arr.get(new tuple(I, J, K));
-
-      if (X == -1) {
-        a = -1;
-        break;
-      } else {
-        a += X * (1 << i);  // X * 2 ^ i.
-      }
-
-      System.out.println(a + " ");
-    }
-  }
-
-  private static class tuple {
-    int first, second, third;
-
-    public tuple(int f, int s, int t) {
-      this.first = f;
-      this.second = s;
-      this.third = t;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      if (this == obj)
-        return true;
-      if (obj == null || getClass() != obj.getClass())
-        return false;
-      tuple t = (tuple) obj;
-      return first == t.first && second == t.second && third == t.third;
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hash(first, second, third);
-    }
   }
 
   // ---------------------------------------------------

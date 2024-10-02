@@ -1,3 +1,4 @@
+import java.security.InvalidKeyException;
 import java.util.*;
 
 // Author : Sulabh Ambule
@@ -20,45 +21,26 @@ public class TLE {
    */
   private static void Accepted(Scanner in) {
     int n = in.nextInt();
-    long[] arr= new long[n];
-    for(int i = 0; i < n; i++) {
-      arr[i] = in.nextLong();
+    int m = in.nextInt();
+    long[] a = new long[n];
+    for (int i = 0; i < a.length; i++) {
+      a[i] = in.nextLong();
     }
+    
   }
 
   // ---------------------------------------------------
   static long MOD = (long) (1e9 + 7);
 
-  static class Pair {
-    long first;
-    long second;
-
-    Pair(long f, long s) {
-      this.first = f;
-      this.second = s;
-    }
-  }
+  // static class Pair {
+  // long first;
+  // long second;
+  // Pair(long f, long s) {
+  // this.first = f;
+  // this.second = s;
+  // }
+  // }
   // ----------------------------------------------
-
-  // private static List<Integer> sliding_wind_min(int[] arr, int k) {
-  // // code to find minimum in subArray of size k.
-  // List<Integer> ans = new ArrayList<>();
-  // int n = arr.length;
-  // Deque<Integer> deque = new LinkedList<>();
-  // for (int i = 0; i < n; i++) {
-  // while (!deque.isEmpty() && deque.getFirst() >= arr[i]) {
-  // deque.pop();
-  // }
-  // deque.push(i);
-  // if (deque.getFirst() == i - k) {
-  // deque.pop();
-  // }
-  // if (i >= k - 1) {
-  // ans.add(arr[deque.getFirst()]);
-  // }
-  // }
-  // return ans;
-  // }
 
   // BINARY SEARCH TIP
   // Collections.binarySearch(list, a[i])
@@ -88,8 +70,7 @@ public class TLE {
 
   // private static int lowerBound(int num, int[] arr) {
   // int n = arr.length;
-  // int low = 0;
-  // int high = n - 1;
+  // int low = 0, high = n - 1;
   // long ans = -1;
   // while (low <= high) {
   // int mid = (low + high) / 2;
@@ -118,7 +99,7 @@ public class TLE {
   // if((arr[i] & (1 << j)) != 0) {
   // count++; this means the jth bit is set.increase count
   // }
-  // int bit = (num >> i) & 1; // extract the ith bit
+  // int bit = (num >> i) & 1; // extract the i-th bit
   // int flipBit(int n, int j) {
   // return n ^ (1 << j);
   // }
@@ -129,9 +110,6 @@ public class TLE {
 
   // mex calculate for the arr of permutation
   // long mex = (n * (n + 1) / 2) - sum;
-  // ----------------------------------------------
-
-  // PriorityQueue<Pair> pq = new PriorityQueue<>((x, y) -> y.first - x.first);
   // ---------------------------------------------------
 
   // private static int computeXOR(int n) {
@@ -177,6 +155,20 @@ public class TLE {
   // return gcd(b % a, a);
   // }
   // --------------------------------------------------
+
+  // public static void factor(long n) {
+  // long count = 0;
+  // for(int i = 1; i * i <= n; i++) {
+  // if(n % i == 0) {
+  // // i -> is the one factor
+  // count++;
+  // if(i != n / i) {
+  // // n / i -> is the other factor
+  // count++;
+  // }
+  // }
+  // }
+  // }
 
   // private static int getPrime(int n) {
   // while(n % 2 == 0) return 2;
