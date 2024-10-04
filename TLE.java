@@ -1,14 +1,14 @@
-import java.security.InvalidKeyException;
+
 import java.util.*;
 
 // Author : Sulabh Ambule
 public class TLE {
   public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
-    int cases = in.nextInt();
-    while (cases-- > 0) {
-      Accepted(in);
-    }
+    // int cases = in.nextInt();
+    // while (cases-- > 0) {
+    Accepted(in);
+    // }
     in.close();
   }
 
@@ -20,13 +20,38 @@ public class TLE {
    * 
    */
   private static void Accepted(Scanner in) {
-    int n = in.nextInt();
-    int m = in.nextInt();
-    long[] a = new long[n];
-    for (int i = 0; i < a.length; i++) {
-      a[i] = in.nextLong();
+    long n = in.nextLong();
+    long a = in.nextLong();
+    long b = in.nextLong();
+
+    long[] arr = new long[(int) n];
+    for (int i = 0; i < n; i++) {
+      arr[i] = in.nextLong();
     }
+    long[] prefix = new long[(int) (n + 1)];
+    for (int i = 1; i <= n; i++) {
+      prefix[i] = prefix[i - 1] + arr[i - 1];
+    }
+
+    TreeMap<Long, Long> map = new TreeMap<>();
+    long maxSum = Long.MIN_VALUE;
     
+    for (int i = (int) a; i <= n; i++) {
+      map.put(prefix[(int) (i - a)], map.getOrDefault(prefix[(int) (i - a)], 0L) + 1);
+
+      if (i > b) {
+        long removeKey = (long) prefix[(int) (i - b - 1)];
+        if (map.get(removeKey) == 1) {
+          map.remove(removeKey);
+        } else {
+          map.put(removeKey, map.get(removeKey) - 1);
+        }
+      }
+
+      maxSum = Math.max(maxSum, prefix[i] - map.firstKey());
+    }
+
+    System.out.println(maxSum);
   }
 
   // ---------------------------------------------------
