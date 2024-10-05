@@ -1,9 +1,25 @@
-public class Utilitu {
-  
+public class Utility {
+
   public static void main(String[] args) {
-    
+
   }
 
+  // ----------------------------------------------------
+  // private static int lowerBound(int num, int[] arr) {
+  // int n = arr.length;
+  // int low = 0, high = n - 1;
+  // long ans = -1;
+  // while (low <= high) {
+  // int mid = (low + high) / 2;
+  // if (arr[mid] <= num) {
+  // ans = mid;
+  // low = mid + 1;
+  // } else {
+  // high = mid - 1;
+  // }
+  // }
+  // return (int) ans;
+  // }
 
   // ---------------------------------------------------
   // This is used when we use Pair inside the map
