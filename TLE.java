@@ -32,42 +32,38 @@ public class TLE {
     int n = in.nextInt();
     int m = in.nextInt();
 
-    int[] arr = new int[n];
-    for (int i = 0; i < arr.length; i++) {
-      arr[i] = in.nextInt();
+    long[] arr = new long[n];
+    for (int i = 0; i < n; i++) {
+      arr[i] = in.nextLong();
     }
-    int[] count = new int[(int)1.5e6 + 1];
-    TreeSet<Integer> set = new TreeSet<>();
+    long[] ans = new long[n - m + 1];
 
-    for (int i = 0; i < (int)1.5e6 + 1; i++) {
-      set.add(i);
-    }
-    int ansMex = n + 1;
+    TreeSet<Integer> low = new TreeSet<>(
+        (a, b) -> arr[a] == arr[b] ? a - b : Long.compare(arr[a], arr[b]));
+    TreeSet<Integer> high = new TreeSet<>(
+        (a, b) -> arr[a] == arr[b] ? a - b : Long.compare(arr[a], arr[b]));
 
-    for (int i = 0; i < m; i++) {
-      count[arr[i]]++;
-      if (set.contains(arr[i])) {
-        set.remove(arr[i]);
-      }
-    }
-    ansMex = set.first();
+    for(int i = 0; i < n; i++) {
+      low.add(i);
+      high.add(low.pollLast());
 
-    for (int i = m; i < n; i++) {
-      count[arr[i - m]]--;
-      count[arr[i]]++;
-
-      if (set.contains(arr[i])) {
-        set.remove(arr[i]);
+      if(low.size() < high.size()) {
+        low.add(high.pollFirst());
       }
 
-      if (count[arr[i - m]] == 0) {
-        set.add(arr[i - m]);
+      if(i >= m - 1) {
+        ans[i - m + 1] = arr[low.last()];
+        if(!low.remove(i - m + 1)) {
+          high.remove(i - m + 1);
+        }
       }
-
-      ansMex = Math.min(ansMex, set.first());
     }
 
-    out.println(ansMex);
+    for(long num : ans) {
+      System.out.print(num + " ");
+    }
+
+    System.out.println();
   }
 
   static class FastReader {
