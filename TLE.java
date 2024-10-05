@@ -3,7 +3,6 @@
 
 import java.io.*;
 import java.util.*;
-import java.lang.*;
 
 public class TLE {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
@@ -34,10 +33,41 @@ public class TLE {
     int m = in.nextInt();
 
     int[] arr = new int[n];
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < arr.length; i++) {
       arr[i] = in.nextInt();
     }
+    int[] count = new int[(int)1.5e6 + 1];
+    TreeSet<Integer> set = new TreeSet<>();
 
+    for (int i = 0; i < (int)1.5e6 + 1; i++) {
+      set.add(i);
+    }
+    int ansMex = n + 1;
+
+    for (int i = 0; i < m; i++) {
+      count[arr[i]]++;
+      if (set.contains(arr[i])) {
+        set.remove(arr[i]);
+      }
+    }
+    ansMex = set.first();
+
+    for (int i = m; i < n; i++) {
+      count[arr[i - m]]--;
+      count[arr[i]]++;
+
+      if (set.contains(arr[i])) {
+        set.remove(arr[i]);
+      }
+
+      if (count[arr[i - m]] == 0) {
+        set.add(arr[i - m]);
+      }
+
+      ansMex = Math.min(ansMex, set.first());
+    }
+
+    out.println(ansMex);
   }
 
   static class FastReader {
@@ -84,14 +114,15 @@ public class TLE {
 
   // ---------------------------------------------------
 
-  // static class Pair {
-  // long first;
-  // long second;
-  // Pair(long f, long s) {
-  // this.first = f;
-  // this.second = s;
-  // }
-  // }
+  static class Pair {
+    long first;
+    long second;
+
+    Pair(long f, long s) {
+      this.first = f;
+      this.second = s;
+    }
+  }
   // ----------------------------------------------
 
   // BINARY SEARCH TIP
