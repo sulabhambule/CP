@@ -1,15 +1,24 @@
 
-import java.util.*;
-
 // Author : Sulabh Ambule
+
+import java.io.*;
+import java.util.*;
+import java.lang.*;
+
 public class TLE {
-  public static void main(String[] args) {
-    Scanner in = new Scanner(System.in);
+  public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
+  static long MOD = (long) (1e9 + 7);
+  // static long MOD = 998244353;
+  static FastReader in = new FastReader();
+
+  public static void main(String[] args) throws Exception {
     // int cases = in.nextInt();
     // while (cases-- > 0) {
-    Accepted(in);
+    Accepted();
     // }
-    in.close();
+
+    out.flush();
+    out.close();
   }
 
   /*
@@ -19,43 +28,61 @@ public class TLE {
    * 
    * 
    */
-  private static void Accepted(Scanner in) {
-    long n = in.nextLong();
-    long a = in.nextLong();
-    long b = in.nextLong();
 
-    long[] arr = new long[(int) n];
+  private static void Accepted() {
+    int n = in.nextInt();
+    int m = in.nextInt();
+
+    int[] arr = new int[n];
     for (int i = 0; i < n; i++) {
-      arr[i] = in.nextLong();
-    }
-    long[] prefix = new long[(int) (n + 1)];
-    for (int i = 1; i <= n; i++) {
-      prefix[i] = prefix[i - 1] + arr[i - 1];
+      arr[i] = in.nextInt();
     }
 
-    TreeMap<Long, Long> map = new TreeMap<>();
-    long maxSum = Long.MIN_VALUE;
-    
-    for (int i = (int) a; i <= n; i++) {
-      map.put(prefix[(int) (i - a)], map.getOrDefault(prefix[(int) (i - a)], 0L) + 1);
+  }
 
-      if (i > b) {
-        long removeKey = (long) prefix[(int) (i - b - 1)];
-        if (map.get(removeKey) == 1) {
-          map.remove(removeKey);
-        } else {
-          map.put(removeKey, map.get(removeKey) - 1);
+  static class FastReader {
+    BufferedReader br;
+    StringTokenizer st;
+
+    public FastReader() {
+      br = new BufferedReader(new InputStreamReader(System.in));
+    }
+
+    String next() {
+      while (st == null || !st.hasMoreElements()) {
+        try {
+          st = new StringTokenizer(br.readLine());
+        } catch (IOException e) {
+          e.printStackTrace();
         }
       }
-
-      maxSum = Math.max(maxSum, prefix[i] - map.firstKey());
+      return st.nextToken();
     }
 
-    System.out.println(maxSum);
+    int nextInt() {
+      return Integer.parseInt(next());
+    }
+
+    long nextLong() {
+      return Long.parseLong(next());
+    }
+
+    double nextDouble() {
+      return Double.parseDouble(next());
+    }
+
+    String nextLine() {
+      String str = "";
+      try {
+        str = br.readLine();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      return str;
+    }
   }
 
   // ---------------------------------------------------
-  static long MOD = (long) (1e9 + 7);
 
   // static class Pair {
   // long first;
@@ -91,7 +118,7 @@ public class TLE {
   // map.put(x, map.getOrDefault(x, 0) + 1);
   // }
   // }
-  // -----------------------------------------------
+  // ---------------------------------------------
 
   // private static int lowerBound(int num, int[] arr) {
   // int n = arr.length;
@@ -109,7 +136,7 @@ public class TLE {
   // return (int) ans;
   // }
 
-  // ----------------------------------------------
+  // ------------------------------------------
 
   // public static long factorial(long minOp) {
   // long fact = 1;
@@ -118,7 +145,7 @@ public class TLE {
   // }
   // return fact;
   // }
-  // -------------------------------------------------
+  // --------------------------------------------
 
   // to check in arr[i] the j-th bit set or not.
   // if((arr[i] & (1 << j)) != 0) {
@@ -135,7 +162,7 @@ public class TLE {
 
   // mex calculate for the arr of permutation
   // long mex = (n * (n + 1) / 2) - sum;
-  // ---------------------------------------------------
+  // ---------------------------------------------
 
   // private static int computeXOR(int n) {
   // if (n % 4 == 0) return n;
@@ -228,10 +255,6 @@ public class TLE {
   // }
   // ----------------------------------------------------
 
-  // Arrays.sort(ord, (i, j) -> Integer.compare(a[j], a[i]));
-  // Arrays.sort(a, Comparator.comparingInt(p -> p.first));
-  // ----------------------------------------------------
-
   // static class Pair implements Comparable<Pair> {
   // long first;
   // long second;
@@ -244,29 +267,6 @@ public class TLE {
   // @Override
   // public int compareTo(Pair other) {
   // return Long.compare(this.first, other.first);
-  // }
-  // }
-
-  // ---------------------------------------------------
-  // This is used when we use Pair inside the map
-
-  // Map<Pair, Integer> map = new HashMap<>();
-  // static class Pair {
-  // long first, second;
-  // Pair(long first, long second) {
-  // this.first = first;
-  // this.second = second;
-  // }
-  // @Override
-  // public boolean equals(Object o) {
-  // if (this == o) return true;
-  // if (o == null || getClass() != o.getClass()) return false;
-  // Pair pair = (Pair) o;
-  // return first == pair.first && second == pair.second;
-  // }
-  // @Override
-  // public int hashCode() {
-  // return (int) (31 * first + second);
   // }
   // }
 
