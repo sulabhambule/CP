@@ -1,8 +1,7 @@
 
-// Author : Sulabh Ambule
-
 import java.io.*;
 import java.util.*;
+// Author : Sulabh Ambule
 
 public class TLE {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
@@ -16,7 +15,7 @@ public class TLE {
     Accepted();
     // }
 
-    out.flush();
+    // out.flush();
     out.close();
   }
 
@@ -29,41 +28,7 @@ public class TLE {
    */
 
   private static void Accepted() {
-    int n = in.nextInt();
-    int m = in.nextInt();
-
-    long[] arr = new long[n];
-    for (int i = 0; i < n; i++) {
-      arr[i] = in.nextLong();
-    }
-    long[] ans = new long[n - m + 1];
-
-    TreeSet<Integer> low = new TreeSet<>(
-        (a, b) -> arr[a] == arr[b] ? a - b : Long.compare(arr[a], arr[b]));
-    TreeSet<Integer> high = new TreeSet<>(
-        (a, b) -> arr[a] == arr[b] ? a - b : Long.compare(arr[a], arr[b]));
-
-    for(int i = 0; i < n; i++) {
-      low.add(i);
-      high.add(low.pollLast());
-
-      if(low.size() < high.size()) {
-        low.add(high.pollFirst());
-      }
-
-      if(i >= m - 1) {
-        ans[i - m + 1] = arr[low.last()];
-        if(!low.remove(i - m + 1)) {
-          high.remove(i - m + 1);
-        }
-      }
-    }
-
-    for(long num : ans) {
-      System.out.print(num + " ");
-    }
-
-    System.out.println();
+    
   }
 
   static class FastReader {
