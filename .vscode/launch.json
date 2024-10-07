@@ -1,8 +1,13 @@
 {
   "version": "0.2.0",
   "configurations": [
-    
-    
+    {
+      "type": "java",
+      "name": "TLE2",
+      "request": "launch",
+      "mainClass": "TLE2",
+      "projectName": "cp VS_fdde75b5"
+    },
     {
       "type": "java",
       "name": "Codechef",
