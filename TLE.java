@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.util.*;
 // Author : Sulabh Ambule
@@ -10,10 +9,10 @@ public class TLE {
   static FastReader in = new FastReader();
 
   public static void main(String[] args) throws Exception {
-    // int cases = in.nextInt();
-    // while (cases-- > 0) {
-    Accepted();
-    // }
+    int cases = in.nextInt();
+    while (cases-- > 0) {
+      Accepted();
+    }
 
     // out.flush();
     out.close();
