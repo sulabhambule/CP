@@ -26,37 +26,46 @@ public class TLE {
    */
   private static void Accepted() {
     int n = in.nextInt();
-    long[] h = new long[n];
-    for (int i = 0; i < h.length; i++) {
-      h[i] = in.nextLong();
-    }
-    long ans = -1;
-    long low = 0;
-    long high = (long) 1e9;
-    while (low <= high) {
-      long mid = (low + high) / 2;
-      if (isPossible(mid, h)) {
-        ans = mid;
-        low = mid + 1;
-      } else {
-        high = mid - 1;
+    String s = in.next();
+    int count = 0;
+    for (int i = 0; i < n; i++) {
+      if (s.charAt(i) == '*') {
+        count++;
       }
     }
-    out.println(ans);
-  }
+    if (count == n) {
+      System.out.println(0);
+      return;
+    }
+    int m = (count + 1) / 2;
+    int idx = 0;
+    for (int i = 0; i < n; i++) {
+      if (s.charAt(i) == '*') {
+        m--;
+      }
+      if (m == 0) {
+        idx = i;
+        break;
+      }
+    }
+    long ans = 0;
+    int idx2 = idx;
 
-  private static boolean isPossible(long x, long[] h) {
-    int n = h.length;
-    long[] cur_h = h.clone();
-    for (int i = n - 1; i >= 2; --i) {
-      if (cur_h[i] < x) {
-        return false;
+    for (int i = idx + 1; i < n; i++) {
+      if (s.charAt(i) == '*') {
+        ans += i - idx2 - 1;
+        idx2++;
       }
-      long d = Math.min(h[i], cur_h[i] - x) / 3;
-      cur_h[i - 1] += d;
-      cur_h[i - 2] += 2 * d;
     }
-    return cur_h[0] >= x && cur_h[1] >= x;
+    idx2 = idx;
+    for (int i = idx - 1; i >= 0; i--) {
+      if (s.charAt(i) == '*') {
+        ans += idx2 - i - 1;
+        idx2--;
+      }
+    }
+
+    System.out.println(ans);
   }
 
   static class FastReader {
