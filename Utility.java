@@ -1,7 +1,7 @@
 public class Utility {
 
   public static void main(String[] args) {
-
+    System.out.println(gcd(1, 5));
   }
 
   // BINARY SEARCH TIP
@@ -31,6 +31,19 @@ public class Utility {
   // return (int) ans;
   // }
   // ----------------------------------------------
+
+  // private static long modExp(long base, long exp, long mod) {
+  // long result = 1;
+  // while (exp > 0) {
+  // if ((exp & 1) == 1) {
+  // result = (result * base) % mod;
+  // }
+  // base = (base * base) % mod;
+  // exp >>= 1;
+  // }
+  // return result;
+  // }
+  // ------------------------------------------------
 
   // if x = 10, then PM are-> 2, 5 added to map.
   // private static void addAllPrimFact(int x, HashMap<Integer, Integer> map) {
@@ -110,11 +123,11 @@ public class Utility {
   // }
   // ---------------------------------------------------
 
-  // public static long gcd(long a, long b) {
-  // if (a == 0)
-  // return b;
-  // return gcd(b % a, a);
-  // }
+  public static long gcd(long a, long b) {
+    if (a == 0)
+      return b;
+    return gcd(b % a, a);
+  }
   // ---------------------------------------------------
 
   // public static void factor(long n) {
@@ -187,7 +200,39 @@ public class Utility {
   // }
   // }
 
-   // ------------------------------------------------
+  // ------------------------------------------------
   // Removing leading zeros from the StringBuilder
   // String xStr = x.toString().replaceFirst("^0+(?!$)", "");
+
+  // -----------------------------------------------------------------
+  // Method to generate the next lexicographical permutation
+  public static boolean nextPermutation(char[] array) {
+    int n = array.length;
+    int i = n - 2;
+    while (i >= 0 && array[i] >= array[i + 1]) {
+      i--;
+    }
+    if (i < 0) {
+      return false;
+    }
+    int j = n - 1;
+    while (array[j] <= array[i]) {
+      j--;
+    }
+    swap2(array, i, j);
+    reverse2(array, i + 1, n - 1);
+    return true;
+  }
+  private static void reverse2(char[] array, int start, int end) {
+    while (start < end) {
+      swap2(array, start, end);
+      start++;
+      end--;
+    }
+  }
+  private static void swap2(char[] array, int i, int j) {
+    char temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
 }
