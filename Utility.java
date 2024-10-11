@@ -14,6 +14,18 @@ public class Utility {
   // Adjust for the negative index from binarySearch
   // }
 
+  // for calculating the mex
+  // int[] leftMex = new int[n];
+  // boolean[] present = new boolean[n + 1];
+  // int currentMex = 0;
+  // for (int i = 0; i < n; i++) {
+  // present[a[i]] = true;
+  // while (currentMex <= n && present[currentMex]) {
+  // currentMex++;
+  // }
+  // leftMex[i] = currentMex;
+  // }
+
   // ---------------------------------------------------
   // private static int lowerBound(int num, int[] arr) {
   // int n = arr.length;
@@ -223,6 +235,7 @@ public class Utility {
     reverse2(array, i + 1, n - 1);
     return true;
   }
+
   private static void reverse2(char[] array, int start, int end) {
     while (start < end) {
       swap2(array, start, end);
@@ -230,6 +243,7 @@ public class Utility {
       end--;
     }
   }
+
   private static void swap2(char[] array, int i, int j) {
     char temp = array[i];
     array[i] = array[j];
