@@ -1,172 +1,142 @@
 
-  import java.io.*;
-  import java.util.*;
+import java.io.*;
+import java.util.*;
 
-  // Author : Sulabh Ambule
-  public class TLE {
+// Author : Sulabh Ambule
+public class TLE {
 
-    public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
-    static long MOD = (long) (1e9 + 7);
-    // static long MOD = 998244353;
-    static FastReader in = new FastReader();
+  public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
+  static long MOD = (long) (1e9 + 7);
+  // static long MOD = 998244353;
+  static FastReader in = new FastReader();
 
-    public static void main(String[] args) throws Exception {
-      // int cf = in.nextInt();
-      // while (cf-- > 0) {
+  public static void main(String[] args) throws Exception {
+    int cf = in.nextInt();
+    while (cf-- > 0) {
       Accepted();
-      // }
-      out.flush();
-      out.close();
     }
-    /*
-    * 
-    * 
-    * || जय श्री राम ||
-    * 
-    * 
-    */
-    private static void Accepted() {
-      int n = in.nextInt();
-      long k = in.nextLong();
-      int[][] arr = new int[n][3];
-      for (int i = 0; i < n; i++) {
-        int a = in.nextInt();
-        int b = in.nextInt();
-        int c = in.nextInt();
-        arr[i][0] = a;
-        arr[i][1] = b;
-        arr[i][2] = c;
-      }
-      int low = 0;
-      int high = (int) 1e6;
-      int ans = 0;
+    out.flush();
+    out.close();
+  }
 
-      while (low <= high) {
-        int mid = (low + high) / 2;
-        if (isPossible(mid, arr, k)) {
-          ans = mid;
-          high = mid - 1;
-        } else {
-          low = mid + 1;
-        }
-      }
+  /*
+   * 
+   * 
+   * || जय श्री राम ||
+   * 
+   * 
+   */
+  private static void Accepted() {
+    int n = in.nextInt();
+    long l = in.nextLong();
+    long r = in.nextLong();
+    List<Long> v = new ArrayList<>();
 
-      out.println(ans);
+    for (int i = 0; i < n; i++) {
+      v.add(in.nextLong());
     }
 
-    private static boolean isPossible(int mid, int[][] arr, long k) {
-      // Store {cost to receive (c), number of batteries needed}
-      PriorityQueue<Pair> pq = new PriorityQueue<>(Comparator.comparingLong(p -> p.cost));
+    Collections.sort(v);
+    long ans = 0;
+    for (int i = 0; i < n; i++) {
+      long upper = upperBound(r - v.get(i), v);
+      long lower = lowerBound(l - v.get(i), v);
+      ans += (upper - lower);
 
-      for (int i = 0; i < arr.length; i++) {
-        if (arr[i][0] < mid) {
-          pq.offer(new Pair(arr[i][2], mid - arr[i][0]));
-        }
-      }
-
-      long total = 0;
-      for (int i = 0; i < arr.length; i++) {
-        if (arr[i][0] > mid) {
-          long req = arr[i][0] - mid;
-          total += (req * arr[i][1]);
-          while (!pq.isEmpty() && req > 0) {
-            Pair pile = pq.poll();
-            if (req >= pile.batNeed) {
-              req -= pile.batNeed;
-              total += pile.cost * pile.batNeed;
-            } else {
-              total += pile.cost * req;
-              pile.batNeed -= req;
-              pq.offer(pile);
-              req = 0;
-            }
-            if (total > k) {
-              return false;
-            }
-          }
-          if (req > 0 || total > k) {
-            return false;
-          }
-        }
-      }
-
-      return true;
-    }
-
-    static class Pair {
-      long cost; 
-      long batNeed; 
-
-      Pair(long cost, long batNeed) {
-        this.cost = cost;
-        this.batNeed = batNeed;
+      if (2 * v.get(i) >= l && 2 * v.get(i) <= r) {
+        ans--;
       }
     }
 
-    static class FastReader {
-      BufferedReader br;
-      StringTokenizer st;
+    System.out.println(ans / 2);
+  }
 
-      public FastReader() {
-        br = new BufferedReader(new InputStreamReader(System.in));
-      }
-
-      String next() {
-        while (st == null || !st.hasMoreElements()) {
-          try {
-            st = new StringTokenizer(br.readLine());
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
+  public static int upperBound(long key, List<Long> v) {
+    int pos = Collections.binarySearch(v, key);
+    if (pos >= 0) {
+        pos++;
+        while (pos < v.size() && v.get(pos) == key) {
+            pos++;
         }
-        return st.nextToken();
-      }
+    } else {
+        pos = -pos - 1;
+    }
+    return pos;
+}
+  
+public static int lowerBound(long key, List<Long> v) {
+    int pos = Collections.binarySearch(v, key);
+    if (pos < 0) {
+        pos = -pos - 1;
+    }
+    return pos;
+}
 
-      int nextInt() {
-        return Integer.parseInt(next());
-      }
 
-      long nextLong() {
-        return Long.parseLong(next());
-      }
+  static class FastReader {
+    BufferedReader br;
+    StringTokenizer st;
 
-      double nextDouble() {
-        return Double.parseDouble(next());
-      }
+    public FastReader() {
+      br = new BufferedReader(new InputStreamReader(System.in));
+    }
 
-      String nextLine() {
-        String str = "";
+    String next() {
+      while (st == null || !st.hasMoreElements()) {
         try {
-          str = br.readLine();
+          st = new StringTokenizer(br.readLine());
         } catch (IOException e) {
           e.printStackTrace();
         }
-        return str;
       }
+      return st.nextToken();
     }
 
-    // static class Pair {
-    // long first;
-    // long second
-    // Pair(long f, long s) {
-    // this.first = f;
-    // this.second = s;
-    // }
-    // }
+    int nextInt() {
+      return Integer.parseInt(next());
+    }
 
-    // static class Pair implements Comparable<Pair> {
-    //   long first;
-    //   long second;
+    long nextLong() {
+      return Long.parseLong(next());
+    }
 
-    //   Pair(long first, long x) {
-    //     this.first = first;
-    //     this.second = x;
-    //   }
+    double nextDouble() {
+      return Double.parseDouble(next());
+    }
 
-    //   @Override
-    //   public int compareTo(Pair other) {
-    //     return Long.compare(this.second, other.second);
-    //   }
-    // }
-
+    String nextLine() {
+      String str = "";
+      try {
+        str = br.readLine();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      return str;
+    }
   }
+
+  // static class Pair {
+  // long first;
+  // long second
+  // Pair(long f, long s) {
+  // this.first = f;
+  // this.second = s;
+  // }
+  // }
+
+  // static class Pair implements Comparable<Pair> {
+  // long first;
+  // long second;
+
+  // Pair(long first, long x) {
+  // this.first = first;
+  // this.second = x;
+  // }
+
+  // @Override
+  // public int compareTo(Pair other) {
+  // return Long.compare(this.second, other.second);
+  // }
+  // }
+
+}

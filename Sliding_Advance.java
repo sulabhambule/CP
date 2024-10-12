@@ -48,12 +48,12 @@ public class Sliding_Advance {
       if (r - l + 1 == k) {
         ans[l] = map.lastKey();
         int val = nums[l];
-        if (map.get(val) == 1) {
-          map.remove(val);
-        } else {
-          map.put(val, map.get(val) - 1);
-        }
-        l++;
+          if (map.get(val) == 1) {
+            map.remove(val);
+          } else {
+            map.put(val, map.get(val) - 1);
+          }
+          l++;
       }
     }
 
@@ -87,7 +87,7 @@ public class Sliding_Advance {
   }
 
   // Function to find the sliding window Meadian.
-  public double[] medianSlidingWindow(int[] nums, int k) {
+    public double[] medianSlidingWindow(int[] nums, int k) {
     TreeSet<Integer> minSet = new TreeSet<>(
         (a, b) -> nums[a] == nums[b] ? a - b
             : Integer.compare(nums[a], nums[b]));
@@ -115,7 +115,7 @@ public class Sliding_Advance {
         }
 
         if (!minSet.remove(i - k + 1)) {
-          // remove the left num out of the subarray.
+            
           maxSet.remove(i - k + 1);
         }
       }

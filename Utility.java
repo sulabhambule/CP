@@ -26,24 +26,39 @@ public class Utility {
   // leftMex[i] = currentMex;
   // }
 
-  // ---------------------------------------------------
-  // private static int lowerBound(int num, int[] arr) {
-  // int n = arr.length;
-  // int low = 0, high = n - 1;
-  // long ans = -1;
-  // while (low <= high) {
-  // int mid = (low + high) / 2;
-  // if (arr[mid] <= num) {
-  // ans = mid;
-  // low = mid + 1;
-  // } else {
-  // high = mid - 1;
+  // ---------------------------------------------------------------
+  // Binary search for the first index where x >= val
+  // private static int lowerBound(long[] a, int start, int end, long val) {
+  //   int lo = start, hi = end, res = end + 1;
+  //   while (lo <= hi) {
+  //       int mid = lo + (hi - lo) / 2;
+  //       if (a[mid] >= val) {
+  //           res = mid;
+  //           hi = mid - 1;
+  //       } else {
+  //           lo = mid + 1;
+  //       }
+  //   }
+  //   return res;
   // }
-  // }
-  // return (int) ans;
-  // }
-  // ----------------------------------------------
 
+  // Binary search for the last index where x <= val
+  // private static int upperBound(long[] a, int start, int end, long val) {
+  //     int lo = start, hi = end, res = start - 1;
+  //     while (lo <= hi) {
+  //         int mid = lo + (hi - lo) / 2;
+  //         if (a[mid] <= val) {
+  //             res = mid;
+  //             lo = mid + 1;
+  //         } else {
+  //             hi = mid - 1;
+  //         }
+  //     }
+  //     return res;
+  // }
+
+  // --------------------------------------------------------
+  
   // private static long modExp(long base, long exp, long mod) {
   // long result = 1;
   // while (exp > 0) {
@@ -249,4 +264,8 @@ public class Utility {
     array[i] = array[j];
     array[j] = temp;
   }
+
+//  standard problem with prefix sums: if two prefix sums are equal, then the subarray between them has sum 0
+// ; otherwise, no subarray has sum 0
+.
 }
