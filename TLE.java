@@ -11,10 +11,10 @@ public class TLE {
   static FastReader in = new FastReader();
 
   public static void main(String[] args) throws Exception {
-    int cf = in.nextInt();
-    while (cf-- > 0) {
+    // int cf = in.nextInt();
+    // while (cf-- > 0) {
       Accepted();
-    }
+    // }
     out.flush();
     out.close();
   }
@@ -28,50 +28,34 @@ public class TLE {
    */
   private static void Accepted() {
     int n = in.nextInt();
-    long l = in.nextLong();
-    long r = in.nextLong();
-    List<Long> v = new ArrayList<>();
-
-    for (int i = 0; i < n; i++) {
-      v.add(in.nextLong());
+    int[] a = new int[n];
+    for (int i = 0; i < a.length; i++) {
+      a[i] = in.nextInt();
+    } 
+    int m = in.nextInt();
+    int[] b = new int[m];
+    for (int i = 0; i < b.length; i++) {
+      b[i] = in.nextInt();
     }
 
-    Collections.sort(v);
-    long ans = 0;
-    for (int i = 0; i < n; i++) {
-      long upper = upperBound(r - v.get(i), v);
-      long lower = lowerBound(l - v.get(i), v);
-      ans += (upper - lower);
+    Arrays.sort(a);
+    Arrays.sort(b);
 
-      if (2 * v.get(i) >= l && 2 * v.get(i) <= r) {
-        ans--;
+    int i = 0, j = 0;
+    int ans = 0;
+    while(i < n && j < m) {
+      if(Math.abs(a[i] - b[j]) <= 1) {
+        ans++;
+        i++;
+        j++;
+      } else if(a[i] < b[j]) {
+        i++;
+      } else {
+        j++;
       }
     }
-
-    System.out.println(ans / 2);
+    System.out.println(ans);
   }
-
-  public static int upperBound(long key, List<Long> v) {
-    int pos = Collections.binarySearch(v, key);
-    if (pos >= 0) {
-        pos++;
-        while (pos < v.size() && v.get(pos) == key) {
-            pos++;
-        }
-    } else {
-        pos = -pos - 1;
-    }
-    return pos;
-}
-  
-public static int lowerBound(long key, List<Long> v) {
-    int pos = Collections.binarySearch(v, key);
-    if (pos < 0) {
-        pos = -pos - 1;
-    }
-    return pos;
-}
-
 
   static class FastReader {
     BufferedReader br;
