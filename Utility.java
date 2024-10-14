@@ -26,6 +26,20 @@ public class Utility {
   // leftMex[i] = currentMex;
   // }
 
+
+  // private static int lowerBound(long[] arr, long key) {
+  //   int lo = 0, hi = arr.length;
+  //   while (lo < hi) {
+  //     int mid = lo + (hi - lo) / 2;
+  //     if (arr[mid] >= key) {
+  //       hi = mid;
+  //     } else {
+  //       lo = mid + 1;
+  //     }
+  //   }
+  //   return lo;
+  // }
+
   // ---------------------------------------------------------------
   // Binary search for the first index where x >= val
   // private static int lowerBound(long[] a, int start, int end, long val) {

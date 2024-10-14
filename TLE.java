@@ -11,50 +11,22 @@ public class TLE {
   static FastReader in = new FastReader();
 
   public static void main(String[] args) throws Exception {
-    // int cf = in.nextInt();
-    // while (cf-- > 0) {
+    int cf = in.nextInt();
+    while (cf-- > 0) {
       Accepted();
-    // }
+    }
     out.flush();
     out.close();
   }
 
   /*
    * 
-   * 
    * || जय श्री राम ||
    * 
-   * 
    */
+
   private static void Accepted() {
-    int n = in.nextInt();
-    int[] a = new int[n];
-    for (int i = 0; i < a.length; i++) {
-      a[i] = in.nextInt();
-    } 
-    int m = in.nextInt();
-    int[] b = new int[m];
-    for (int i = 0; i < b.length; i++) {
-      b[i] = in.nextInt();
-    }
-
-    Arrays.sort(a);
-    Arrays.sort(b);
-
-    int i = 0, j = 0;
-    int ans = 0;
-    while(i < n && j < m) {
-      if(Math.abs(a[i] - b[j]) <= 1) {
-        ans++;
-        i++;
-        j++;
-      } else if(a[i] < b[j]) {
-        i++;
-      } else {
-        j++;
-      }
-    }
-    System.out.println(ans);
+    
   }
 
   static class FastReader {
