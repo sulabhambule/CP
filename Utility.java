@@ -73,18 +73,19 @@ public class Utility {
 
   // --------------------------------------------------------
   
-  // private static long modExp(long base, long exp, long mod) {
-  // long result = 1;
-  // while (exp > 0) {
-  // if ((exp & 1) == 1) {
-  // result = (result * base) % mod;
+  // static long binPow(long a, long b, long MOD) {
+  //   long result = 1;
+  //   a = a % MOD; // in case 'a' is larger than MOD
+
+  //   while (b > 0) {
+  //     if ((b & 1) == 1) {
+  //       result = (result * a) % MOD;
+  //     }
+  //     a = (a * a) % MOD;
+  //     b >>= 1;
+  //   }
+  //   return result;
   // }
-  // base = (base * base) % mod;
-  // exp >>= 1;
-  // }
-  // return result;
-  // }
-  // ------------------------------------------------
 
   // if x = 10, then PM are-> 2, 5 added to map.
   // private static void addAllPrimFact(int x, HashMap<Integer, Integer> map) {
