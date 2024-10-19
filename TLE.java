@@ -1,11 +1,9 @@
 import java.io.*;
 import java.util.*;
 
-// Author : Sulabh Ambule
+// Author: Sulabh Ambule
 public class TLE {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
-  static long MOD = (long) (1e9 + 7);
-  // static long MOD = 998244353;
   static FastReader in = new FastReader();
 
   public static void main(String[] args) throws Exception {
@@ -17,58 +15,8 @@ public class TLE {
     out.close();
   }
 
-  /*
-   * 
-   * || जय श्री राम ||
-   * 
-   */
-
   private static void Accepted() {
-    int n = in.nextInt();
-    int[] a = new int[n];
-    for (int i = 0; i < n; i++) {
-      a[i] = in.nextInt();
-    }
-    ArrayList<Integer> list = new ArrayList<>();
-    int max = (int) 2e5;
-    boolean[] visited = new boolean[max + 1];
-    long[] count = new long[max + 1];
-    for (int i = 0; i < n; i++) {
-      count[a[i]]++;
-    }
-    int mex = 0, j = 0;
-    for (int i = 0; i < n; i++) {
-      if (a[i] == mex) {
-        count[a[i]]--;
-        visited[a[i]] = true;
-        while (visited[mex]) {
-          mex++;
-        }
-        if (count[mex] == 0) {
-          // there is num equal to mex in future arr. so break the k value.
-          list.add(mex); // mex is added to the answerr
-          mex = 0;
-          for (int k = j; k <= i; k++) {
-            visited[a[k]] = false;
-          }
-          j = i + 1;
-        }
-      } else if (count[mex] == 0) {
-        // again cut the k here.
-        list.add(mex);
-        mex = 0;
-        count[a[i]]--;
-        j = i + 1;
-      } else {
-        count[a[i]]--;
-        visited[a[i]] = true;
-      }
-    }
-    System.out.println(list.size());
-    for (int ii : list) {
-      System.out.print(ii + " ");
-    }
-    System.out.println();
+
   }
 
   static class FastReader {
