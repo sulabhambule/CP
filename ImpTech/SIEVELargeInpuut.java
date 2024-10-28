@@ -1,4 +1,4 @@
-import java.util.Scanner;
+package ImpTech;
 
 public class SIEVELargeInpuut {
   public static void main(String[] args) {

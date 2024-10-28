@@ -1,3 +1,4 @@
+package ImpTech;
 import java.util.Scanner;
 
 public class SPF {

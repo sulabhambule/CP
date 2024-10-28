@@ -1,5 +1,14 @@
 {
   "java.debug.settings.onBuildFailureProceed": true,
   "C_Cpp.default.compilerPath": "D:\\MinGW\\bin\\gcc.exe",
-  "C_Cpp.errorSquiggles": "disabled"
+  "C_Cpp.errorSquiggles": "disabled",
+  "files.associations": {
+    "*.ejs": "html",
+    "array": "cpp",
+    "bitset": "cpp",
+    "initializer_list": "cpp",
+    "regex": "cpp",
+    "utility": "cpp",
+    "valarray": "cpp"
+  }
 }

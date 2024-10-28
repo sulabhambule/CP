@@ -1,7 +1,8 @@
+
 import java.io.*;
 import java.util.*;
 
-public class TLE {
+public class specialPrime {
   static final int MAXN = 10000000;
   static boolean[] isPrime = new boolean[MAXN + 1];
   static List<Integer> specialPrimes = new ArrayList<>();

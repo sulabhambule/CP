@@ -1,8 +1,9 @@
+package SomeProblems;
 // Author : Sulabh Ambule
 
 import java.util.*;
 
-public class tranform1 {
+public class transform2 {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         // int cases = in.nextInt();
@@ -16,85 +17,38 @@ public class tranform1 {
 
     private static void Accepted(Scanner in) {
         int n = in.nextInt();
-        int d = in.nextInt();
+        int k = in.nextInt();
         double[] a = new double[n];
-        for (int i = 0; i < a.length; i++) {
-            a[i] = in.nextInt();
+        double[] b = new double[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = in.nextDouble();
+            b[i] = in.nextDouble();
         }
-        double low = 0, high = 100;
-        int iterations = 100;
+        double low = 0, high = 1e10;
+        int iterations = 60;
+
         for (int i = 0; i < iterations; i++) {
             double mid = (low + high) / 2;
-            if (isPossible(mid, a, d, n)) {
+            if (isPossible(mid, a, b, n, k)) {
                 low = mid;
             } else {
                 high = mid;
             }
         }
-        // TTTTTTTFFFFFF // first t is answer
-        // System.out.println(low);
-        int[] index = bestSubArray(low, a, d, n);
-
-        System.out.println((index[0] + 1) + " " + (index[1] + 1));
+        System.out.println(low);
     }
 
-    private static int[] bestSubArray(double low, double[] a, int d, int n) {
-        double[] trans = new double[n];
-        for (int i = 0; i < n; i++) {
-            trans[i] = a[i] - low;
+    private static boolean isPossible(double mid, double[] a, double[] b, int n, int k) {
+        double[] transform = new double[n];
+        for (int i = 0; i < a.length; i++) {
+            transform[i] = a[i] - b[i] * mid;
         }
-        return anySubarrWithPosSum(trans, d, n);
-    }
-
-    private static boolean isPossible(double mid, double[] a, int d, int n) {
-        double[] trans = new double[n];
-        for (int i = 0; i < n; i++) {
-            trans[i] = a[i] - mid;
+        Arrays.sort(transform);
+        double sum = 0;
+        for (int i = n - k; i < n; i++) {
+            sum += transform[i];
         }
-        return (maximumSum(trans, d, n)) >= 0;
-        // find out the best possible subarray sum in transformed array of subarray
-        // length at least d.
-        // if this maximum sum >= 0, return true else return false.
-    }
-
-    private static double maximumSum(double[] trans, int d, int n) {
-        double[] prefixSum = new double[n];
-        prefixSum[0] = trans[0];
-        for (int i = 1; i < n; i++) {
-            prefixSum[i] = prefixSum[i - 1] + trans[i];
-        }
-        double ans = -1e18;
-        double minSoFar = 0;
-        for (int r = d - 1; r < n; r++) {
-            double bestSubArrEndingHere = prefixSum[r] - minSoFar;
-            minSoFar = Math.min(minSoFar, prefixSum[r - d + 1]);
-            ans = Math.max(ans, bestSubArrEndingHere);
-        }
-        return ans;
-    }
-
-    private static int[] anySubarrWithPosSum(double[] trans, int d, int n) {
-        double[] prefixSum = new double[n];
-        prefixSum[0] = trans[0];
-        for (int i = 1; i < n; i++) {
-            prefixSum[i] = prefixSum[i - 1] + trans[i];
-        }
-        double ans = -1e18;
-        double minSoFar = 0;
-        int bestLeftIndex = -1;
-        for (int r = d - 1; r < n; r++) {
-            double bestSubArrEndingHere = prefixSum[r] - minSoFar;
-            ans = Math.max(ans, bestSubArrEndingHere);
-            if (ans >= 0) 
-                return new int[] { bestLeftIndex + 1, r };
-
-            if (minSoFar > prefixSum[r - d + 1]) {
-                minSoFar = prefixSum[r - d + 1];
-                bestLeftIndex = r - d + 1;
-            }
-        }
-        // return ans;
-        return new int[] { -1, -1 }; // never going to happer
+        return sum >= 0;
     }
 
     // ---------------------------------------------------

@@ -1,61 +1,81 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
 
-// Author : Sulabh Ambule
-#define ll long long
-#define MOD 1000000007
-#define endl '\n'
-
-void Accepted() {
-    int n, m;
-    ll k;
-    cin >> n >> m >> k;
-
-    vector<ll> a(n), b(m);
-
-    // Input the desired apartment sizes
-    for (int i = 0; i < n; i++) {
-        cin >> a[i];
-    }
-
-    // Input the actual apartment sizes
-    for (int i = 0; i < m; i++) {
-        cin >> b[i];
-    }
-
-    // Sort both arrays
-    sort(a.begin(), a.end());
-    sort(b.begin(), b.end());
-
-    // Two-pointer approach
-    int i = 0, j = 0, ans = 0;
-    while (i < n && j < m) {
-        ll des = a[i];
-        ll size = b[j];
-
-        if (size >= des - k && size <= des + k) {
-            ans++;
-            i++;
-            j++;
-        } else if (size < des - k) {
-            j++;
-        } else {
-            i++;
+// Author: Sulabh Ambule
+long long calculateK(const vector<int> &p)
+{
+    long long k = 0;
+    for (int i = 0; i < p.size(); i++)
+    {
+        if (i % 2 == 0)
+        { // For 0-based index, even i means 1st, 3rd, 5th... (1-based)
+            k |= p[i];
+        }
+        else
+        {
+            k &= p[i];
         }
     }
-
-    cout << ans << endl;
+    return k;
 }
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+void processTestCase(int n)
+{
+    vector<int> p(n);
 
-    // int t;
-    // cin >> t;
-    // while (t--) {
-    Accepted();
-    // }
+    // Fill the permutation from 1 to n
+    for (int i = 0; i < n; i++)
+    {
+        p[i] = i + 1;
+    }
 
+    // Calculate k for the direct order
+    long long maxK = calculateK(p);
+    vector<int> bestSequence = p; // Store the best sequence
+
+    // Example of trying a rearrangement strategy
+    // We will use a simple swap strategy to see if we can find a better configuration.
+    // This specific case does not use permutations but simple logic.
+
+    // Swap last two elements
+    swap(p[n - 1], p[n - 2]);
+    long long k = calculateK(p);
+    if (k > maxK)
+    {
+        maxK = k;
+        bestSequence = p;
+    }
+
+    swap(p[n - 1], p[n - 2]);
+
+    swap(p[0], p[1]);
+    if (k > maxK)
+    {
+        maxK = k;
+        bestSequence = p;
+    }
+    swap(p[0], p[1]);
+    // Output results
+    cout << maxK << endl;
+    for (int num : bestSequence)
+    {
+        cout << num << " ";
+    }
+    cout << endl;
+}
+
+int main()
+{
+    int t;
+    cin >> t;
+    while (t-- > 0)
+    {
+        int n;
+        cin >> n;
+        processTestCase(n);
+    }
     return 0;
 }
