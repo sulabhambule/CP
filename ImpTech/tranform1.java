@@ -86,7 +86,7 @@ public class tranform1 {
         for (int r = d - 1; r < n; r++) {
             double bestSubArrEndingHere = prefixSum[r] - minSoFar;
             ans = Math.max(ans, bestSubArrEndingHere);
-            if (ans >= 0) 
+            if (ans >= 0)
                 return new int[] { bestLeftIndex + 1, r };
 
             if (minSoFar > prefixSum[r - d + 1]) {

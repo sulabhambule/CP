@@ -1,4 +1,6 @@
-import java.util.* ;
+package DataStructures;
+
+import java.util.*;
 
 public class Trie2 {
     private Node root;
@@ -24,7 +26,7 @@ public class Trie2 {
         Node node = root;
         for (int i = 0; i < word.length(); i++) {
             char ch = word.charAt(i);
-            if (!node.containsKey(ch)) { 
+            if (!node.containsKey(ch)) {
                 return 0;
             }
             node = node.get(ch);

@@ -1,3 +1,4 @@
+package ImpTech;
 // Author : Sulabh Ambule
 
 import java.util.*;
@@ -62,7 +63,7 @@ public class INTERACTIVEP {
         System.out.println("? " + x);
         String outPut;
         // outPut = in.next();
-        if(testing) {
+        if (testing) {
             outPut = it.queryInteractor(x);
             System.out.println("Interactor outPut:" + outPut);
         } else {
@@ -70,7 +71,6 @@ public class INTERACTIVEP {
         }
         return outPut;
     }
-    
 
     // ---------------------------------------------------
     private static final long MOD = (long) (1e9 + 7);

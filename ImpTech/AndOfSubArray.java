@@ -1,4 +1,5 @@
 package ImpTech;
+
 import java.util.*;
 
 // Author : Sulabh Ambule
@@ -37,7 +38,8 @@ public class AndOfSubArray {
       arr[i] = in.nextInt();
     }
 
-    // the below code snippet -> it mke the prefix array in which we prefix[n][30] --> which gonna be store the which jth bit is set int arr[i].
+    // the below code snippet -> it mke the prefix array in which we prefix[n][30]
+    // --> which gonna be store the which jth bit is set int arr[i].
 
     int[][] prefix = new int[n][30];
     for (int i = 0; i < n; i++) {
@@ -50,7 +52,10 @@ public class AndOfSubArray {
       }
     }
 
-    // id the bit is not set then we are storing 1 in that perticualr position because if any bit gets unset then it never be going to set so the bit is set we store 0 so if we use pefix sum then sum will not change as the sum of 0 + 0 + 0 + 0 = 0
+    // id the bit is not set then we are storing 1 in that perticualr position
+    // because if any bit gets unset then it never be going to set so the bit is set
+    // we store 0 so if we use pefix sum then sum will not change as the sum of 0 +
+    // 0 + 0 + 0 = 0
 
     for (int i = 1; i < n; i++) {
       for (int j = 0; j < 30; j++) {
@@ -64,11 +69,11 @@ public class AndOfSubArray {
       int r = in.nextInt() - 1;
 
       int AndFromRangeLtoR = 0;
-      for(int j = 0 ; j < 30; j++) {
+      for (int j = 0; j < 30; j++) {
         int setBit = prefix[r][j] - (l == 0 ? 0 : prefix[l - 1][j]);
         // if the setBit is zer means from l -> r the bit of jth position is set
-        if(setBit == 0) {
-          AndFromRangeLtoR += (1 << j);  // 2^j
+        if (setBit == 0) {
+          AndFromRangeLtoR += (1 << j); // 2^j
         }
       }
 

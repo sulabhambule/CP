@@ -1,11 +1,11 @@
 
-/* || JAI SHREE RAM || */
-
 import java.io.*;
 import java.util.*;
 // Author : Sulabh Ambule
 
-public class TLE {
+// problem link : https://codeforces.com/problemset/problem/1349/A
+
+public class gcd_lcm {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static long MOD = (long) (1e9 + 7);
   // static long MOD = 998244353;
@@ -14,41 +14,93 @@ public class TLE {
   public static void main(String[] args) throws Exception {
     // int cases = in.nextInt();
     // while (cases-- > 0) {
+
+    sieveSPF();
     Accepted();
     // }
     out.flush();
     out.close();
   }
 
-  private static void Accepted() {
-    long n = in.nextLong();
-    int ans = 0;
+  /*
+   * 
+   * 
+   * || JAI SHREE RAM ||
+   * 
+   * 
+   */
 
-    if (n == 1) {
-      System.out.println(0);
-      return;
+  static final int MAXN = 200001;
+  static int[] spf = new int[MAXN];
+
+  static void sieveSPF() {
+    for (int i = 1; i < MAXN; i++) {
+      spf[i] = i;
+    }
+    for (int i = 2; i * i < MAXN; i++) {
+      if (spf[i] == i) {
+        for (int j = i * i; j < MAXN; j += i) {
+          if (spf[j] == j) {
+            spf[j] = i;
+          }
+        }
+      }
+    }
+  }
+
+  private static void Accepted() {
+    int n = in.nextInt();
+    int[] arr = new int[n];
+    for (int i = 0; i < n; i++) {
+      arr[i] = in.nextInt();
     }
 
-    for (int i = 2; i * i <= n; i++) {
-      if (n % i == 0) {
+    Map<Integer, PriorityQueue<Integer>> map = new HashMap<>();
+    for (int num : arr) {
+      while (num != 1) {
+        int spfNum = spf[num];
         int count = 0;
-        int moves = 0;
-        while (n % i == 0) {
+        while (num % spfNum == 0) {
           count++;
-          n /= i;
+          num /= spfNum;
         }
-        while (moves * (moves + 1) / 2 <= count) {
-          moves++;
-        }
-        ans += (moves - 1);
+        map.computeIfAbsent(spfNum, k -> new PriorityQueue<>()).add(count);
+      }
+    }
+    long ans = 1;
+
+    for (Map.Entry<Integer, PriorityQueue<Integer>> entry : map.entrySet()) {
+      int primeFactor = entry.getKey();
+      PriorityQueue<Integer> counts = entry.getValue();
+
+      if (counts.size() < n - 1)
+        continue; // Ignore factors appearing in fewer than (n-1) numbers
+
+      if (counts.size() == n) {
+        counts.poll(); // Remove smallest count if factor appears in all `n` numbers
       }
 
-    }
-    if (n > 1) {
-      ans++;
+      int minPower = counts.isEmpty() ? 0 : counts.peek();
+      ans = ans * binExpo(primeFactor, minPower);
     }
 
-    System.out.println(ans);
+    out.println(ans);
+
+  }
+
+  static long binExpo(int base, int exp) {
+    long result = 1;
+    long baseMod = base % MOD;
+
+    while (exp > 0) {
+      if ((exp & 1) == 1) {
+        result = result * baseMod % MOD;
+      }
+      baseMod = baseMod * baseMod % MOD;
+      exp >>= 1;
+    }
+
+    return result;
   }
 
   static class FastReader {
@@ -104,7 +156,7 @@ public class TLE {
       this.second = s;
     }
   }
-  // ------------------------------------------------------------------------------------------------------------------------------
+  // ----------------------------------------------
 
   // BINARY SEARCH TIP
   // Collections.binarySearch(list, a[i])
