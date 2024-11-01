@@ -2,7 +2,7 @@
 public class Utility {
 
   public static void main(String[] args) {
-    
+
   }
 
   /*
@@ -75,8 +75,18 @@ public class Utility {
    * }
    * 
    * 
+   * long long binpow(long long a, long long b) {
+   * long long res = 1;
+   * while (b > 0) {
+   * if (b & 1)
+   * res = res * a;
+   * a = a * a;
+   * b >>= 1;
+   * }
+   * return res;
+   * }
    * 
-   * static long binPow(long a, long b, long MOD) {
+   * static long binPowMod(long a, long b, long MOD) {
    * long result = 1;
    * a = a % MOD; // in case 'a' is larger than MOD
    * 

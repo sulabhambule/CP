@@ -1,81 +1,52 @@
+/* || JAI SHREE RAM || */
+
 #include <iostream>
-#include <vector>
-#include <algorithm>
+#include <map>
 
 using namespace std;
 
 // Author: Sulabh Ambule
-long long calculateK(const vector<int> &p)
-{
-    long long k = 0;
-    for (int i = 0; i < p.size(); i++)
-    {
-        if (i % 2 == 0)
-        { // For 0-based index, even i means 1st, 3rd, 5th... (1-based)
-            k |= p[i];
-        }
-        else
-        {
-            k &= p[i];
-        }
-    }
-    return k;
-}
-
-void processTestCase(int n)
-{
-    vector<int> p(n);
-
-    // Fill the permutation from 1 to n
-    for (int i = 0; i < n; i++)
-    {
-        p[i] = i + 1;
-    }
-
-    // Calculate k for the direct order
-    long long maxK = calculateK(p);
-    vector<int> bestSequence = p; // Store the best sequence
-
-    // Example of trying a rearrangement strategy
-    // We will use a simple swap strategy to see if we can find a better configuration.
-    // This specific case does not use permutations but simple logic.
-
-    // Swap last two elements
-    swap(p[n - 1], p[n - 2]);
-    long long k = calculateK(p);
-    if (k > maxK)
-    {
-        maxK = k;
-        bestSequence = p;
-    }
-
-    swap(p[n - 1], p[n - 2]);
-
-    swap(p[0], p[1]);
-    if (k > maxK)
-    {
-        maxK = k;
-        bestSequence = p;
-    }
-    swap(p[0], p[1]);
-    // Output results
-    cout << maxK << endl;
-    for (int num : bestSequence)
-    {
-        cout << num << " ";
-    }
-    cout << endl;
-}
 
 int main()
 {
-    int t;
-    cin >> t;
-    while (t-- > 0)
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, m; 
+    cin >> n >> m;
+
+    map<long long, int> tickets; 
+
+    for (int i = 0; i < n; i++)
     {
-        int n;
-        cin >> n;
-        processTestCase(n);
+        long long price;
+        cin >> price;
+        tickets[price]++;
     }
+
+    for (int i = 0; i < m; i++)
+    {
+        long long maxPrice;
+        cin >> maxPrice; 
+
+        auto it = tickets.upper_bound(maxPrice);
+
+        if (it == tickets.begin())
+        {
+            cout << -1 << "\n"; 
+        }
+        else
+        {
+            --it; 
+
+            cout << it->first << "\n"; 
+            
+            if (--(it->second) == 0)
+            {
+                tickets.erase(it); 
+            }
+        }
+    }
+
     return 0;
 }
