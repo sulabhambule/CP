@@ -13,16 +13,42 @@ public class TLE {
   static FastReader in = new FastReader();
 
   public static void main(String[] args) throws Exception {
-    int WrongAnswer = in.nextInt();
-    while (WrongAnswer-- > 0) {
-      Accepted();
-    }
+    // int WrongAnswer = in.nextInt();
+    // while (WrongAnswer-- > 0) {
+    Accepted();
+    // }
     out.flush();
     out.close();
   }
 
   private static void Accepted() {
+    int a = in.nextInt();
+    int b = in.nextInt();
+    int c = in.nextInt();
 
+    if (canBeExpressed(a, b, c)) {
+      out.println("YES");
+    } else {
+      out.println("NO");
+    }
+  }
+
+
+  public static long gcd(long a, long b) {
+    if (a == 0)
+      return b;
+    return gcd(b % a, a);
+  }
+
+
+  private static boolean canBeExpressed(int a, int b, int c) {
+    for (int x = 0; x <= c / a; x++) {
+      int remainder = c - x * a;
+      if (remainder % b == 0) {
+        return true;
+      }
+    }
+    return false;
   }
 
   static class FastReader {
