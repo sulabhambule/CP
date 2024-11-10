@@ -22,13 +22,13 @@ public class TLE2 {
   }
 
   private static void Accepted() {
-    System.out.println(3 ^ 1);
+
   }
 
   static class FastReader {
     BufferedReader br;
     StringTokenizer st;
-    
+
     public FastReader() {
       br = new BufferedReader(new InputStreamReader(System.in));
     }
@@ -77,5 +77,3 @@ public class TLE2 {
     }
   }
 }
-
-// descrete log ke niche nhi krna hai

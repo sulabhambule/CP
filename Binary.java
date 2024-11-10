@@ -3,22 +3,22 @@ import java.util.*;
 public class Binary {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        
+
         // Read the length of the array
         int n = in.nextInt();
         long[] arr = new long[n];
-        
+
         // Read the array elements
         for (int i = 0; i < n; i++) {
             arr[i] = in.nextLong();
         }
-        
+
         // Sort the array to enable binary search
         Arrays.sort(arr);
-        
+
         // Read the number of queries
         int k = in.nextInt();
-        
+
         int[][] query = new int[k][2];
         for (int i = 0; i < k; i++) {
             query[i][0] = in.nextInt();

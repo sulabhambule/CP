@@ -1,54 +1,32 @@
 
-/*            || जय श्री राम ||           */
-
 import java.io.*;
 import java.util.*;
 
-// Author : Sulabh Ambule
-
+// Author: Sulabh Ambule
 public class TLE {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
-  // static long MOD = (long) (1e9 + 7);
-  static long MOD = 998244353;
+  static long MOD = (long) (1e9 + 7);
+  // static long MOD = 998244353;
   static FastReader in = new FastReader();
 
+  // One thing that comes into my mind today, why I am Giving Contest ??
+
   public static void main(String[] args) throws Exception {
-    // int WrongAnswer = in.nextInt();
-    // while (WrongAnswer-- > 0) {
-    Accepted();
-    // }
+    int cf = in.nextInt();
+    while (cf-- > 0) {
+      Accepted();
+    }
     out.flush();
     out.close();
   }
 
   private static void Accepted() {
-    int a = in.nextInt();
-    int b = in.nextInt();
-    int c = in.nextInt();
-
-    if (canBeExpressed(a, b, c)) {
-      out.println("YES");
-    } else {
-      out.println("NO");
+    int n = in.nextInt();
+    int[] a = new int[n];
+    for (int i = 0; i < n; i++) {
+      a[i] = in.nextInt();
     }
-  }
-
-
-  public static long gcd(long a, long b) {
-    if (a == 0)
-      return b;
-    return gcd(b % a, a);
-  }
-
-
-  private static boolean canBeExpressed(int a, int b, int c) {
-    for (int x = 0; x <= c / a; x++) {
-      int remainder = c - x * a;
-      if (remainder % b == 0) {
-        return true;
-      }
-    }
-    return false;
+    
   }
 
   static class FastReader {
@@ -90,16 +68,6 @@ public class TLE {
         e.printStackTrace();
       }
       return str;
-    }
-  }
-
-  static class Pair {
-    long first;
-    long second;
-
-    Pair(long f, long s) {
-      this.first = f;
-      this.second = s;
     }
   }
 }

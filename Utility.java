@@ -36,6 +36,8 @@ public class Utility {
    * }
    * leftMex[i] = currentMex;
    * }
+   * -----------------------------------------------------
+   * 
    */
 
   private static int lowerBound(long[] arr, long key) {
@@ -92,6 +94,24 @@ public class Utility {
     return res;
   }
 
+  static long modDiv(long x, long y, long mod) {
+    // x * y^(MOD-2) % MOD
+    return (x * modPow(y, mod - 2, mod)) % mod;
+  }
+
+  static long modPow(long base, long exp, long mod) {
+    long result = 1;
+    base = base % mod;
+    while (exp > 0) {
+      if ((exp & 1) == 1) {
+        result = (result * base) % mod;
+      }
+      base = (base * base) % mod;
+      exp >>= 1;
+    }
+    return result;
+  }
+
   long binpow(long a, long b) {
     long res = 1;
     while (b > 0) {
@@ -145,6 +165,52 @@ public class Utility {
     if (x > 1) {
       map.put(x, map.getOrDefault(x, 0) + 1);
     }
+  }
+
+  public static List<Boolean> segmentedSieveNoPreGen(long L, long R) {
+    int size = (int) (R - L + 1);
+    List<Boolean> isPrime = new ArrayList<>();
+    for (int i = 0; i < size; i++) {
+      isPrime.add(true);
+    }
+    long lim = (long) Math.sqrt(R);
+    for (long i = 2; i <= lim; i++) {
+      long start = Math.max(i * i, (L + i - 1) / i * i);
+      for (long j = start; j <= R; j += i) {
+        isPrime.set((int) (j - L), false);
+      }
+    }
+    if (L == 1)
+      isPrime.set(0, false);
+    return isPrime;
+  }
+
+  public static List<Boolean> segmentedSieve(long L, long R) {
+    long lim = (long) Math.sqrt(R);
+    boolean[] mark = new boolean[(int) (lim + 1)];
+    List<Long> primes = new ArrayList<>();
+    for (long i = 2; i <= lim; i++) {
+      if (!mark[(int) i]) {
+        primes.add(i);
+        for (long j = i * i; j <= lim; j += i) {
+          mark[(int) j] = true;
+        }
+      }
+    }
+    List<Boolean> isPrime = new ArrayList<>();
+    for (int i = 0; i <= R - L; i++) {
+      isPrime.add(true);
+    }
+    for (long prime : primes) {
+      long start = Math.max(prime * prime, (L + prime - 1) / prime * prime);
+      for (long j = start; j <= R; j += prime) {
+        isPrime.set((int) (j - L), false);
+      }
+    }
+    if (L == 1) {
+      isPrime.set(0, false);
+    }
+    return isPrime;
   }
 
   public static long factorial(long minOp) {
