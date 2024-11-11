@@ -1,8 +1,9 @@
+
 import java.io.*;
 import java.util.*;
 
 // Author: Sulabh Ambule
-public class TLE {
+public class AlicesAdventuresinCuttingCake {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FastReader in = new FastReader();
 
