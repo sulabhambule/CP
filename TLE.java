@@ -5,62 +5,110 @@ import java.util.*;
 public class TLE {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FastReader in = new FastReader();
+  static long MOD = (long)1e9 + 7;
 
   public static void main(String[] args) throws Exception {
     int cf = in.nextInt();
     while (cf-- > 0) {
       Accepted();
     }
-    out.flush();
+    // out.flush();
     out.close();
   }
 
   // Lets, hope for best.
 
   private static void Accepted() {
-    int n = in.nextInt();
-    int m = in.nextInt();
-    long v = in.nextLong();
-    long[] a = new long[n + 1];
-    for (int i = 1; i < n + 1; i++)
-      a[i] = in.nextLong();
+    int r = in.nextInt();
+    int c = in.nextInt();
+    int k = in.nextInt();
+    String h = in.next();
+    String v = in.next();
 
-    long[] prefSum = new long[n + 1];
-    for (int i = 1; i < n + 1; i++) {
-      prefSum[i] = prefSum[i - 1] + a[i];
-    }
-    List<Integer> v1 = new ArrayList<>();
-    List<Integer> v2 = new ArrayList<>();
-    v1.add(1);
-    v2.add(n);
-    long sum = 0;
-    for (int i = 1; i < n + 1; i++) {
-      sum += a[i];
-      if (sum >= v) {
-        v1.add(i + 1);
-        sum = 0;
+    char[] hor = h.toCharArray();
+    char[] ver = v.toCharArray();
+    int a = 0, b = 0;
+    for (char ch : hor) {
+      if (ch == '#') {
+        a++;
       }
     }
-    sum = 0;
-    for (int i = n; i >= 1; i--) {
-      sum += a[i];
-      if (sum >= v) {
-        v2.add(i - 1);
-        sum = 0;
+    for (char ch : ver) {
+      if (ch == '#') {
+        b++;
       }
     }
-    if (v1.size() - 1 < m) {
-      System.out.println(-1);
+    if (k > a * b || Math.max(a, b) > k) {
+      out.println("IMPOSSIBLE");
       return;
     }
-    long ans = 0;
-    for (int i = 0; i < m + 1; i++) {
-      int l = v1.get(i);
-      int r = v2.get(m - i);
-      long sum2 = prefSum[r] - prefSum[l - 1];
-      ans = Math.max(ans, sum2);
+
+    if (a == 0 && b == 0) {
+      if (k == 0) {
+        out.println("POSSIBLE");
+        for (int i = 0; i < r; i++) {
+          for (int j = 0; j < c; j++) {
+            out.print('.');
+          }
+          out.println();
+        }
+        return;
+      } else {
+        out.println("IMPOSSIBLE");
+        return;
+      }
     }
-    System.out.println(ans);
+
+    if (a == 0 || b == 0) {
+      out.println("IMPOSSIBLE");
+      return;
+    }
+
+    char[][] ans = new char[r][c];
+    for (int i = 0; i < r; i++) {
+      Arrays.fill(ans[i], '.');
+    }
+
+    char[] row = h.toCharArray();
+    char[] cols = v.toCharArray();
+    int max = a * b;
+    for (int i = 0; i < r; i++) {
+      if (k == 0)
+        break;
+      for (int j = 0; j < c; j++) {
+        if (k == 0)
+          break;
+        if (hor[i] == '#' && ver[j] == '#') {
+          int newa = a, newb = b;
+          if (row[i] == '#')
+            newa--;
+          if (cols[j] == '#')
+            newb--;
+
+          if (Math.max(newa, newb) < k) {
+            ans[i][j] = '@';
+            a = newa;
+            b = newb;
+            k--;
+            row[i] = '.';
+            cols[j] = '.';
+          }
+        }
+      }
+    }
+
+    if (k > 0) {
+      System.out.println("IMPOSSIBLE");
+      return;
+    }
+
+    out.println("POSSIBLE");
+    for (int i = 0; i < r; i++) {
+      for (int j = 0; j < c; j++) {
+        out.print(ans[i][j]);
+      }
+      out.println();
+    }
   }
 
   static class FastReader {

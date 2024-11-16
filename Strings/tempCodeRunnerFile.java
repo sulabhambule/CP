@@ -1,27 +1,58 @@
 
-/**********|| JAI SHREE RAM ||**************/
-
 import java.io.*;
 import java.util.*;
 
-// Author : Sulabh Ambule
-
-public class TLE2 {
+// Author: Sulabh Ambule
+public class XORpalindrome {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
-  static long MOD = (long) (1e9 + 7);
-  // static long MOD = 998244353;
   static FastReader in = new FastReader();
 
   public static void main(String[] args) throws Exception {
-    int codeforces = in.nextInt();
-    while (codeforces-- > 0) {
+    int cf = in.nextInt();
+    while (cf-- > 0) {
       Accepted();
     }
     out.flush();
     out.close();
   }
 
+  // Lets, hope for best?
+
   private static void Accepted() {
+    int n = in.nextInt();
+    long[] a = new long[n];
+    long max = 0, countEven = 0, countOdd = 0;
+    for (int i = 0; i < n; i++) {
+      a[i] = in.nextLong();
+      if (a[i] % 2 == 1) {
+        countOdd++;
+        max = Math.max(max, a[i]);
+      } else {
+        countEven++;
+      }
+    }
+
+    if (countEven == n || countOdd == n || n == 1) {
+      System.out.println(0);
+      return;
+    }
+
+    Arrays.sort(a);
+    int ans = 0;
+
+    for (long num : a) {
+      if (num % 2 == 0) {
+        if (max > num) {
+          ans++;
+          max += num;
+        } else {
+          ans += 2;
+          max += 2 * num;
+        }
+      }
+    }
+
+    System.out.println(ans);
 
   }
 
@@ -64,16 +95,6 @@ public class TLE2 {
         e.printStackTrace();
       }
       return str;
-    }
-  }
-
-  static class Pair {
-    long first;
-    long second;
-
-    Pair(long f, long s) {
-      this.first = f;
-      this.second = s;
     }
   }
 }
