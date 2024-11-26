@@ -167,6 +167,29 @@ public class Utility {
     }
   }
 
+  static boolean[] isPrime;
+  static ArrayList<Integer> primes;
+
+  public static void sieve(int n) {
+    isPrime = new boolean[n + 1];
+    primes = new ArrayList<>();
+    Arrays.fill(isPrime, true);
+    isPrime[0] = false;
+    isPrime[1] = false;
+    for (int i = 2; i * i <= n; i++) {
+      if (isPrime[i]) {
+        for (int j = i * i; j <= n; j += i) {
+          isPrime[j] = false;
+        }
+      }
+    }
+    for (int i = 2; i <= n; i++) {
+      if (isPrime[i]) {
+        primes.add(i);
+      }
+    }
+  }
+
   public static List<Boolean> segmentedSieveNoPreGen(long L, long R) {
     int size = (int) (R - L + 1);
     List<Boolean> isPrime = new ArrayList<>();
@@ -185,6 +208,7 @@ public class Utility {
     return isPrime;
   }
 
+  // Find primes in range
   public static List<Boolean> segmentedSieve(long L, long R) {
     long lim = (long) Math.sqrt(R);
     boolean[] mark = new boolean[(int) (lim + 1)];
@@ -211,6 +235,44 @@ public class Utility {
       isPrime.set(0, false);
     }
     return isPrime;
+  }
+
+  public static int countPrimes(int n) {
+    final int S = 10000;
+    int nsqrt = (int) Math.sqrt(n);
+    List<Integer> primes = new ArrayList<>();
+    boolean[] isPrime = new boolean[nsqrt + 1];
+    Arrays.fill(isPrime, true);
+    for (int i = 2; i <= nsqrt; i++) {
+      if (isPrime[i]) {
+        primes.add(i);
+        for (int j = i * i; j <= nsqrt; j += i) {
+          isPrime[j] = false;
+        }
+      }
+    }
+    int result = 0;
+    boolean[] block = new boolean[S];
+    for (int k = 0; k * S <= n; k++) {
+      Arrays.fill(block, true);
+      int start = k * S;
+      for (int p : primes) {
+        int startIdx = Math.max((start + p - 1) / p, p);
+        int j = startIdx * p - start;
+        for (; j < S; j += p) {
+          block[j] = false;
+        }
+      }
+      if (k == 0) {
+        block[0] = block[1] = false;
+      }
+      for (int i = 0; i < S && start + i <= n; i++) {
+        if (block[i]) {
+          result++;
+        }
+      }
+    }
+    return result;
   }
 
   public static long factorial(long minOp) {
@@ -318,8 +380,67 @@ public class Utility {
     arr[(int) j] = t;
   }
 
+  public static long numberOfDivisors(long num) {
+    long total = 1;
+    for (long i = 2; i * i <= num; i++) {
+      if (num % i == 0) {
+        int e = 0;
+        while (num % i == 0) {
+          e++;
+          num /= i;
+        }
+        total *= (e + 1);
+      }
+    }
+    if (num > 1) {
+      total *= 2;
+    }
+    return total;
+  }
+
+  public static long sumOfDivisors(long num) {
+    long total = 1;
+    for (long i = 2; i * i <= num; i++) {
+      if (num % i == 0) {
+        int e = 0;
+        while (num % i == 0) {
+          e++;
+          num /= i;
+        }
+        long sum = 0, pow = 1;
+        while (e-- >= 0) {
+          sum += pow;
+          pow *= i;
+        }
+        total *= sum;
+      }
+    }
+    if (num > 1) {
+      total *= (1 + num);
+    }
+    return total;
+  }
+
   public static long lcm(long a, long b) {
     return Math.abs(a * b) / gcd(a, b);
+  }
+
+  // long[] fact = new long[n + 2];
+  // long[] ifact = new long[n + 2];
+  // fact[0] = 1;
+  // for (int i = 1; i <= n + 1; i++) {
+  // fact[i] = (fact[i - 1] * i) % MOD;
+  // }
+
+  // ifact[n + 1] = binPow(fact[n + 1], MOD - 2, MOD);
+  // for (int i = n; i >= 0; i--) {
+  // ifact[i] = (ifact[i + 1] * (i + 1)) % MOD;
+  // }
+
+  static long combination(long n, long r, long[] fact, long[] ifact) {
+    if (r > n || r < 0)
+      return 0;
+    return ((fact[(int) n] * ifact[(int) r]) % MOD * ifact[(int) (n - r)] % MOD) % MOD;
   }
 
   // This is used when we use Pair inside the map

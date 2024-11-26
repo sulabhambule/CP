@@ -1,6 +1,6 @@
-import java.util.*;
-import java.lang.*;
 import java.io.*;
+import java.lang.*;
+import java.util.*;
 
 class Codechef {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
@@ -17,7 +17,40 @@ class Codechef {
     }
 
     private static void Accepted() {
+        int n = in.nextInt();
+        long k = in.nextLong();
+        long[] ans = new long[n];
+        for (int i = 0; i < n; i++) {
+            if (k >= (n - 1 - i)) {
+                ans[i] = 3;
+                k -= (n - 1 - i);
+            } else {
 
+            }
+        }
+    }
+
+    public static ArrayList<Long> generatePrimes(long limit) {
+        boolean[] isPrime = new boolean[(int) (limit + 1)];
+        Arrays.fill(isPrime, true);
+        isPrime[0] = false;
+        isPrime[1] = false;
+
+        for (long i = 2; i * i <= limit; i++) {
+            if (isPrime[(int) i]) {
+                for (long j = i * i; j <= limit; j += i) {
+                    isPrime[(int) j] = false;
+                }
+            }
+        }
+
+        ArrayList<Long> primes = new ArrayList<>();
+        for (long i = 2; i <= limit; i++) {
+            if (isPrime[(int) i]) {
+                primes.add(i);
+            }
+        }
+        return primes;
     }
 
     static class FastReader {
