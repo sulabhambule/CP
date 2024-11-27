@@ -1,7 +1,10 @@
+// problem link : https://codeforces.com/contest/1860/problem/C
+// rating 1400
+
 import java.io.*;
 import java.util.*;
 
-public class TLE {
+public class GameOnPermutation {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FastReader in = new FastReader();
   static long MOD = (long) 1e9 + 7;
@@ -17,9 +20,20 @@ public class TLE {
 
   private static void Accepted() {
     int n = in.nextInt();
-    String s = in.next();
-    String t = in.next();
-
+    int[] p = new int[n];
+    for (int i = 0; i < n; i++) {
+      p[i] = in.nextInt();
+    }
+    int ans = 0;
+    int mn = n + 1, mnWin = n + 1;
+    for (int i = 0; i < n; i++) {
+      if (p[i] > mn && p[i] < mnWin) {
+        ans++;
+        mnWin = p[i];
+      }
+      mn = Math.min(mn, p[i]);
+    }
+    System.out.println(ans);
   }
 
   static class FastReader {

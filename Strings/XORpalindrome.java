@@ -22,7 +22,7 @@ public class XORpalindrome {
     int n = in.nextInt();
     int k = in.nextInt();
     long[] a = new long[n];
-    
+
   }
 
   static class FastReader {
