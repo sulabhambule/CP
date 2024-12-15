@@ -4,22 +4,18 @@ import java.util.*;
 public class TLE {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FastReader in = new FastReader();
-  static long MOD = (long) 1e9 + 7;
-  // static long MOD = (long) 998244353;
 
   public static void main(String[] args) throws Exception {
-    int cf = in.nextInt();
-    while (cf-- > 0) {
-      Accepted();
+    int testCases = in.nextInt(); // Number of test cases
+    while (testCases-- > 0) {
+      solve();
     }
     out.close();
   }
 
-  private static void Accepted() {
+  private static void solve() {
     int n = in.nextInt();
-    String s = in.next();
-    String t = in.next();
-
+    
   }
 
   static class FastReader {
