@@ -1,114 +1,53 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#ifndef ONLINE_JUDGE
-// #include "debug.h"
-#endif
-#define endl "\n"
-#define int long long
-#define ff first
-#define ss second
-#define all(x) (x).begin(), (x).end()
-typedef long long ll;
-typedef unsigned long long ull;
-typedef long double lld;
+const int MOD = 1e9 + 7;
 
 void solve()
 {
-    int n, m, L;
-    cin >> n >> m >> L;
-
-    vector<pair<int, int>> hh;
-
-    for (int i = 0; i < n; ++i)
+    int n, x;
+    cin >> n >> x;
+    vector<int> c(n);
+    for (int i = 0; i < n; i++)
     {
-        int x, y;
-        cin >> x >> y;
-        hh.push_back({x, y});
+        cin >> c[i];
     }
 
-    sort(all(hh));
+    // dp[i][k] represents the number of ways to make the sum `k` using coins from `i` to `n-1`.
+    vector<vector<int>> dp(n + 1, vector<int>(x + 1, 0));
 
-    vector<vector<int>> mnn(n);
-
-    int ptr = 0;
-    for (int i = 0; i < m; ++i)
+    // Base case: There's exactly 1 way to make sum 0 (by taking no coins).
+    for (int i = 0; i <= n; i++)
     {
-        int x, y;
-        cin >> x >> y;
+        dp[i][0] = 1;
+    }
 
-        if (ptr == n)
-            continue;
-
-        if (x < hh[ptr].ff)
-            mnn[ptr].push_back(y);
-        else
+    // Fill the dp table from the last coin to the first coin.
+    for (int i = n - 1; i >= 0; i--)
+    {
+        for (int j = 1; j <= x; j++)
         {
-            ptr++;
-            if (ptr == n)
-                continue;
-            mnn[ptr].push_back(y);
+            int take = 0;
+            int skip = dp[i + 1][j]; // Skip current coin
+            if (c[i] <= j)
+            {
+                take = dp[i][j - c[i]]; // Take current coin
+            }
+            dp[i][j] = (take + skip) % MOD;
         }
     }
 
-    int energy = 1;
-    int ans = 0;
-    for (auto &vec : mnn)
-    {
-        sort(all(vec), greater<int>());
-        for (int i = 0; i < vec.size(); ++i)
-        {
-            if (i)
-                vec[i] += vec[i - 1];
-        }
-    }
-
-    for (int i = 0; i < n; ++i)
-    {
-        int req = hh[i].ss - hh[i].ff + 2;
-
-        if (req <= energy)
-            continue;
-        else
-            req -= energy;
-
-        if (mnn[i].empty())
-        {
-            cout << -1 << endl;
-            return;
-        }
-
-        if (mnn[i][mnn[i].size() - 1] < req)
-        {
-            cout << -1 << endl;
-            return;
-        }
-        int idx = lower_bound(all(mnn[i]), req) - mnn[i].begin();
-
-        if (idx == mnn[i].size())
-        {
-            cout << -1 << endl;
-            return;
-        }
-
-        energy += mnn[i][idx];
-        ans += idx + 1;
-    }
-
-    cout << ans << endl;
+    cout << dp[0][x] << endl;
 }
 
-signed main()
+int main()
 {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-
-    int t;
-    cin >> t;
-
-    while (t--)
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int testCases = 1;
+    while (testCases--)
+    {
         solve();
-
+    }
     return 0;
 }

@@ -4,9 +4,10 @@ import java.util.*;
 public class TLE {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FastReader in = new FastReader();
+  private static final int MOD = (int) 1e9 + 7;
 
   public static void main(String[] args) throws Exception {
-    int testCases = in.nextInt(); // Number of test cases
+    int testCases = 1;
     while (testCases-- > 0) {
       solve();
     }
@@ -14,8 +15,9 @@ public class TLE {
   }
 
   private static void solve() {
-    int n = in.nextInt();
-    
+    String a = in.next();
+    String b = in.next();
+
   }
 
   static class FastReader {
