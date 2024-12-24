@@ -7,16 +7,42 @@ public class TLE {
   private static final int MOD = (int) 1e9 + 7;
 
   public static void main(String[] args) throws Exception {
-    int testCases = 1;
-    while (testCases-- > 0) {
-      solve();
+    int t = 1;
+    while (t-- > 0) {
+      TLAM();
     }
     out.close();
   }
 
-  private static void solve() {
-    String a = in.next();
-    String b = in.next();
+  private static void TLAM() {
+    int n = in.nextInt();
+    int x = in.nextInt();
+    int[] h = new int[n];
+    for (int i = 0; i < n; i++) {
+      h[i] = in.nextInt();
+    }
+    int[] s = new int[n];
+    for (int i = 0; i < n; i++) {
+      s[i] = in.nextInt();
+    }
+    int[] dp = new int[x + 1];
+    // dp[i][j] = max number of pages in books from index i to n with left page j
+    // dp[i][j] = dp[i + 1][j - a[i]] Or dp[i + 1][j];
+    // ans = dp[0][x];
+
+    for (int i = n - 1; i >= 0; i--) {
+      int[] curr = new int[x + 1];
+      for (int j = 0; j <= x; j++) {
+        if (h[i] <= j) {
+          curr[j] = Math.max(dp[j], s[i] + dp[j - h[i]]);
+        } else {
+          curr[j] = dp[j];
+        }
+      }
+      dp = curr;  
+    }
+
+    out.println(dp[x]);
 
   }
 

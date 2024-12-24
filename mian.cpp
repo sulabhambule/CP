@@ -1,53 +1,90 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int MOD = 1e9 + 7;
+struct Person
+{
+    long long arrival, departure;
+    int index;
+
+    Person(long long a, long long d, int i) : arrival(a), departure(d), index(i) {}
+};
+
+struct Room
+{
+    int roomNumber;
+    long long departure;
+
+    Room(int r, long long d) : roomNumber(r), departure(d) {}
+};
+
+struct CompareDeparture
+{
+    bool operator()(const Room &r1, const Room &r2)
+    {
+        return r1.departure > r2.departure; // Min-heap based on departure time
+    }
+};
 
 void solve()
 {
-    int n, x;
-    cin >> n >> x;
-    vector<int> c(n);
+    int n;
+    cin >> n;
+    vector<Person> persons;
+
     for (int i = 0; i < n; i++)
     {
-        cin >> c[i];
+        long long a, b;
+        cin >> a >> b;
+        persons.emplace_back(a, b, i);
     }
 
-    // dp[i][k] represents the number of ways to make the sum `k` using coins from `i` to `n-1`.
-    vector<vector<int>> dp(n + 1, vector<int>(x + 1, 0));
+    // Sort persons by arrival time
+    sort(persons.begin(), persons.end(), [](const Person &p1, const Person &p2)
+         { return p1.arrival < p2.arrival; });
 
-    // Base case: There's exactly 1 way to make sum 0 (by taking no coins).
-    for (int i = 0; i <= n; i++)
-    {
-        dp[i][0] = 1;
-    }
+    priority_queue<Room, vector<Room>, CompareDeparture> pq;
+    vector<int> roomAssignments(n);
+    int totalRooms = 0;
 
-    // Fill the dp table from the last coin to the first coin.
-    for (int i = n - 1; i >= 0; i--)
+    for (const auto &p : persons)
     {
-        for (int j = 1; j <= x; j++)
+        if (!pq.empty() && pq.top().departure < p.arrival)
         {
-            int take = 0;
-            int skip = dp[i + 1][j]; // Skip current coin
-            if (c[i] <= j)
-            {
-                take = dp[i][j - c[i]]; // Take current coin
-            }
-            dp[i][j] = (take + skip) % MOD;
+            Room freeRoom = pq.top();
+            pq.pop();
+            freeRoom.departure = p.departure;
+            roomAssignments[p.index] = freeRoom.roomNumber;
+            pq.push(freeRoom);
+        }
+        else
+        {
+            totalRooms++;
+            Room newRoom(totalRooms, p.departure);
+            roomAssignments[p.index] = totalRooms;
+            pq.push(newRoom);
         }
     }
 
-    cout << dp[0][x] << endl;
+    cout << totalRooms << "\n";
+    for (int room : roomAssignments)
+    {
+        cout << room << " ";
+    }
+    cout << "\n";
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
+    ios::sync_with_stdio(false);
     cin.tie(nullptr);
+
     int testCases = 1;
+    // Uncomment if multiple test cases are needed
+    // cin >> testCases;
     while (testCases--)
     {
         solve();
     }
+
     return 0;
 }

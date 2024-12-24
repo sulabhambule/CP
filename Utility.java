@@ -112,7 +112,7 @@ public class Utility {
     return result;
   }
 
-  long binpow(long a, long b) {
+  static long binpow(long a, long b) {
     long res = 1;
     while (b > 0) {
       if ((b & 1) == 1)
@@ -135,6 +135,17 @@ public class Utility {
       b >>= 1;
     }
     return result;
+  }
+
+  static void derangement() {
+    int k = 4;
+    int[] derangements = new int[k + 1];
+    derangements[0] = 1; // D(0) =
+    if (k > 0)
+      derangements[1] = 0; // D(1) =
+    for (int i = 2; i <= k; i++) {
+      derangements[i] = (i - 1) * (derangements[i - 1] + derangements[i - 2]);
+    }
   }
 
   private static int phi(int n) {
