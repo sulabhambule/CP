@@ -40,6 +40,30 @@ public class Utility {
    * 
    */
 
+  private static long maxSubarraySum(long[] a, int left, int right) {
+    long curr = 0, maxSum = 0;
+    for (int i = left; i <= right; i++) {
+      curr += a[i];
+      maxSum = Math.max(maxSum, curr);
+      if (curr < 0) {
+        curr = 0;
+      }
+    }
+    return maxSum;
+  }
+
+  private static long minSubarraySum(long[] a, int left, int right) {
+    long curr = 0, maxSum = 0;
+    for (int i = left; i <= right; i++) {
+      curr -= a[i];
+      maxSum = Math.max(maxSum, curr);
+      if (curr < 0) {
+        curr = 0;
+      }
+    }
+    return -maxSum;
+  }
+
   private static int lowerBound(long[] arr, long key) {
     int lo = 0, hi = arr.length;
     while (lo < hi) {
