@@ -4,11 +4,10 @@ import java.util.*;
 public class TLE {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FastReader in = new FastReader();
-  // private static final int MOD = (int) 1e9 + 7;
-  private static final int MOD = (int) 998244353;
+  private static final int MOD = (int) 1e9 + 7;
 
   public static void main(String[] args) {
-    int T = 1;
+    int T = in.nextInt();
     while (T-- > 0) {
       solve();
     }
@@ -17,35 +16,14 @@ public class TLE {
 
   private static void solve() {
     int n = in.nextInt();
-    int[] a = new int[n + 1];
-    for (int i = 1; i <= n; i++) {
-      a[i] = in.nextInt();
+    int[][] arr = new int[2][n];
+    for (int i = 0; i < n; i++) {
+      arr[0][i] = in.nextInt();
     }
-    int[] b = new int[n + 1];
-    for (int i = 1; i <= n; i++) {
-      b[i] = in.nextInt();
+    for (int i = 0; i < n; i++) {
+      arr[1][i] = in.nextInt();
     }
-
-    // STATE: Dp[i][j] = number of ways till index i to get ci = j
-    // transition: dp[i][j] = sum of dp[i - 1][k] k <= j;
-
-    int max = b[n];
-    int[][] dp = new int[n + 1][max + 1];
-    int[][] sum = new int[n + 1][max + 1];
-    dp[0][0] = 1;
-    for (int j = 0; j <= max; j++) {
-      sum[0][j] = 1;
-    }
-
-    for (int i = 1; i <= n; i++) {
-      for (int j = 0; j <= max; j++) {
-        if (j >= a[i] && j <= b[i]) {
-          dp[i][j] = (dp[i][j] + sum[i - 1][j]) % MOD;
-        }
-        sum[i][j] = ((j > 0 ? sum[i][j - 1] : 0) + dp[i][j]) % MOD;
-      }
-    }
-    System.out.println(sum[n][max]);
+    
   }
 
   static class FastReader {
@@ -79,4 +57,28 @@ public class TLE {
       return Double.parseDouble(next());
     }
   }
+
+  // static class Pair {
+  // int first, second;
+
+  // Pair(int first, int second) {
+  // this.first = first;
+  // this.second = second;
+  // }
+
+  // @Override
+  // public boolean equals(Object obj) {
+  // if (obj == this)
+  // return true;
+  // if (!(obj instanceof Pair))
+  // return false;
+  // Pair pair = (Pair) obj;
+  // return pair.first == this.first && pair.second == this.second;
+  // }
+
+  // @Override
+  // public int hashCode() {
+  // return Objects.hash(first, second);
+  // }
+  // }
 }

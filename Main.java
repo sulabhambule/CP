@@ -1,88 +1,62 @@
-import java.io.*;
 import java.util.*;
 
 public class Main {
-  public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
-  static FastReader in = new FastReader();
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
 
-  public static void main(String[] args) throws Exception {
-    int cf = in.nextInt();
-    while (cf-- > 0) {
-      Accepted();
+    int test_cases = sc.nextInt();
+
+    while (test_cases-- > 0) {
+      long n = sc.nextLong();
+      long k = sc.nextLong();
+
+      // Compute the lucky value using the recursive function
+      Pair result = computeLucky(1, n, k);
+
+      // Output the final lucky value
+      System.out.println(result.first);
     }
-    out.close();
+
+    sc.close();
   }
 
-  private static void Accepted() {
-    int n = in.nextInt();
-    int[] ar = new int[n];
-    int[] pref = new int[n];
-    int[] suff = new int[n];
-    int[] ans = new int[n];
-    for (int i = 0; i < n; i++) {
-      ar[i] = in.nextInt();
+  // Pair class to hold two values
+  static class Pair {
+    long first;
+    int second;
+
+    Pair(long first, int second) {
+      this.first = first;
+      this.second = second;
     }
-    pref[0] = ar[0];
-    for (int i = 1; i < n; i++) {
-      pref[i] = Math.max(pref[i - 1], ar[i]);
-    }
-    suff[n - 1] = ar[n - 1];
-    for (int i = n - 2; i >= 0; i--) {
-      suff[i] = Math.min(suff[i + 1], ar[i]);
-    }
-    ans[n - 1] = pref[n - 1];
-    for (int i = n - 2; i >= 0; i--) {
-      if (pref[i] > suff[i + 1]) {
-        ans[i] = ans[i + 1];
-      } else {
-        ans[i] = pref[i];
-      }
-    }
-    for (int i = 0; i < n; i++) {
-      System.out.print(ans[i] + " ");
-    }
-    System.out.println();
   }
 
-  static class FastReader {
-    BufferedReader br;
-    StringTokenizer st;
+  // Function to recursively compute the lucky value
+  static Pair computeLucky(long left, long right, long threshold) {
 
-    public FastReader() {
-      br = new BufferedReader(new InputStreamReader(System.in));
+    if (right - left + 1 < threshold) {
+      return new Pair(0, 0);
     }
-
-    String next() {
-      while (st == null || !st.hasMoreElements()) {
-        try {
-          st = new StringTokenizer(br.readLine());
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-      return st.nextToken();
+    if (right - left + 1 == 1) {
+      return new Pair(left, 1);
     }
+    long mid = left + (right - left) / 2;
 
-    int nextInt() {
-      return Integer.parseInt(next());
-    }
+    // If the segment length is odd
+    if ((right - left + 1) % 2 == 1) {
+      Pair leftResult = computeLucky(left, mid - 1, threshold);
 
-    long nextLong() {
-      return Long.parseLong(next());
-    }
+      long totalLucky = mid + 2 * leftResult.first + mid * leftResult.second;
+      int totalSegments = 2 * leftResult.second + 1;
 
-    double nextDouble() {
-      return Double.parseDouble(next());
-    }
+      return new Pair(totalLucky, totalSegments);
+    } else {
 
-    String nextLine() {
-      String str = "";
-      try {
-        str = br.readLine();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-      return str;
+      Pair leftResult = computeLucky(left, mid, threshold);
+      long totalLucky = 2 * leftResult.first + mid * leftResult.second;
+      int totalSegments = 2 * leftResult.second;
+
+      return new Pair(totalLucky, totalSegments);
     }
   }
 }
