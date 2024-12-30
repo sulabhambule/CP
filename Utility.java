@@ -560,6 +560,28 @@ public class Utility {
     array[j] = temp;
   }
 
+  private static long calculateDigitSum(int n) {
+    // to calculate the sum (1 + 2 + .... )
+    // (each digit it replaced by there sum of the digit).
+
+    long sum = 0;
+    int factor = 1;
+    int leftOver = 0;
+
+    // Process each digit position
+    while (n > 0) {
+      int digit = n % 10;
+      int higher = n / 10;
+      sum += higher * factor * 45; // Sum of all digits from 0 to 9 is 45
+      sum += digit * (digit - 1) / 2 * factor; // Sum of digits within the current group
+      sum += digit * leftOver; // Adjust for digits already processed
+      leftOver += digit * factor; // Update leftover for next digit position
+      factor *= 10;
+      n /= 10;
+    }
+    return sum;
+  }
+
   // standard problem with prefix sums:
   // if two prefix sums are equal, then the subarray between them has sum
   // 0;otherwise, no subarray has sum 0.

@@ -15,15 +15,7 @@ public class TLE {
   }
 
   private static void solve() {
-    int n = in.nextInt();
-    int[][] arr = new int[2][n];
-    for (int i = 0; i < n; i++) {
-      arr[0][i] = in.nextInt();
-    }
-    for (int i = 0; i < n; i++) {
-      arr[1][i] = in.nextInt();
-    }
-    
+
   }
 
   static class FastReader {
@@ -58,27 +50,27 @@ public class TLE {
     }
   }
 
-  // static class Pair {
-  // int first, second;
+  static class Pair {
+    int first, second;
 
-  // Pair(int first, int second) {
-  // this.first = first;
-  // this.second = second;
-  // }
+    Pair(int first, int second) {
+      this.first = first;
+      this.second = second;
+    }
 
-  // @Override
-  // public boolean equals(Object obj) {
-  // if (obj == this)
-  // return true;
-  // if (!(obj instanceof Pair))
-  // return false;
-  // Pair pair = (Pair) obj;
-  // return pair.first == this.first && pair.second == this.second;
-  // }
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this)
+        return true;
+      if (!(obj instanceof Pair))
+        return false;
+      Pair pair = (Pair) obj;
+      return pair.first == this.first && pair.second == this.second;
+    }
 
-  // @Override
-  // public int hashCode() {
-  // return Objects.hash(first, second);
-  // }
-  // }
+    @Override
+    public int hashCode() {
+      return Objects.hash(first, second);
+    }
+  }
 }
