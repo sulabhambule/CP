@@ -1,90 +1,87 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Person
-{
-    long long arrival, departure;
-    int index;
+#define ll long long
+#define f(i, a, b) for (int i = a; i <= b; i++)
+#define ff(i, a, b) for (int i = a; i >= b; i--)
+#define mod 1000000007
 
-    Person(long long a, long long d, int i) : arrival(a), departure(d), index(i) {}
-};
+const int N = 1001;
+vector<ll> vv(N, 1e5);
 
-struct Room
-{
-    int roomNumber;
-    long long departure;
+// ll solv(int ind,int opsrem,vector<ll> &c,vector<ll> &b,unordered_map<string,int> &dp){
+//     int sz = b.size();
+//     if(ind>=sz) return 0;
 
-    Room(int r, long long d) : roomNumber(r), departure(d) {}
-};
+//     string ss = to_string(ind) + "-" + to_string(opsrem);
 
-struct CompareDeparture
-{
-    bool operator()(const Room &r1, const Room &r2)
-    {
-        return r1.departure > r2.departure; // Min-heap based on departure time
-    }
-};
+//     if(dp.count(ss)!=0) return dp[ss];
+
+//     ll ans = 0;
+//     ans = max(ans,solv(ind+1,opsrem,c,b,dp));
+//     if(opsrem>=vv[b[ind]]) ans = max(ans,c[ind] + solv(ind+1,opsrem-vv[b[ind]],c,b,dp));
+
+//     return dp[ss] = ans;
+// }
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<Person> persons;
 
-    for (int i = 0; i < n; i++)
+    ll n, k;
+    cin >> n >> k;
+    vector<ll> b(n), c(n);
+    f(i, 0, n - 1) cin >> b[i];
+    f(i, 0, n - 1) cin >> c[i];
+
+    // max ops for any value -> 12
+    // tot max ops req -> 12000
+    // n*kmax = > 1000*12000 => 12*1e6
+
+    // unordered_map<string,int> dp;
+    ll mxopsreq = n * 12;
+    ll finops = min(k, mxopsreq);
+    // ll ans = solv(0,min(k,mxopsreq),c,b,dp);
+
+    vector<ll> dp(finops + 2);
+
+    ff(i, n - 1, 0)
     {
-        long long a, b;
-        cin >> a >> b;
-        persons.emplace_back(a, b, i);
-    }
-
-    // Sort persons by arrival time
-    sort(persons.begin(), persons.end(), [](const Person &p1, const Person &p2)
-         { return p1.arrival < p2.arrival; });
-
-    priority_queue<Room, vector<Room>, CompareDeparture> pq;
-    vector<int> roomAssignments(n);
-    int totalRooms = 0;
-
-    for (const auto &p : persons)
-    {
-        if (!pq.empty() && pq.top().departure < p.arrival)
+        vector<ll> ndp(finops + 2);
+        f(j, 0, finops)
         {
-            Room freeRoom = pq.top();
-            pq.pop();
-            freeRoom.departure = p.departure;
-            roomAssignments[p.index] = freeRoom.roomNumber;
-            pq.push(freeRoom);
+            ndp[j] = dp[j];
+            if (j >= vv[b[i]])
+                ndp[j] = max(ndp[j], c[i] + dp[j - vv[b[i]]]);
         }
-        else
-        {
-            totalRooms++;
-            Room newRoom(totalRooms, p.departure);
-            roomAssignments[p.index] = totalRooms;
-            pq.push(newRoom);
-        }
+        dp = ndp;
     }
 
-    cout << totalRooms << "\n";
-    for (int room : roomAssignments)
-    {
-        cout << room << " ";
-    }
-    cout << "\n";
+    cout << dp[finops] << endl;
 }
 
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
 
-    int testCases = 1;
-    // Uncomment if multiple test cases are needed
-    // cin >> testCases;
-    while (testCases--)
+    vv[1] = 0;
+    for (int i = 1; i <= 1e3; i++)
+    {
+        for (int j = 1; j <= i; j++)
+        {
+            int nxt = i + floor((double)i / (double)j);
+            if (nxt > 1e3)
+                continue;
+            else
+                vv[nxt] = min(vv[nxt], 1 + vv[i]);
+        }
+    }
+
+    int T = 1;
+    cin >> T;
+    while (T--)
     {
         solve();
     }
-
     return 0;
 }

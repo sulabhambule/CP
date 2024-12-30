@@ -40,6 +40,30 @@ public class Utility {
    * 
    */
 
+  static class Pair {
+    int first, second;
+
+    Pair(int first, int second) {
+      this.first = first;
+      this.second = second;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this)
+        return true;
+      if (!(obj instanceof Pair))
+        return false;
+      Pair pair = (Pair) obj;
+      return pair.first == this.first && pair.second == this.second;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(first, second);
+    }
+  }
+
   private static long maxSubarraySum(long[] a, int left, int right) {
     long curr = 0, maxSum = 0;
     for (int i = left; i <= right; i++) {
