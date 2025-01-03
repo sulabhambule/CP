@@ -1,3 +1,4 @@
+package BinarySearch;
 import java.util.*;
 
 // closest to the right.
