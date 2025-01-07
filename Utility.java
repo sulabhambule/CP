@@ -160,6 +160,20 @@ public class Utility {
     return result;
   }
 
+  public static long nCr(int n, int r) {
+    if (r > n)
+      return 0;
+    if (r == 0 || r == n)
+      return 1;
+    r = Math.min(r, n - r);
+    long result = 1;
+    for (int i = 0; i < r; i++) {
+      result = (result * (n - i)) % MOD;
+      result = (modDiv(result, (i + 1), MOD));
+    }
+    return result;
+  }
+
   static long binpow(long a, long b) {
     long res = 1;
     while (b > 0) {

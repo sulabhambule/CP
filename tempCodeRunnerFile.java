@@ -17,85 +17,36 @@ public class TLE {
 
   private static void solve() {
     int n = in.nextInt();
-    int[] a = new int[n];
+    long r = in.nextLong();
+    int avg = in.nextInt();
+    long[][] a = new int[n][2];
+    long sum = 0;
     for (int i = 0; i < n; i++) {
-      a[i] = in.nextInt();
+      a[i][0] = in.nextLong();
+      sum += a[i][0];
+      a[i][1] = in.nextLong();
     }
-    String ans = "";
-    int prev = 0;
-    int l = 0, r = n - 1;
-    while (l <= r) {
-      if (a[l] < a[r]) {
-        if (a[l] > prev) {
-          prev = a[l];
-          l++;
-          ans += 'L';
-        } else if (a[r] > prev) {
-          prev = a[r];
-          r--;
-          ans += 'R';
-        } else {
-          break;
-        }
-      } else if (a[r] < a[l]) {
-        if (a[r] > prev) {
-          prev = a[r];
-          r--;
-          ans += 'R';
-        } else if (a[l] > prev) {
-          prev = a[l];
-          l++;
-          ans += 'L';
-        } else {
-          break;
-        }
-      } else if (a[l] == a[r] && a[l] > prev) {
-        prev = a[l];
-        int ll = l, rr = r;
-        int lPrev = prev, rPrev = prev;
-        for (int k = l + 1; k < r; k++) {
-          if (a[k] > lPrev) {
-            ll++;
-            lPrev = a[k];
-          } else {
-            break;
-          }
-        }
-        for (int k = r - 1; k > l; k--) {
-          if (a[k] > rPrev) {
-            rr++;
-            rPrev = a[k];
-          } else {
-            break;
-          }
-        }
+    int req = n * avg;
 
-        if (ll <= rr) {
-          ans += 'L';
-          for (int k = l + 1; k < r; k++) {
-            if (a[k] > prev) {
-              prev = a[k];
-            } else {
-              break;
-            }
-          }
-          break;
-        } else {
-          for (int k = r - 1; k > l; k--) {
-            if (a[k] > prev) {
-              prev = a[k];
-            } else {
-              break;
-            }
-          }
-          break;
-        }
-      } else {
+    if (req < sum) {
+      System.out.println(0);
+      return;
+    }
+    Arrays.sort(a, (x, y) -> (x[1] - y[1]));
+    long rem = req - sum;
+    long ans = 0;
+    for (int i = 0; i < n; i++) {
+      if (rem == 0) {
         break;
+      }
+      long till = r - a[i][0];
+      if (till > 0) {
+        long val = a[i][1];
+        ans += (Math.min(rem, till) * val);
+        rem -= Math.min(rem, till);
       }
     }
 
-    System.out.println(ans.length());
     System.out.println(ans);
   }
 
