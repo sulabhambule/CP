@@ -8,7 +8,7 @@ public class TLE {
   private static final int MOD = 998244353;
 
   public static void main(String[] args) {
-    int T = 1;
+    int T = in.nextInt();
     while (T-- > 0) {
       solve();
     }
@@ -16,23 +16,33 @@ public class TLE {
   }
 
   private static void solve() {
-    int n = in.nextInt();
-    int m = in.nextInt();
-    int[] a = new int[n + 1];
-    for (int i = 1; i <= n; i++) {
-      a[i] = in.nextInt();
+    long a = in.nextLong();
+    long b = in.nextLong();
+    long r = in.nextLong();
+    if (a > b) {
+      long temp = a;
+      a = b;
+      b = temp;
     }
-    List<List<Integer>> edges = new ArrayList<>();
-    for (int i = 0; i <= n; i++) {
-      edges.add(new ArrayList<>());
+    boolean firstBit = true;
+    long x = 0;
+
+    for (int i = 60; i >= 0; i--) {
+      if (((1L << i) & a) == ((1L << i) & b)) {
+        continue;
+      }
+
+      if (firstBit) {
+        firstBit = false;
+      } else {
+        if (((1L << i) & a) == 0 && (x | (1L << i)) <= r) {
+          a ^= (1L << i);
+          b ^= (1L << i);
+          x |= (1L << i);
+        }
+      }
     }
-    for (int i = 0; i < n - 1; i++) {
-      int x = in.nextInt();
-      int y = in.nextInt();
-      edges.get(x).add(y);
-      edges.get(y).add(x);
-    }
-    
+    System.out.println(b - a);
   }
 
   // static class Pair {
