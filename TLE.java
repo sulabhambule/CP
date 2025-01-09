@@ -8,7 +8,7 @@ public class TLE {
   private static final int MOD = 998244353;
 
   public static void main(String[] args) {
-    int T = in.nextInt();
+    int T = 1;
     while (T-- > 0) {
       solve();
     }
@@ -16,33 +16,37 @@ public class TLE {
   }
 
   private static void solve() {
-    long a = in.nextLong();
-    long b = in.nextLong();
-    long r = in.nextLong();
-    if (a > b) {
-      long temp = a;
-      a = b;
-      b = temp;
+    int n = in.nextInt();
+    List<List<Integer>> edges = new ArrayList<>();
+    for (int i = 0; i < n + 1; i++) {
+      edges.add(new ArrayList<>());
     }
-    boolean firstBit = true;
-    long x = 0;
+    for (int i = 2; i < n + 1; i++) {
+      int u = in.nextInt();
+      edges.get(u).add(i);
+      edges.get(i).add(u);
+    }
+    int[] subtreeSize = new int[n + 1];
+    dfs(1, edges, -1, subtreeSize);
+    System.out.print(n - 1 + " ");
+    for (int i = 2; i <= n; i++) {
+      System.out.print(subtreeSize[i] - 1 + " ");
+    }
+    System.out.println();
+  }
 
-    for (int i = 60; i >= 0; i--) {
-      if (((1L << i) & a) == ((1L << i) & b)) {
-        continue;
-      }
-
-      if (firstBit) {
-        firstBit = false;
-      } else {
-        if (((1L << i) & a) == 0 && (x | (1L << i)) <= r) {
-          a ^= (1L << i);
-          b ^= (1L << i);
-          x |= (1L << i);
-        }
+  private static void dfs(int node, List<List<Integer>> edges, int parent, int[] subtreeSize) {
+    // subtreeSize[x] = 1 + sum(subtreeSize[child])
+    subtreeSize[node] = 1;
+    for (int neighbour : edges.get(node)) {
+      if (neighbour != parent) {
+        dfs(neighbour, edges, node, subtreeSize);
+        // subtreeSize of neighbour child is added.
+        subtreeSize[node] += subtreeSize[neighbour];
       }
     }
-    System.out.println(b - a);
+    // once we move out of the dfs call, the subtreeSize of node is correctly
+    // populated
   }
 
   // static class Pair {

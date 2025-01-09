@@ -620,6 +620,32 @@ public class Utility {
     return sum;
   }
 
+  // TREES
+  private static void dfs(int node, List<List<Integer>> edges, int parent, int[] subtreeSize) {
+    // subtreeSize[x] = 1 + sum(subtreeSize[child])
+    subtreeSize[node] = 1;
+    for (int neighbour : edges.get(node)) {
+      if (neighbour != parent) {
+        dfs(neighbour, edges, node, subtreeSize);
+        // subtreeSize of neighbour child is added.
+        subtreeSize[node] += subtreeSize[neighbour];
+      }
+    }
+    // once we move out of the dfs call, the subtreeSize of node is correctly
+    // populated
+  }
+
+  private static void dfs2(int node, List<List<Integer>> edges, int parent, int[] level) {
+    if (parent == -1) {
+      level[node] = 1;
+    } else {
+      level[node] = level[parent] + 1;
+    }
+    for (int neighbour : edges.get(parent))
+      if (neighbour != parent)
+        dfs(neighbour, edges, node, level);
+  }
+
   // standard problem with prefix sums:
   // if two prefix sums are equal, then the subarray between them has sum
   // 0;otherwise, no subarray has sum 0.
