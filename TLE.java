@@ -16,48 +16,28 @@ public class TLE {
     }
 
     private static void solve() {
-        int n = in.nextInt();
-        List<Integer> result = new ArrayList<>();
-        HashSet<Integer> set = new HashSet<>();
-        int[] parent = new int[n + 1];
-        int root = 0;
-        int[] c = new int[n + 1];
-        for (int i = 1; i <= n; i++) {
-            int pi = in.nextInt();
-            int ci = in.nextInt();
-            if (pi == -1) {
-                root = i;
-            } else {
-                parent[i] = pi;
-            }
-            c[i] = ci;
-        }
-        for (int i = 1; i <= n; i++) {
-            if (i == root) {
-                continue;
-            }
-            if (c[i] == 0) {
-                set.add(i);
-                set.add(parent[i]);
-            }
-        }
-        for (int i = 1; i <= n; i++) {
-            if (i == root)
-                continue;
-            if (!set.contains(i)) {
-                result.add(i);
-            }
-        }
-        if (result.isEmpty()) {
-            System.out.println(-1);
-            return;
-        }
+        String s = in.next();
+        int n = s.length();
+        long[] dp = new long[n]; // dp[i] = total substrings divisible by 4 ending at index i
 
-        Collections.sort(result);
-        for (int i : result) {
-            System.out.print(i + " ");
+        // if the current number is divisible by 4 then add 1 to the aswer, if the
+        // number last 2 is divisible by 4 then all number are divisible by 4 means add
+        // i to the answer. and also so dp[i - 1]
+
+        for (int i = 0; i < n; i++) {
+            if ((s.charAt(i) - '0') % 4 == 0) {
+                dp[i]++;
+            }
+            if (i > 0) {
+                int num = (s.charAt(i - 1) - '0') * 10 + (s.charAt(i) - '0');
+                if (num % 4 == 0) {
+                    dp[i] += (i + dp[i - 1]);
+                } else {
+                    dp[i] += dp[i - 1];
+                }
+            }
         }
-        System.out.println();
+        System.out.println(dp[n - 1]);
     }
 
     static class FastReader {
