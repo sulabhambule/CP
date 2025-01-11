@@ -16,28 +16,22 @@ public class TLE {
     }
 
     private static void solve() {
-        String s = in.next();
-        int n = s.length();
-        long[] dp = new long[n]; // dp[i] = total substrings divisible by 4 ending at index i
-
-        // if the current number is divisible by 4 then add 1 to the aswer, if the
-        // number last 2 is divisible by 4 then all number are divisible by 4 means add
-        // i to the answer. and also so dp[i - 1]
-
-        for (int i = 0; i < n; i++) {
-            if ((s.charAt(i) - '0') % 4 == 0) {
-                dp[i]++;
-            }
-            if (i > 0) {
-                int num = (s.charAt(i - 1) - '0') * 10 + (s.charAt(i) - '0');
-                if (num % 4 == 0) {
-                    dp[i] += (i + dp[i - 1]);
-                } else {
-                    dp[i] += dp[i - 1];
-                }
-            }
+        int n = in.nextInt();
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            adj.add(new ArrayList<>());
         }
-        System.out.println(dp[n - 1]);
+        for (int i = 0; i < n - 1; i++) {
+            int u = in.nextInt();
+            int v = in.nextInt();
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+        int[] c = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            c[i] = in.nextInt();
+        }
+        
     }
 
     static class FastReader {
