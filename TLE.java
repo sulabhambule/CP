@@ -8,7 +8,7 @@ public class TLE {
     // private static final int MOD = 998244353;
 
     public static void main(String[] args) {
-        int T = 1;
+        int T = in.nextInt();
         while (T-- > 0) {
             solve();
         }
@@ -16,10 +16,7 @@ public class TLE {
     }
 
     private static void solve() {
-        int n = in.nextInt();
-        int m = in.nextInt();
-        String s = in.next();
-        
+
     }
 
     static class FastReader {
