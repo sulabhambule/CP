@@ -1,67 +1,56 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define int long long
 #define MOD 1000000007
-#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 
-void dfs(int curr, int parent, vector<vector<int>> &edges, vector<int> &dist) {
-    if (parent == -1) {
-        dist[curr] = 0;
-    } else {
-        dist[curr] = dist[parent] + 1;
-    }
-
-    for (int neighbor : edges[curr]) {
-        if (neighbor != parent) {
-            dfs(neighbor, curr, edges, dist);
+// Function to perform modular exponentiation
+long long modPow(long long base, long long exp, long long mod) {
+    long long result = 1;
+    base = base % mod;
+    while (exp > 0) {
+        if (exp % 2 == 1) {
+            result = (result * base) % mod;
         }
+        base = (base * base) % mod;
+        exp /= 2;
     }
+    return result;
 }
 
-int farthestNode(int n, vector<int> &dist) {
-    int farthest = 1; // Nodes are numbered from 1
-    for (int i = 1; i <= n; i++) {
-        if (dist[i] > dist[farthest]) {
-            farthest = i;
-        }
-    }
-    return farthest;
+// Function to handle modular arithmetic
+long long mod(long long n) {
+    return (n % MOD + MOD) % MOD;
 }
 
-void solve() {
-    int n;
-    cin >> n;
-    vector<vector<int>> edges(n + 1);
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    
+    long long x, k;
+    cin >> x >> k;
 
-    for (int i = 0; i < n - 1; i++) {
-        int u, v;
-        cin >> u >> v;
-        edges[u].push_back(v);
-        edges[v].push_back(u);
+    // If x is 0, print 0 and return
+    if (x == 0) {
+        cout << "0\n";
+        return 0;
     }
 
-    vector<int> distX(n + 1, -1);
-    vector<int> distY(n + 1, -1);
-
-    // First DFS from an arbitrary node to find the farthest node
-    dfs(1, -1, edges, distX);
-    int y = farthestNode(n, distX);
-
-    // Second DFS from the farthest node found in the first DFS
-    dfs(y, -1, edges, distY);
-    int z = farthestNode(n, distY);
-
-    // The diameter of the tree is the distance to the farthest node in distY
-    cout << distY[z] << endl;
-}
-
-int32_t main() {
-    FAST_IO;
-    int T = 1;
-    // cin >> T; // Uncomment this line if there are multiple test cases
-    while (T--) {
-        solve();
+    // If k is 0, print (2 * x) % MOD
+    if (k == 0) {
+        cout << (2 * x) % MOD << '\n';
+        return 0;
     }
+
+    // Compute (2^k+1) % MOD
+    long long power2kPlus1 = modPow(2, k + 1, MOD);
+    // Compute (2^k) % MOD
+    long long power2k = modPow(2, k, MOD);
+    
+    // Compute the result
+    long long result = mod((power2kPlus1 * x) - power2k + 1);
+
+    // Output the result
+    cout << result << '\n';
+
     return 0;
 }
