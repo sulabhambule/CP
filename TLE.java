@@ -16,7 +16,49 @@ public class TLE {
     }
 
     private static void solve() {
+        int n = in.nextInt();
+        int k = in.nextInt();
+        long[] a = new long[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = in.nextLong();
+        }
 
+        List<Long> b = new ArrayList<>();
+        for (int i = k; i < n; i++) {
+            b.add(a[i]);
+        }
+
+        List<Long> c = new ArrayList<>();
+        for (int i = k - 1; i > 0; i--) {
+            c.add(-a[i]);
+        }
+        long sum = 0;
+        int operations = 0;
+        PriorityQueue<Long> pq = new PriorityQueue<>();
+
+        for (long x : b) {
+            sum += x;
+            pq.add(x);
+            while (sum < 0) {
+                long smallest = pq.poll();
+                sum -= 2L * smallest;
+                operations++;
+            }
+        }
+
+        sum = 0;
+        PriorityQueue<Long> pq2 = new PriorityQueue<>();
+        for (long x : c) {
+            sum += x;
+            pq2.add(x);
+            while (sum < 0) {
+                long smallest = pq2.poll();
+                sum -= 2L * smallest;
+                operations++;
+            }
+        }
+
+        System.out.println(operations);
     }
 
     static class FastReader {
@@ -51,28 +93,4 @@ public class TLE {
             return Double.parseDouble(next());
         }
     }
-
-    // static class Pair {
-    // int first, second;
-
-    // Pair(int first, int second) {
-    // this.first = first;
-    // this.second = second;
-    // }
-
-    // @Override
-    // public boolean equals(Object obj) {
-    // if (obj == this)
-    // return true;
-    // if (!(obj instanceof Pair))
-    // return false;
-    // Pair pair = (Pair) obj;
-    // return pair.first == this.first && pair.second == this.second;
-    // }
-
-    // @Override
-    // public int hashCode() {
-    // return Objects.hash(first, second);
-    // }
-    // }
 }

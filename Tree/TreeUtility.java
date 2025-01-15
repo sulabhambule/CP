@@ -1,11 +1,11 @@
 import java.util.List;
 
 public class TreeUtility {
-  static int time = 0;
-
   public static void main(String[] args) {
 
   }
+
+  static int time = 0;
 
   // calculte the inTime and outTime of the node to check if two node have the
   // common ancestor
