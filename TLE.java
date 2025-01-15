@@ -16,49 +16,38 @@ public class TLE {
     }
 
     private static void solve() {
-        int n = in.nextInt();
-        int k = in.nextInt();
-        long[] a = new long[n];
-        for (int i = 0; i < n; i++) {
-            a[i] = in.nextLong();
+        long n = in.nextInt();
+        int m = in.nextInt();
+        long d = in.nextLong();
+        List<Long> list = new ArrayList<>();
+        list.add(1 - d);
+        for (int i = 0; i < m; i++) {
+            long num = in.nextLong();
+            list.add(num);
         }
-
-        List<Long> b = new ArrayList<>();
-        for (int i = k; i < n; i++) {
-            b.add(a[i]);
+        list.add(n + 1);
+        long cookies = 0;
+        for (int i = 1; i < list.size(); i++) {
+            cookies += ((list.get(i) - list.get(i - 1) - 1) / d);
         }
-
-        List<Long> c = new ArrayList<>();
-        for (int i = k - 1; i > 0; i--) {
-            c.add(-a[i]);
-        }
-        long sum = 0;
-        int operations = 0;
-        PriorityQueue<Long> pq = new PriorityQueue<>();
-
-        for (long x : b) {
-            sum += x;
-            pq.add(x);
-            while (sum < 0) {
-                long smallest = pq.poll();
-                sum -= 2L * smallest;
-                operations++;
+        cookies += (list.size() - 2);
+        long count = 0;
+        long ans = (long) 2e9;
+        for (int i = 1; i <= m; i++) {
+            long a = list.get(i) - list.get(i - 1) - 1;
+            long b = list.get(i + 1) - list.get(i) - 1;
+            long c = list.get(i + 1) - list.get(i - 1) - 1;
+            long D = (c / d - a / d - b / d);
+            if (D < ans) {
+                ans = D;
+                count = 0;
+            }
+            if (D == ans) {
+                count++;
             }
         }
 
-        sum = 0;
-        PriorityQueue<Long> pq2 = new PriorityQueue<>();
-        for (long x : c) {
-            sum += x;
-            pq2.add(x);
-            while (sum < 0) {
-                long smallest = pq2.poll();
-                sum -= 2L * smallest;
-                operations++;
-            }
-        }
-
-        System.out.println(operations);
+        System.out.println(ans + cookies - 1 + " " + count);
     }
 
     static class FastReader {
