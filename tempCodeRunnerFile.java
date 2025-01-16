@@ -1,4 +1,1 @@
-if (m == n) {
-            System.out.println(0);
-            return;
-        }
+n - 1
