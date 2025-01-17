@@ -8,17 +8,19 @@ public class Main {
     private static final int MOD = 998244353;
 
     public static void main(String[] args) {
-        int T = in.nextInt();
-        while (T-- > 0) {
-            solve();
+        int t = in.nextInt();
+        while (t-- > 0) {
+            function();
         }
         out.close();
     }
+    /*------------------------------------------------------------------------------------------------------*/
 
-    private static void solve() {
-
+    private static void function() {
+        
     }
 
+    /*------------------------------------------------------------------------------------------------------ */
     static class FastReader {
 
         BufferedReader br;
