@@ -562,9 +562,6 @@ public class Utility {
     }
   }
 
-  // Removing leading zeros from the StringBuilder
-  // String xStr = x.toString().replaceFirst("^0+(?!$)", "");
-
   // Method to generate the next lexicographical permutation
   public static boolean nextPermutation(char[] array) {
     int n = array.length;
@@ -619,6 +616,8 @@ public class Utility {
     }
     return sum;
   }
+
+  /*---------------------------------------------------------------------------------------- */
 
   // TREES
   private static void dfs(int node, List<List<Integer>> edges, int parent, int[] subtreeSize) {

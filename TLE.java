@@ -2,6 +2,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
 import java.io.*;
+import java.lang.management.ThreadInfo;
 import java.util.*;
 
 public class TLE {
@@ -15,6 +16,7 @@ public class TLE {
      * - Why my rating is not Increasing Codeforces :(
      * - Let's Hope for Best Today !
      */
+
     public static void main(String[] Hi) {
         int T = in.nextInt();
         while (T-- > 0) {
@@ -25,6 +27,60 @@ public class TLE {
 
     static void solve() {
 
+    }
+
+    /*----------------------------------------------------------------------------------------------- */
+
+    class Pair {
+        int f, s;
+
+        Pair(int f, int s) {
+            f = f;
+            s = s;
+        }
+    }
+
+    static long gcd(long a, long b) {
+        if (a == 0)
+            return b;
+        return gcd(b % a, a);
+    }
+
+    static long lcm(long a, long b) {
+        return Math.abs(a * b) / gcd(a, b);
+    }
+
+    static void reverse(int[] a, int l, int r) {
+        while (l < r) {
+            int t = a[l];
+            a[l] = a[r];
+            a[r] = t;
+            l++;
+            r--;
+        }
+    }
+
+    static void reverse(long[] a, int l, int r) {
+        while (l < r) {
+            long t = a[l];
+            a[l] = a[r];
+            a[r] = t;
+            l++;
+            r--;
+        }
+    }
+
+    static long modPow(long b, long e, long mod) {
+        long r = 1;
+        b = b % mod;
+        while (e > 0) {
+            if ((e & 1) == 1) {
+                r = (r * b) % mod;
+            }
+            b = (b * b) % mod;
+            r >>= 1;
+        }
+        return r;
     }
 
     static class FastReader {
@@ -59,13 +115,13 @@ public class TLE {
         }
     }
 
-    static void sort(int[] arr) {
+    static void sort(int[] a) {
         ArrayList<Integer> ls = new ArrayList<Integer>();
-        for (int x : arr)
+        for (int x : a)
             ls.add(x);
         Collections.sort(ls);
-        for (int i = 0; i < arr.length; i++)
-            arr[i] = ls.get(i);
+        for (int i = 0; i < a.length; i++)
+            a[i] = ls.get(i);
     }
 
     static void print(int[][] arr) {
@@ -84,28 +140,57 @@ public class TLE {
         }
     }
 
-    static void print(int[] arr) {
-        for (int i : arr)
+    static void print(int[] a) {
+        for (int i : a)
             out.print(i + " ");
         out.println();
     }
 
-    static void print(long[] arr) {
-        for (long i : arr)
+    static void print(char[] a) {
+        for (char i : a)
+            out.print(i + " ");
+        out.println();
+    }
+
+    static void print(long[] a) {
+        for (long i : a)
             out.print(i + " ");
         out.println();
     }
 
     static <T extends Number> void print(ArrayList<T> ls) {
         for (T i : ls)
-            System.out.print(i + " ");
-        System.out.println();
+            out.print(i + " ");
+        out.println();
     }
 
     static int[] inputIntArr(int n) {
         int[] a = new int[n];
         for (int i = 0; i < n; i++)
             a[i] = in.nextInt();
+        return a;
+    }
+
+    static long[] inputLongArr(int n) {
+        long[] a = new long[n];
+        for (int i = 0; i < n; i++)
+            a[i] = in.nextLong();
+        return a;
+    }
+
+    static int[][] inputIntArr(int n, int m) {
+        int[][] a = new int[n][m];
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
+                a[i][j] = in.nextInt();
+        return a;
+    }
+
+    static long[][] inputLongArr(int n, int m) {
+        long[][] a = new long[n][m];
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
+                a[i][j] = in.nextLong();
         return a;
     }
 
@@ -122,12 +207,4 @@ public class TLE {
             ls.add(in.nextLong());
         return ls;
     }
-
-    static long[] inputLongArr(int n) {
-        long[] a = new long[n];
-        for (int i = 0; i < n; i++)
-            a[i] = in.nextLong();
-        return a;
-    }
-
 }
