@@ -14,10 +14,37 @@ public class Main {
         }
         out.close();
     }
-    /*------------------------------------------------------------------------------------------------------*/
+
+    /*
+     * @Sulabh Ambule
+     * Lets hope for Best !
+     */
 
     private static void function() {
-        
+        int n = in.nextInt();
+        int[][] adj = new int[n][n];
+
+        for (int i = 0; i < n; i++) {
+            String s = in.next();
+            for (int j = 0; j < s.length(); j++) {
+                adj[i][j] = s.charAt(j) - '0';
+            }
+        }
+        Integer[] p = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            p[i] = i;
+        }
+        Arrays.sort(p, (x, y) -> {
+            if (adj[x][y] == 1) {
+                return Integer.compare(x, y);
+            } else {
+                return Integer.compare(y, x);
+            }
+        });
+        for (int i : p) {
+            System.out.print((i + 1) + " ");
+        }
+        System.out.println();
     }
 
     /*------------------------------------------------------------------------------------------------------ */
