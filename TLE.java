@@ -2,7 +2,6 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
 import java.io.*;
-import java.lang.management.ThreadInfo;
 import java.util.*;
 
 public class TLE {
@@ -26,17 +25,22 @@ public class TLE {
     }
 
     static void solve() {
+        int n = in.nextInt();
+        for (int i = 0; i < n - 1; i++) {
+            int u = in.nextInt();
+            int v = in.nextInt();
 
+        }
     }
 
-    /*----------------------------------------------------------------------------------------------- */
+    /*------------------------------------------------------------------------------------------------- */
 
     class Pair {
-        int f, s;
+        int first, second;
 
         Pair(int f, int s) {
-            f = f;
-            s = s;
+            first = f;
+            second = s;
         }
     }
 
