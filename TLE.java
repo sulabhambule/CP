@@ -26,11 +26,7 @@ public class TLE {
 
     static void solve() {
         int n = in.nextInt();
-        for (int i = 0; i < n - 1; i++) {
-            int u = in.nextInt();
-            int v = in.nextInt();
-
-        }
+        
     }
 
     /*------------------------------------------------------------------------------------------------- */
@@ -120,8 +116,17 @@ public class TLE {
     }
 
     static void sort(int[] a) {
-        ArrayList<Integer> ls = new ArrayList<Integer>();
+        ArrayList<Integer> ls = new ArrayList<>();
         for (int x : a)
+            ls.add(x);
+        Collections.sort(ls);
+        for (int i = 0; i < a.length; i++)
+            a[i] = ls.get(i);
+    }
+
+    static void sort(long[] a) {
+        ArrayList<Long> ls = new ArrayList<>();
+        for (long x : a)
             ls.add(x);
         Collections.sort(ls);
         for (int i = 0; i < a.length; i++)
@@ -134,6 +139,7 @@ public class TLE {
                 out.print(i + " ");
             out.println();
         }
+        out.println();
     }
 
     static void print(long[][] arr) {
@@ -142,6 +148,7 @@ public class TLE {
                 out.print(i + " ");
             out.println();
         }
+        out.println();
     }
 
     static void print(int[] a) {
