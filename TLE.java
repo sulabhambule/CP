@@ -1,6 +1,7 @@
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
+import static java.lang.Math.ceilDiv;
 import java.io.*;
 import java.util.*;
 
@@ -26,9 +27,39 @@ public class TLE {
 
     static void solve() {
         int n = in.nextInt();
-        
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            adj.add(new ArrayList<>());
+        }
+        long[][] value = new long[n + 1][2];
+        for (int i = 1; i <= n; i++) {
+            value[i][0] = in.nextLong();
+            value[i][1] = in.nextLong();
+        }
+        for (int i = 0; i < n - 1; i++) {
+            int a = in.nextInt();
+            int b = in.nextInt();
+            adj.get(a).add(b);
+            adj.get(b).add(a);
+        }
+
+        long[][] dp = new long[n + 1][2];
+        dfs(1, -1, adj, value, dp);
+        out.println(max(dp[1][0], dp[1][1]));
     }
 
+    private static void dfs(int node, int parent, List<List<Integer>> adj, long[][] value, long[][] dp) {
+
+        for (int adjNode : adj.get(node)) {
+            if (adjNode != parent) {
+                dfs(adjNode, node, adj, value, dp);
+                dp[node][1] += max(dp[adjNode][1] + abs(value[node][1] - value[adjNode][1]),
+                        dp[adjNode][0] + abs(value[node][1] - value[adjNode][0]));
+                dp[node][0] += max(dp[adjNode][1] + abs(value[node][0] - value[adjNode][1]),
+                        dp[adjNode][0] + abs(value[node][0] - value[adjNode][0]));
+            }
+        }
+    }
     /*------------------------------------------------------------------------------------------------- */
 
     class Pair {
