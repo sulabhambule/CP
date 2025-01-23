@@ -13,8 +13,6 @@ public class TLE {
 
     /*
      * @Sulabh Ambule
-     * - Why my rating is not Increasing Codeforces :(
-     * - Let's Hope for Best Today !
      */
 
     public static void main(String[] Hi) {
@@ -26,48 +24,23 @@ public class TLE {
     }
 
     static void solve() {
-        int n = in.nextInt();
-        List<List<Integer>> adj = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
-            adj.add(new ArrayList<>());
-        }
-        long[][] value = new long[n + 1][2];
-        for (int i = 1; i <= n; i++) {
-            value[i][0] = in.nextLong();
-            value[i][1] = in.nextLong();
-        }
-        for (int i = 0; i < n - 1; i++) {
-            int a = in.nextInt();
-            int b = in.nextInt();
-            adj.get(a).add(b);
-            adj.get(b).add(a);
-        }
-
-        long[][] dp = new long[n + 1][2];
-        dfs(1, -1, adj, value, dp);
-        out.println(max(dp[1][0], dp[1][1]));
+        
     }
 
-    private static void dfs(int node, int parent, List<List<Integer>> adj, long[][] value, long[][] dp) {
-
-        for (int adjNode : adj.get(node)) {
-            if (adjNode != parent) {
-                dfs(adjNode, node, adj, value, dp);
-                dp[node][1] += max(dp[adjNode][1] + abs(value[node][1] - value[adjNode][1]),
-                        dp[adjNode][0] + abs(value[node][1] - value[adjNode][0]));
-                dp[node][0] += max(dp[adjNode][1] + abs(value[node][0] - value[adjNode][1]),
-                        dp[adjNode][0] + abs(value[node][0] - value[adjNode][0]));
-            }
-        }
-    }
     /*------------------------------------------------------------------------------------------------- */
 
-    class Pair {
+    static class Pair implements Comparable<Pair> {
         int first, second;
 
-        Pair(int f, int s) {
-            first = f;
-            second = s;
+        Pair(int first, int second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        @Override
+        public int compareTo(Pair other) {
+            // decreasing order
+            return other.first - this.first;
         }
     }
 
@@ -79,6 +52,16 @@ public class TLE {
 
     static long lcm(long a, long b) {
         return Math.abs(a * b) / gcd(a, b);
+    }
+
+    static boolean isPrime(long arr) {
+        if (arr <= 1)
+            return false;
+        for (int i = 2; i <= Math.sqrt(arr); i++) {
+            if (arr % i == 0)
+                return false;
+        }
+        return true;
     }
 
     static void reverse(int[] a, int l, int r) {
@@ -153,6 +136,10 @@ public class TLE {
         Collections.sort(ls);
         for (int i = 0; i < a.length; i++)
             a[i] = ls.get(i);
+    }
+
+    static <T extends Comparable<T>> void sort(ArrayList<T> list) {
+        Collections.sort(list);
     }
 
     static void sort(long[] a) {

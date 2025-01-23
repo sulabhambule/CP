@@ -19,13 +19,7 @@ public class Main {
     }
 
     static void solve() {
-        int n = in.nextInt();
-        int[] a = inputIntArr(n);
-        int num = 1 + n;
-        for (int i = 0; i < n; i++) {
-            out.print((num - a[i]) + " ");
-        }
-        out.println();
+
     }
 
     /*------------------------------------------------------------------------------------------------- */
