@@ -24,7 +24,38 @@ public class TLE {
     }
 
     static void solve() {
-        
+        int n = in.nextInt();
+        long x = in.nextLong();
+        long[] a = inputLongArr(n);
+        long[] pref = new long[n + 1];
+        for (int i = 1; i <= n; i++) {
+            pref[i] += a[i] + pref[i - 1];
+        }
+        long ans = 0;
+        // we will use the dp,
+        // dp[i] = total number of subArray starting from teh index i
+        // our answer is the sum of all dp[i];
+
+        int[] dp = new int[n + 2];
+        for (int i = n - 1; i >= 0; i--) {
+            int index = upperBound(pref, x + a[i]);
+            
+        }
+    }
+
+    static int upperBound(long[] a, long tar) {
+        int ans = -1;
+        int low = 0, high = a.length - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (a[mid] > tar) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return ans;
     }
 
     /*------------------------------------------------------------------------------------------------- */
@@ -39,7 +70,6 @@ public class TLE {
 
         @Override
         public int compareTo(Pair other) {
-            // decreasing order
             return other.first - this.first;
         }
     }
@@ -138,8 +168,30 @@ public class TLE {
             a[i] = ls.get(i);
     }
 
+    static void sortRev(int[] a) {
+        ArrayList<Integer> ls = new ArrayList<>();
+        for (int x : a)
+            ls.add(x);
+        Collections.sort(ls, Collections.reverseOrder());
+        for (int i = 0; i < a.length; i++)
+            a[i] = ls.get(i);
+    }
+
+    static void sortRev(long[] a) {
+        ArrayList<Long> ls = new ArrayList<>();
+        for (long x : a)
+            ls.add(x);
+        Collections.sort(ls, Collections.reverseOrder());
+        for (int i = 0; i < a.length; i++)
+            a[i] = ls.get(i);
+    }
+
     static <T extends Comparable<T>> void sort(ArrayList<T> list) {
         Collections.sort(list);
+    }
+
+    static <T extends Comparable<T>> void sortRev(ArrayList<T> list) {
+        Collections.sort(list, Collections.reverseOrder());
     }
 
     static void sort(long[] a) {
