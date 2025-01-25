@@ -12,9 +12,6 @@ public class TLE {
     static final int MOD = 998244353;
     static List<List<Integer>> adj;
     static final int MAX_LOG = 20;
-    static final int N = (int) 2e5 + 1;
-    static int[][] par = new int[N][MAX_LOG];
-    static int[] depth = new int[N];
     static long maxCost = 0;
 
     /*
@@ -70,50 +67,12 @@ public class TLE {
         maxCost = max(maxCost, currCost);
         for (int adjNode : adj.get(node)) {
             if (adjNode != parent) {
-                // re Roting the tree here
                 long newCost = currCost - subTreeSum[adjNode] + (total - subTreeSum[adjNode]);
                 dfs3(adjNode, node, newCost, subTreeSum, total);
             }
         }
 
     }
-
-    // static void dfs(int node, int parent, int[] subTreeSum) {
-    // depth[node] = 1 + depth[parent];
-    // par[node][0] = parent;
-    // for (int j = 0; j < MAX_LOG; j++) {
-    // par[node][j] = par[par[node][j - 1]][j - 1];
-    // }
-    // for (int adjNode : adj.get(node)) {
-    // if (adjNode != parent) {
-    // dfs(adjNode, node, subTreeSum);
-    // subTreeSum[node] += subTreeSum[adjNode];
-    // }
-    // }
-    // }
-
-    // static int LCA(int u, int v) {
-    // if (u == v)
-    // return u;
-    // if (depth[u] < depth[v]) {
-    // int t = u;
-    // u = v;
-    // v = t;
-    // }
-    // int d = depth[u] - depth[v];
-    // for (int i = MAX_LOG - 1; i >= 0; i--) {
-    // if (((1 << i) & d) != 0) {
-    // u = par[u][i];
-    // }
-    // }
-    // for (int j = MAX_LOG - 1; j >= 0; j--) {
-    // if (par[u][j] != par[v][j]) {
-    // u = par[u][j];
-    // v = par[v][j];
-    // }
-    // }
-    // return (u != v) ? par[u][0] : u;
-    // }
 
     /*------------------------------------------------------------------------------------------------- */
 

@@ -1,6 +1,7 @@
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
+import static java.lang.Math.ceilDiv;
 import java.io.*;
 import java.util.*;
 
@@ -59,7 +60,6 @@ public class Main {
                     continue;
                 }
                 int lca = LCA_(a, b);
-                int d = depth[a] + depth[b] - (2 * depth[LCA_(a, b)]);
                 int distA_lca = depth[a] - depth[lca];
                 int distB_lca = depth[b] - depth[lca];
                 k--;
@@ -73,7 +73,6 @@ public class Main {
 
                 out.println(ans);
             }
-
         }
     }
 
