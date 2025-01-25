@@ -1,15 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+#define int long long
+#define MOD 998244353
 #define MAX_LOG 20
 #define N 200001
-#define MOD 998244353
-#define ll long long
-#define all(v) v.begin(), v.end()
 
 vector<int> adj[N];
 int par[N][MAX_LOG];
 int depth[N];
+int diff[N];
+
+/**
+ * @Ayush Chavan
+ * JAI SHREE RAM
+ */
 
 void dfs(int node, int parent)
 {
@@ -19,76 +24,68 @@ void dfs(int node, int parent)
     {
         par[node][j] = par[par[node][j - 1]][j - 1];
     }
-    for (int neighbor : adj[node])
+    for (int adjNode : adj[node])
     {
-        if (neighbor != parent)
+        if (adjNode != parent)
         {
-            dfs(neighbor, node);
+            dfs(adjNode, node);
         }
     }
 }
 
-int LCA_(int nodeA, int nodeB)
+int LCA(int u, int v)
 {
-    if (depth[nodeA] < depth[nodeB])
-        swap(nodeA, nodeB);
+    if (u == v)
+        return u;
+    if (depth[u] < depth[v])
+        swap(u, v);
 
-    int nodeDiff = depth[nodeA] - depth[nodeB];
-    for (int j = MAX_LOG - 1; j >= 0; j--)
+    int d = depth[u] - depth[v];
+    for (int i = MAX_LOG - 1; i >= 0; i--)
     {
-        if ((1 << j) & nodeDiff)
+        if ((1 << i) & d)
         {
-            nodeA = par[nodeA][j];
+            u = par[u][i];
         }
     }
 
-    if (nodeA == nodeB)
-        return nodeA;
+    if (u == v)
+        return u;
 
-    for (int j = MAX_LOG - 1; j >= 0; j--)
+    for (int i = MAX_LOG - 1; i >= 0; i--)
     {
-        if (par[nodeA][j] != par[nodeB][j])
+        if (par[u][i] != par[v][i])
         {
-            nodeA = par[nodeA][j];
-            nodeB = par[nodeB][j];
+            u = par[u][i];
+            v = par[v][i];
         }
     }
-    return par[nodeA][0];
+    return par[u][0];
 }
 
-void dfs1(int curr, int parent, vector<int> &level)
+void propagate(int node, int parent)
 {
-    level[curr] = (parent == -1) ? 0 : level[parent] + 1;
-    for (int neighbor : adj[curr])
+    for (int adjNode : adj[node])
     {
-        if (neighbor != parent)
+        if (adjNode != parent)
         {
-            dfs1(neighbor, curr, level);
+            propagate(adjNode, node);
+            diff[node] += diff[adjNode];
         }
     }
-}
-
-int farthestNode(int n, vector<int> &dist)
-{
-    int farthest = 1;
-    for (int i = 1; i <= n; i++)
-    {
-        if (dist[i] > dist[farthest])
-        {
-            farthest = i;
-        }
-    }
-    return farthest;
 }
 
 void solve()
 {
-    int n;
-    cin >> n;
+    int n, m;
+    cin >> n >> m;
+
     for (int i = 0; i <= n; i++)
-    {
         adj[i].clear();
-    }
+    memset(par, 0, sizeof(par));
+    memset(diff, 0, sizeof(diff));
+    memset(depth, 0, sizeof(depth));
+
     for (int i = 0; i < n - 1; i++)
     {
         int a, b;
@@ -97,37 +94,38 @@ void solve()
         adj[b].push_back(a);
     }
 
-    // Initialize the depth and parent arrays
     dfs(1, 0);
 
-    vector<int> distX(n + 1, -1), distY(n + 1, -1);
+    for (int i = 0; i < m; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        diff[a]++;
+        diff[b]++;
+        int lca = LCA(a, b);
+        diff[lca]--;
+        if (par[lca][0] != 0)
+            diff[par[lca][0]]--;
+    }
 
-    int x = 1;
-    dfs1(x, -1, distX);
-    int y = farthestNode(n, distX);
-
-    dfs1(y, -1, distY);
-    int z = farthestNode(n, distY);
+    propagate(1, 0);
 
     for (int i = 1; i <= n; i++)
     {
-        int distance1 = depth[i] + depth[y] - 2 * depth[LCA_(i, y)];
-        int distance2 = depth[i] + depth[z] - 2 * depth[LCA_(i, z)];
-        cout << max(distance1, distance2) << " ";
+        cout << diff[i] << " ";
     }
     cout << endl;
 }
 
-int main()
+int32_t main()
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     int T = 1;
+    // cin >> T;
     while (T--)
     {
         solve();
     }
-
     return 0;
 }

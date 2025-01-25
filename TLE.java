@@ -10,77 +10,135 @@ public class TLE {
     static FastReader in = new FastReader();
     // static final int MOD = (int) 1e9 + 7;
     static final int MOD = 998244353;
+    static List<List<Integer>> adj;
+    static final int MAX_LOG = 20;
+    static final int N = (int) 2e5 + 1;
+    static int[][] par = new int[N][MAX_LOG];
+    static int[] depth = new int[N];
+    static long maxCost = 0;
 
     /*
      * @Sulabh Ambule
      */
 
-    public static void main(String[] Hi) {
-        int T = in.nextInt();
+    public static void main(String[] Hi) throws IOException {
+        int T = 1;
         while (T-- > 0) {
-            solve();
+            Code_Subh();
         }
         out.close();
     }
 
-    static void solve() {
+    static void Code_Subh() throws IOException {
         int n = in.nextInt();
-        long x = in.nextLong();
-        long[] a = inputLongArr(n);
-        long[] pref = new long[n + 1];
-        for (int i = 1; i <= n; i++) {
-            pref[i] += a[i] + pref[i - 1];
+        int[] a = inputIntArr(n);
+        adj = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            adj.add(new ArrayList<>());
         }
-        long ans = 0;
-        // we will use the dp,
-        // dp[i] = total number of subArray starting from teh index i
-        // our answer is the sum of all dp[i];
 
-        int[] dp = new int[n + 2];
-        for (int i = n - 1; i >= 0; i--) {
-            int index = upperBound(pref, x + a[i]);
-            
+        for (int i = 0; i < n - 1; i++) {
+            int u = in.nextInt();
+            int v = in.nextInt();
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+        long sum = 0;
+        for (int i : a) {
+            sum += i;
+        }
+        int[] subTreeSum = new int[n + 1];
+        int[] ans1 = { 0 };
+        dfs(1, 0, 0, ans1, a, subTreeSum);
+        maxCost = ans1[0];
+        dfs3(1, 0, maxCost, subTreeSum, sum);
+        out.println(maxCost);
+    }
+
+    static void dfs(int node, int parent, int d, int[] ans1, int[] a, int[] subTreeSum) {
+        subTreeSum[node] += a[node - 1];
+        ans1[0] += d * a[node - 1];
+        for (int child : adj.get(node)) {
+            if (parent == child)
+                continue;
+            dfs(child, node, d + 1, ans1, a, subTreeSum);
+            subTreeSum[node] += subTreeSum[child];
         }
     }
 
-    static int upperBound(long[] a, long tar) {
-        int ans = -1;
-        int low = 0, high = a.length - 1;
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            if (a[mid] > tar) {
-                ans = mid;
-                high = mid - 1;
-            } else {
-                low = mid + 1;
+    static void dfs3(int node, int parent, long currCost, int[] subTreeSum, long total) {
+        maxCost = max(maxCost, currCost);
+        for (int adjNode : adj.get(node)) {
+            if (adjNode != parent) {
+                // re Roting the tree here
+                long newCost = currCost - subTreeSum[adjNode] + (total - subTreeSum[adjNode]);
+                dfs3(adjNode, node, newCost, subTreeSum, total);
             }
         }
-        return ans;
+
     }
+
+    // static void dfs(int node, int parent, int[] subTreeSum) {
+    // depth[node] = 1 + depth[parent];
+    // par[node][0] = parent;
+    // for (int j = 0; j < MAX_LOG; j++) {
+    // par[node][j] = par[par[node][j - 1]][j - 1];
+    // }
+    // for (int adjNode : adj.get(node)) {
+    // if (adjNode != parent) {
+    // dfs(adjNode, node, subTreeSum);
+    // subTreeSum[node] += subTreeSum[adjNode];
+    // }
+    // }
+    // }
+
+    // static int LCA(int u, int v) {
+    // if (u == v)
+    // return u;
+    // if (depth[u] < depth[v]) {
+    // int t = u;
+    // u = v;
+    // v = t;
+    // }
+    // int d = depth[u] - depth[v];
+    // for (int i = MAX_LOG - 1; i >= 0; i--) {
+    // if (((1 << i) & d) != 0) {
+    // u = par[u][i];
+    // }
+    // }
+    // for (int j = MAX_LOG - 1; j >= 0; j--) {
+    // if (par[u][j] != par[v][j]) {
+    // u = par[u][j];
+    // v = par[v][j];
+    // }
+    // }
+    // return (u != v) ? par[u][0] : u;
+    // }
 
     /*------------------------------------------------------------------------------------------------- */
 
     static class Pair implements Comparable<Pair> {
-        int first, second;
+        long first;
+        int second;
 
-        Pair(int first, int second) {
-            this.first = first;
-            this.second = second;
+        Pair(long f, int s) {
+            this.first = f;
+            this.second = s;
         }
 
         @Override
         public int compareTo(Pair other) {
-            return other.first - this.first;
+            return (int) (this.first - other.first);
         }
     }
 
-    static long gcd(long a, long b) {
+    static int gcd(int a, int b) {
         if (a == 0)
             return b;
         return gcd(b % a, a);
     }
 
-    static long lcm(long a, long b) {
+    static int lcm(int a, int b) {
         return Math.abs(a * b) / gcd(a, b);
     }
 
@@ -159,7 +217,7 @@ public class TLE {
         }
     }
 
-    static void sort(int[] a) {
+    static void sort_(int[] a) {
         ArrayList<Integer> ls = new ArrayList<>();
         for (int x : a)
             ls.add(x);
@@ -194,7 +252,7 @@ public class TLE {
         Collections.sort(list, Collections.reverseOrder());
     }
 
-    static void sort(long[] a) {
+    static void sort_(long[] a) {
         ArrayList<Long> ls = new ArrayList<>();
         for (long x : a)
             ls.add(x);

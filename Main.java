@@ -19,7 +19,11 @@ public class Main {
     }
 
     static void solve() {
-
+        int n = in.nextInt();
+        String s = in.next();
+        String t = in.next();
+        int ans = 0;
+        
     }
 
     /*------------------------------------------------------------------------------------------------- */
