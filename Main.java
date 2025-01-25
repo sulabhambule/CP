@@ -9,6 +9,12 @@ public class Main {
     static FastReader in = new FastReader();
     // static final int MOD = (int) 1e9 + 7;
     static final int MOD = 998244353;
+    static List<List<int[]>> adj;
+    private static final int MAX_LOG = 13;
+    private static final int N = (int) 1e5 + 1;
+    static int[][] par = new int[N][MAX_LOG];
+    static int[] dist = new int[N];
+    static int[] depth = new int[N];
 
     public static void main(String[] Hi) {
         int T = in.nextInt();
@@ -20,13 +26,112 @@ public class Main {
 
     static void solve() {
         int n = in.nextInt();
-        String s = in.next();
-        String t = in.next();
-        int ans = 0;
-        
+        adj = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int i = 0; i < n - 1; i++) {
+            int a = in.nextInt();
+            int b = in.nextInt();
+            int c = in.nextInt();
+            adj.get(a).add(new int[] { b, c });
+            adj.get(b).add(new int[] { a, c });
+        }
+        dfs(1, 0);
+        while (true) {
+            String str = in.next();
+            if (str.equals("DONE")) {
+                break;
+            }
+            if (str.equals("DIST")) {
+                int a = in.nextInt();
+                int b = in.nextInt();
+                int ans = dist[a] + dist[b];
+                int lca = LCA_(a, b);
+                ans -= 2 * (dist[lca]);
+                out.println(ans);
+            } else {
+                int a = in.nextInt();
+                int b = in.nextInt();
+                int k = in.nextInt();
+                if (k == 1) {
+                    out.println(a);
+                    continue;
+                }
+                int lca = LCA_(a, b);
+                int d = depth[a] + depth[b] - (2 * depth[LCA_(a, b)]);
+                int distA_lca = depth[a] - depth[lca];
+                int distB_lca = depth[b] - depth[lca];
+                k--;
+                int ans = 0;
+                if (k <= distA_lca) {
+                    ans = Kthparent(a, k);
+                } else {
+                    int newK = distB_lca - (k - distA_lca);
+                    ans = Kthparent(b, newK);
+                }
+
+                out.println(ans);
+            }
+
+        }
     }
 
-    /*------------------------------------------------------------------------------------------------- */
+    static int Kthparent(int node, int k) {
+        for (int i = MAX_LOG - 1; i >= 0; i--) {
+            if ((k & (1 << i)) != 0) {
+                node = par[node][i];
+                if (node == 0)
+                    break;
+            }
+        }
+        return node;
+    }
+
+    static void dfs(int node, int parent) {
+        par[node][0] = parent;
+        depth[node] = 1 + depth[parent];
+        for (int j = 1; j < MAX_LOG; j++) {
+            par[node][j] = par[par[node][j - 1]][j - 1];
+        }
+        for (int[] a : adj.get(node)) {
+            int adjNode = a[0];
+            int distance = a[1];
+            if (adjNode != parent) {
+                dist[adjNode] = dist[node] + distance;
+                dfs(adjNode, node);
+            }
+        }
+    }
+
+    private static int LCA_(int nodeA, int nodeB) {
+        if (nodeA == nodeB)
+            return nodeA;
+
+        if (depth[nodeA] < depth[nodeB]) {
+            int tempNode = nodeA;
+            nodeA = nodeB;
+            nodeB = tempNode;
+        }
+
+        int nodeDiff = depth[nodeA] - depth[nodeB];
+        for (int j = MAX_LOG - 1; j >= 0; j--) {
+            if (((1 << j) & nodeDiff) != 0) {
+                nodeA = par[nodeA][j];
+            }
+        }
+
+        for (int j = MAX_LOG - 1; j >= 0; j--) {
+            if (par[nodeA][j] != par[nodeB][j]) {
+                nodeA = par[nodeA][j];
+                nodeB = par[nodeB][j];
+            }
+        }
+
+        return (nodeA != nodeB ? par[nodeA][0] : nodeA);
+    }
+
+    /*-------------------------------------------------------------------------------------------------------------- */
 
     class Pair {
         int first, second;
@@ -76,7 +181,7 @@ public class Main {
                 r = (r * b) % mod;
             }
             b = (b * b) % mod;
-            r >>= 1;
+            e >>= 1;
         }
         return r;
     }

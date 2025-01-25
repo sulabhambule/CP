@@ -180,7 +180,7 @@ public class TLE {
                 r = (r * b) % mod;
             }
             b = (b * b) % mod;
-            r >>= 1;
+            e >>= 1;
         }
         return r;
     }

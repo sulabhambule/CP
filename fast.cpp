@@ -1,131 +1,91 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <cmath>
 using namespace std;
 
-#define int long long
-#define MOD 998244353
-#define MAX_LOG 20
-#define N 200001
+const int MOD = 998244353;
+vector<vector<int>> adj;
 
-vector<int> adj[N];
-int par[N][MAX_LOG];
-int depth[N];
-int diff[N];
-
-/**
- * @Ayush Chavan
- * JAI SHREE RAM
- */
-
-void dfs(int node, int parent)
+long long modPow(long long base, long long exp, int mod)
 {
-    depth[node] = depth[parent] + 1;
-    par[node][0] = parent;
-    for (int j = 1; j < MAX_LOG; j++)
+    long long result = 1;
+    base %= mod;
+    while (exp > 0)
     {
-        par[node][j] = par[par[node][j - 1]][j - 1];
-    }
-    for (int adjNode : adj[node])
-    {
-        if (adjNode != parent)
+        if (exp & 1)
         {
-            dfs(adjNode, node);
+            result = (result * base) % mod;
         }
+        base = (base * base) % mod;
+        exp >>= 1;
     }
+    return result;
 }
 
-int LCA(int u, int v)
+bool dfs(int node, int color, vector<bool> &visited, vector<int> &colors, vector<int> &counts)
 {
-    if (u == v)
-        return u;
-    if (depth[u] < depth[v])
-        swap(u, v);
+    visited[node] = true;
+    colors[node] = color;
+    counts[color]++;
 
-    int d = depth[u] - depth[v];
-    for (int i = MAX_LOG - 1; i >= 0; i--)
+    for (int neighbor : adj[node])
     {
-        if ((1 << i) & d)
+        if (!visited[neighbor])
         {
-            u = par[u][i];
+            if (!dfs(neighbor, color ^ 1, visited, colors, counts))
+            {
+                return false;
+            }
+        }
+        else if (colors[neighbor] == colors[node])
+        {
+            return false;
         }
     }
+    return true;
+}
 
-    if (u == v)
-        return u;
-
-    for (int i = MAX_LOG - 1; i >= 0; i--)
+int main()
+{
+    int t;
+    cin >> t;
+    while (t--)
     {
-        if (par[u][i] != par[v][i])
+        int n, m;
+        cin >> n >> m;
+
+        adj.assign(n + 1, vector<int>());
+
+        for (int i = 0; i < m; i++)
         {
-            u = par[u][i];
-            v = par[v][i];
+            int u, v;
+            cin >> u >> v;
+            adj[u].push_back(v);
+            adj[v].push_back(u);
         }
-    }
-    return par[u][0];
-}
 
-void propagate(int node, int parent)
-{
-    for (int adjNode : adj[node])
-    {
-        if (adjNode != parent)
+        vector<int> colors(n + 1, -1);
+        vector<bool> visited(n + 1, false);
+
+        bool isBipartite = true;
+        long long result = 1;
+
+        for (int i = 1; i <= n; i++)
         {
-            propagate(adjNode, node);
-            diff[node] += diff[adjNode];
+            if (!visited[i])
+            {
+                vector<int> counts(2, 0);
+                if (!dfs(i, 0, visited, colors, counts))
+                {
+                    isBipartite = false;
+                    break;
+                }
+                long long partResult = (modPow(2, counts[0], MOD) + modPow(2, counts[1], MOD)) % MOD;
+                result = (result * partResult) % MOD;
+            }
         }
-    }
-}
 
-void solve()
-{
-    int n, m;
-    cin >> n >> m;
-
-    for (int i = 0; i <= n; i++)
-        adj[i].clear();
-    memset(par, 0, sizeof(par));
-    memset(diff, 0, sizeof(diff));
-    memset(depth, 0, sizeof(depth));
-
-    for (int i = 0; i < n - 1; i++)
-    {
-        int a, b;
-        cin >> a >> b;
-        adj[a].push_back(b);
-        adj[b].push_back(a);
-    }
-
-    dfs(1, 0);
-
-    for (int i = 0; i < m; i++)
-    {
-        int a, b;
-        cin >> a >> b;
-        diff[a]++;
-        diff[b]++;
-        int lca = LCA(a, b);
-        diff[lca]--;
-        if (par[lca][0] != 0)
-            diff[par[lca][0]]--;
-    }
-
-    propagate(1, 0);
-
-    for (int i = 1; i <= n; i++)
-    {
-        cout << diff[i] << " ";
-    }
-    cout << endl;
-}
-
-int32_t main()
-{
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    int T = 1;
-    // cin >> T;
-    while (T--)
-    {
-        solve();
+        cout << (isBipartite ? result : 0) << endl;
     }
     return 0;
 }

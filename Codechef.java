@@ -17,7 +17,7 @@ class Codechef {
     }
 
     private static void Accepted() {
-
+        
     }
 
     static class FastReader {
