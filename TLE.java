@@ -10,12 +10,10 @@ public class TLE {
     static FastReader in = new FastReader();
     // static final int MOD = (int) 1e9 + 7;
     static final int MOD = 998244353;
-    static List<List<Integer>> adj;
-    static final int MAX_LOG = 20;
-    static long maxCost = 0;
 
     /*
      * @Sulabh Ambule
+     * - CF, 1300+ :(
      */
 
     public static void main(String[] Hi) throws IOException {
@@ -27,54 +25,10 @@ public class TLE {
     }
 
     static void Code_Subh() throws IOException {
-        int n = in.nextInt();
-        int[] a = inputIntArr(n);
-        adj = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
-            adj.add(new ArrayList<>());
-        }
-
-        for (int i = 0; i < n - 1; i++) {
-            int u = in.nextInt();
-            int v = in.nextInt();
-            adj.get(u).add(v);
-            adj.get(v).add(u);
-        }
-        long sum = 0;
-        for (int i : a) {
-            sum += i;
-        }
-        int[] subTreeSum = new int[n + 1];
-        int[] ans1 = { 0 };
-        dfs(1, 0, 0, ans1, a, subTreeSum);
-        maxCost = ans1[0];
-        dfs3(1, 0, maxCost, subTreeSum, sum);
-        out.println(maxCost);
-    }
-
-    static void dfs(int node, int parent, int d, int[] ans1, int[] a, int[] subTreeSum) {
-        subTreeSum[node] += a[node - 1];
-        ans1[0] += d * a[node - 1];
-        for (int child : adj.get(node)) {
-            if (parent == child)
-                continue;
-            dfs(child, node, d + 1, ans1, a, subTreeSum);
-            subTreeSum[node] += subTreeSum[child];
-        }
-    }
-
-    static void dfs3(int node, int parent, long currCost, int[] subTreeSum, long total) {
-        maxCost = max(maxCost, currCost);
-        for (int adjNode : adj.get(node)) {
-            if (adjNode != parent) {
-                long newCost = currCost - subTreeSum[adjNode] + (total - subTreeSum[adjNode]);
-                dfs3(adjNode, node, newCost, subTreeSum, total);
-            }
-        }
 
     }
 
-    /*------------------------------------------------------------------------------------------------- */
+    /*------------------------------------------------------------------------------------------------------------- */
 
     static class Pair implements Comparable<Pair> {
         long first;
@@ -90,6 +44,40 @@ public class TLE {
             return (int) (this.first - other.first);
         }
     }
+
+    static class FastReader {
+        BufferedReader br;
+        StringTokenizer st;
+
+        public FastReader() {
+            br = new BufferedReader(new InputStreamReader(System.in));
+        }
+
+        String next() {
+            while (st == null || !st.hasMoreElements()) {
+                try {
+                    st = new StringTokenizer(br.readLine());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return st.nextToken();
+        }
+
+        int nextInt() {
+            return Integer.parseInt(next());
+        }
+
+        long nextLong() {
+            return Long.parseLong(next());
+        }
+
+        double nextDouble() {
+            return Double.parseDouble(next());
+        }
+    }
+
+    /*----------------------------------------------------------------------------------------------------------- */
 
     static int gcd(int a, int b) {
         if (a == 0)
@@ -144,36 +132,32 @@ public class TLE {
         return r;
     }
 
-    static class FastReader {
-        BufferedReader br;
-        StringTokenizer st;
+    static int max_inArr(int[] arr) {
+        int m = Integer.MIN_VALUE;
+        for (int i : arr)
+            i = max(m, i);
+        return m;
+    }
 
-        public FastReader() {
-            br = new BufferedReader(new InputStreamReader(System.in));
-        }
+    static int min_inArr(int[] arr) {
+        int m = Integer.MAX_VALUE;
+        for (int i : arr)
+            i = min(m, i);
+        return m;
+    }
 
-        String next() {
-            while (st == null || !st.hasMoreElements()) {
-                try {
-                    st = new StringTokenizer(br.readLine());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return st.nextToken();
-        }
+    static int sumOfArr(int[] a) {
+        int s = 0;
+        for (int i : a)
+            s += i;
+        return s;
+    }
 
-        int nextInt() {
-            return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
+    static long sumOfArr(long[] a) {
+        long s = 0;
+        for (long i : a)
+            s += i;
+        return s;
     }
 
     static void sort_(int[] a) {
