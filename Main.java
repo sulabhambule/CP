@@ -13,7 +13,7 @@ public class Main {
     static List<List<Integer>> adj;
 
     public static void main(String[] Hi) {
-        int T = 1;
+        int T = in.nextInt();
         while (T-- > 0) {
             solve();
         }
@@ -21,7 +21,8 @@ public class Main {
     }
 
     static void solve() {
-
+        int n = in.nextInt();
+        
     }
 
     /*-------------------------------------------------------------------------------------------------------------- */
