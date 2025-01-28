@@ -645,7 +645,4 @@ public class Utility {
         dfs(neighbour, edges, node, level);
   }
 
-  // standard problem with prefix sums:
-  // if two prefix sums are equal, then the subarray between them has sum
-  // 0;otherwise, no subarray has sum 0.
 }

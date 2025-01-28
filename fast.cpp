@@ -1,91 +1,69 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
+#include <cstring>
 using namespace std;
 
-const int MOD = 998244353;
-vector<vector<int>> adj;
-
-long long modPow(long long base, long long exp, int mod)
+bool dfs(int node, int color, vector<vector<int>> &adj, vector<bool> &vis, vector<int> &c)
 {
-    long long result = 1;
-    base %= mod;
-    while (exp > 0)
-    {
-        if (exp & 1)
-        {
-            result = (result * base) % mod;
-        }
-        base = (base * base) % mod;
-        exp >>= 1;
-    }
-    return result;
-}
-
-bool dfs(int node, int color, vector<bool> &visited, vector<int> &colors, vector<int> &counts)
-{
-    visited[node] = true;
-    colors[node] = color;
-    counts[color]++;
+    vis[node] = true;
+    c[node] = color;
 
     for (int neighbor : adj[node])
     {
-        if (!visited[neighbor])
+        if (!vis[neighbor])
         {
-            if (!dfs(neighbor, color ^ 1, visited, colors, counts))
+            if (!dfs(neighbor, color ^ 1, adj, vis, c))
             {
                 return false;
             }
         }
-        else if (colors[neighbor] == colors[node])
+        else if (c[neighbor] == c[node])
         {
             return false;
         }
     }
+
     return true;
 }
 
 int main()
 {
-    int t;
-    cin >> t;
-    while (t--)
+    int n, m;
+    cin >> n >> m;
+
+    vector<vector<int>> adj(n + 1);
+    for (int i = 0; i < m; i++)
     {
-        int n, m;
-        cin >> n >> m;
+        int a, b;
+        cin >> a >> b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+    }
 
-        adj.assign(n + 1, vector<int>());
+    vector<bool> vis(n + 1, false);
+    vector<int> c(n + 1, -1);
 
-        for (int i = 0; i < m; i++)
+    bool isBipartite = true;
+    for (int i = 1; i <= n; i++)
+    {
+        if (!vis[i])
         {
-            int u, v;
-            cin >> u >> v;
-            adj[u].push_back(v);
-            adj[v].push_back(u);
+            isBipartite &= dfs(i, 0, adj, vis, c);
         }
+    }
 
-        vector<int> colors(n + 1, -1);
-        vector<bool> visited(n + 1, false);
-
-        bool isBipartite = true;
-        long long result = 1;
-
+    if (!isBipartite)
+    {
+        cout << "IMPOSSIBLE" << endl;
+    }
+    else
+    {
         for (int i = 1; i <= n; i++)
         {
-            if (!visited[i])
-            {
-                vector<int> counts(2, 0);
-                if (!dfs(i, 0, visited, colors, counts))
-                {
-                    isBipartite = false;
-                    break;
-                }
-                long long partResult = (modPow(2, counts[0], MOD) + modPow(2, counts[1], MOD)) % MOD;
-                result = (result * partResult) % MOD;
-            }
+            cout << (c[i] + 1) << " ";
         }
-
-        cout << (isBipartite ? result : 0) << endl;
+        cout << endl;
     }
+
     return 0;
 }
