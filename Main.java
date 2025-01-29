@@ -20,9 +20,54 @@ public class Main {
         out.close();
     }
 
+    // to minimize the produt of two no. the diff between two no. should be less
+
     static void solve() {
-        int n = in.nextInt();
-        
+        String num1 = in.next();
+        String num2 = in.next();
+        int idx = -1;
+        for (int i = 0; i < num1.length(); i++) {
+            if (num1.charAt(i) != num2.charAt(i)) {
+                idx = i;
+                break;
+            }
+        }
+
+        if (idx == -1) {
+            out.println(num1);
+            out.println(num2);
+            return;
+        }
+        String ans1 = "";
+        String ans2 = "";
+        for (int i = 0; i <= idx; i++) {
+            ans1 += num1.charAt(i);
+            ans2 += num2.charAt(i);
+        }
+        boolean f1 = (num1.charAt(idx) > num2.charAt(idx));
+        for (int i = idx + 1; i < num1.length(); i++) {
+            char c1 = num1.charAt(i);
+            char c2 = num2.charAt(i);
+            if (f1) {
+                if (c1 < c2) {
+                    ans1 += c1;
+                    ans2 += c2;
+                } else {
+                    ans1 += c2;
+                    ans2 += c1;
+                }
+            } else {
+                if (c1 > c2) {
+                    ans1 += c1;
+                    ans2 += c2;
+                } else {
+                    ans1 += c2;
+                    ans2 += c1;
+                }
+            }
+        }
+        out.println(ans1);
+        out.println(ans2);
     }
 
     /*-------------------------------------------------------------------------------------------------------------- */
@@ -34,7 +79,6 @@ public class Main {
             first = f;
             second = s;
         }
-
     }
 
     static long gcd(long a, long b) {
