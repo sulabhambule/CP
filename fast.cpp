@@ -1,68 +1,48 @@
-#include <iostream>
-#include <vector>
-#include <cstring>
+#include <bits/stdc++.h>
 using namespace std;
-
-bool dfs(int node, int color, vector<vector<int>> &adj, vector<bool> &vis, vector<int> &c)
-{
-    vis[node] = true;
-    c[node] = color;
-
-    for (int neighbor : adj[node])
-    {
-        if (!vis[neighbor])
-        {
-            if (!dfs(neighbor, color ^ 1, adj, vis, c))
-            {
-                return false;
-            }
-        }
-        else if (c[neighbor] == c[node])
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
+#define INF 1e15
 
 int main()
 {
-    int n, m;
-    cin >> n >> m;
+    ios::sync_with_stdio(false);
+    cin.tie(0);
 
-    vector<vector<int>> adj(n + 1);
+    int n, m, q;
+    cin >> n >> m >> q;
+
+    vector<vector<long long>> dp(n + 1, vector<long long>(n + 1, INF));
+
+    for (int i = 1; i <= n; i++)
+    {
+        dp[i][i] = 0;
+    }
+
     for (int i = 0; i < m; i++)
     {
         int a, b;
-        cin >> a >> b;
-        adj[a].push_back(b);
-        adj[b].push_back(a);
+        long long c;
+        cin >> a >> b >> c;
+        dp[a][b] = min(dp[a][b], c);
+        dp[b][a] = min(dp[b][a], c);
     }
 
-    vector<bool> vis(n + 1, false);
-    vector<int> c(n + 1, -1);
-
-    bool isBipartite = true;
-    for (int i = 1; i <= n; i++)
-    {
-        if (!vis[i])
-        {
-            isBipartite &= dfs(i, 0, adj, vis, c);
-        }
-    }
-
-    if (!isBipartite)
-    {
-        cout << "IMPOSSIBLE" << endl;
-    }
-    else
+    // Floyd-Warshall Algorithm
+    for (int k = 1; k <= n; k++)
     {
         for (int i = 1; i <= n; i++)
         {
-            cout << (c[i] + 1) << " ";
+            for (int j = 1; j <= n; j++)
+            {
+                dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j]);
+            }
         }
-        cout << endl;
+    }
+
+    while (q--)
+    {
+        int x, y;
+        cin >> x >> y;
+        cout << (dp[x][y] == INF ? -1 : dp[x][y]) << '\n';
     }
 
     return 0;
