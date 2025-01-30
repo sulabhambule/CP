@@ -3,6 +3,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Simple",
+      "request": "launch",
+      "mainClass": "Simple",
+      "projectName": "cp VS_fdde75b5"
+    },
+    {
+      "type": "java",
       "name": "TLE2",
       "request": "launch",
       "mainClass": "TLE2",

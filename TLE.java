@@ -6,6 +6,7 @@ import static java.lang.Math.abs;
 import static java.lang.Math.ceilDiv;
 import java.io.*;
 import java.util.*;
+import javax.xml.namespace.QName;
 
 public class TLE {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
@@ -15,7 +16,6 @@ public class TLE {
 
     /*
      * @Sulabh Ambule
-     * - CF, 1300+ :(
      */
 
     public static void main(String[] Hi) throws IOException {
@@ -27,72 +27,24 @@ public class TLE {
     }
 
     static void Code_Subh() throws IOException {
-        int n = in.nextInt();
-        List<Long> a = new ArrayList<>();
-
-        for (int i = 0; i < n; i++) {
-            a.add(in.nextLong());
-        }
-        long ans = 0;
-        for (long num : a) {
-            ans += num;
-        }
-        List<Long> ls;
-
-        for (int j = 0;; j++) {
-            if (a.size() == 1) {
-                ans = Math.max(ans, a.get(0));
-                break;
-            }
-            long sum1 = 0;
-            ls = new ArrayList<>();
-
-            for (int i = 0; i < a.size() - 1; i++) {
-                ls.add(a.get(i + 1) - a.get(i));
-            }
-            List<Long> ls2 = new ArrayList<>();
-
-            for (long diff : ls) {
-                sum1 += diff;
-            }
-            if (sum1 < 0) {
-                for (int i = 0; i < ls.size(); i++) {
-                    ls.set(i, -ls.get(i));
-                }
-            }
-            sum1 = 0;
-            for (long num : ls) {
-                sum1 += num;
-            }
-            ans = Math.max(ans, sum1);
-
-            for (int i = 0; i < ls.size(); i++) {
-                ls2.add(ls.get(i));
-            }
-
-            ls2.reversed();
-
-            a = ls2;
-        }
-        out.println(ans);
+        
     }
-
     /*------------------------------------------------------------------------------------------------------------- */
 
-    static class Pair implements Comparable<Pair> {
-        long first;
-        int second;
+    // static class Pair implements Comparable<Pair> {
+    // long first;
+    // int second;
 
-        Pair(long f, int s) {
-            this.first = f;
-            this.second = s;
-        }
+    // Pair(long f, int s) {
+    // this.first = f;
+    // this.second = s;
+    // }
 
-        @Override
-        public int compareTo(Pair other) {
-            return (int) (this.first - other.first);
-        }
-    }
+    // @Override
+    // public int compareTo(Pair other) {
+    // return (int) (this.first - other.first);
+    // }
+    // }
 
     static class FastReader {
         BufferedReader br;
@@ -185,14 +137,14 @@ public class TLE {
     static int max_inArr(int[] arr) {
         int m = Integer.MIN_VALUE;
         for (int i : arr)
-            i = max(m, i);
+            m = max(m, i);
         return m;
     }
 
     static int min_inArr(int[] arr) {
         int m = Integer.MAX_VALUE;
         for (int i : arr)
-            i = min(m, i);
+            m = min(m, i);
         return m;
     }
 

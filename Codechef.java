@@ -9,7 +9,7 @@ class Codechef {
     static long MOD = (long) 1e9 + 7;
 
     public static void main(String[] args) throws java.lang.Exception {
-        int cf = in.nextInt();
+        int cf = 1;
         while (cf-- > 0) {
             Accepted();
         }
@@ -18,87 +18,8 @@ class Codechef {
     }
 
     private static void Accepted() {
-        int n = in.nextInt();
-        long k = in.nextLong();
-        long[] a = inputLongArr(n);
+        
 
-        long ans = 1;
-        int idx = -1;
-        for (int i = 0; i < n; i++) {
-            if (a[i] != 0) {
-                idx = i;
-                break;
-            }
-        }
-
-        if (idx == -1) {
-            for (int i = 0; i < n; i++) {
-                ans = (ans * k) % MOD;
-                k--;
-            }
-            out.println(ans);
-            return;
-        }
-        int count = 0;
-        for (long i : a) {
-            if (i == 0) {
-                count++;
-            }
-        }
-        if (n % 2 == 0) {
-            boolean f = true;
-            for (int i = 0; i <= n / 2; i++) {
-                if (a[i] != a[n - 1 - i]) {
-                    f = false;
-                }
-            }
-
-            if (f) {
-                long k1 = k;
-                for (int i = 0; i < n; i++) {
-                    if (a[i] == 0) {
-                        ans = (ans * k1) % MOD;
-                        k1--;
-                    }
-                }
-                out.println(ans);
-                return;
-            }
-            long k1 = k;
-            while (count-- > 0) {
-                ans = (ans * k1) % MOD;
-            }
-            out.println(ans);
-            return;
-
-        } else {
-            boolean f = true;
-            for (int i = 0; i < n / 2; i++) {
-                if (a[i] != a[n - i - 1]) {
-                    f = false;
-                    break;
-                }
-            }
-
-            if (f) {
-                long k1 = k;
-                for (int i = 0; i < n; i++) {
-                    if (a[i] == 0) {
-                        ans = (ans * k1) % MOD;
-                        k1--;
-                    }
-                }
-                out.println(ans);
-                return;
-            } else {
-                long k1 = k;
-                while (count-- > 0) {
-                    ans = (ans * k1) % MOD;
-                }
-                out.println(ans);
-                return;
-            }
-        }
     }
 
     class Pair {

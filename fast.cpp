@@ -1,49 +1,76 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+
 using namespace std;
-#define INF 1e15
+
+struct Pair
+{
+    int node;
+    long long weight;
+    Pair(int a, long long c) : node(a), weight(c) {}
+    bool operator>(const Pair &p) const
+    {
+        return weight > p.weight;
+    }
+};
+
+void dijstra(int start, const vector<vector<Pair>> &adj, vector<long long> &dist)
+{
+    priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
+    dist[start] = 0;
+    pq.push(Pair(start, 0));
+
+    while (!pq.empty())
+    {
+        Pair p = pq.top();
+        pq.pop();
+        int node = p.node;
+        long long edgeW = p.weight;
+
+        if (edgeW > dist[node])
+        {
+            continue;
+        }
+
+        for (const Pair &neighbour : adj[node])
+        {
+            int nextNode = neighbour.node;
+            long long weight = neighbour.weight;
+
+            if (weight + dist[node] < dist[nextNode])
+            {
+                dist[nextNode] = weight + dist[node];
+                pq.push(Pair(nextNode, dist[nextNode]));
+            }
+        }
+    }
+}
 
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
+    int n, m;
+    cin >> n >> m;
 
-    int n, m, q;
-    cin >> n >> m >> q;
-
-    vector<vector<long long>> dp(n + 1, vector<long long>(n + 1, INF));
-
-    for (int i = 1; i <= n; i++)
-    {
-        dp[i][i] = 0;
-    }
+    vector<vector<Pair>> adj(n + 1);
 
     for (int i = 0; i < m; i++)
     {
         int a, b;
         long long c;
         cin >> a >> b >> c;
-        dp[a][b] = min(dp[a][b], c);
-        dp[b][a] = min(dp[b][a], c);
+        adj[a].push_back(Pair(b, c));
     }
 
-    // Floyd-Warshall Algorithm
-    for (int k = 1; k <= n; k++)
-    {
-        for (int i = 1; i <= n; i++)
-        {
-            for (int j = 1; j <= n; j++)
-            {
-                dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j]);
-            }
-        }
-    }
+    vector<long long> dist(n + 1, LLONG_MAX);
+    dijstra(1, adj, dist);
 
-    while (q--)
+    for (int i = 1; i <= n; i++)
     {
-        int x, y;
-        cin >> x >> y;
-        cout << (dp[x][y] == INF ? -1 : dp[x][y]) << '\n';
+        cout << dist[i] << " ";
     }
+    cout << endl;
 
     return 0;
 }
