@@ -1,80 +1,56 @@
 import java.util.*;
 
 public class Simple {
-    public static void solve() {
+    static List<Long> ls;
+
+    public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        int n = in.nextInt();
-        int m = in.nextInt();
-        int k = in.nextInt();
-        int s = in.nextInt();
+        int t = in.nextInt();
+        while (t-- > 0) {
+            ls = new ArrayList<>();
+            long n = in.nextLong();
+            long x = in.nextLong();
+            long a = n - x;
+            HashSet<Long> set = new HashSet<>();
+            factor(a);
 
-        List<Integer>[] edges = new ArrayList[n];
-        List<Integer>[] thisType = new ArrayList[k];
-
-        for (int i = 0; i < n; i++)
-            edges[i] = new ArrayList<>();
-        for (int i = 0; i < k; i++)
-            thisType[i] = new ArrayList<>();
-
-        int[] type = new int[n];
-        for (int i = 0; i < n; i++) {
-            type[i] = in.nextInt() - 1;
-            thisType[type[i]].add(i);
-        }
-
-        for (int i = 0; i < m; i++) {
-            int a = in.nextInt() - 1, b = in.nextInt() - 1;
-            edges[a].add(b);
-            edges[b].add(a);
-        }
-
-        // BFS for each good type
-        List<Integer>[] ans = new ArrayList[n];
-        for (int i = 0; i < n; i++)
-            ans[i] = new ArrayList<>();
-
-        for (int good = 0; good < k; good++) {
-            Queue<Integer> queue = new LinkedList<>();
-            int[] level = new int[n];
-            boolean[] visited = new boolean[n];
-            Arrays.fill(level, Integer.MAX_VALUE);
-
-            for (int town : thisType[good]) {
-                queue.add(town);
-                level[town] = 0;
-                visited[town] = true;
-            }
-
-            while (!queue.isEmpty()) {
-                int top = queue.poll();
-                for (int neighbor : edges[top]) {
-                    if (!visited[neighbor]) {
-                        level[neighbor] = level[top] + 1;
-                        queue.add(neighbor);
-                        visited[neighbor] = true;
-                    }
+            for (long i : ls) {
+                if (i % 2 == 0) {
+                    set.add((i + 2) / 2);
                 }
             }
 
-            for (int i = 0; i < n; i++) {
-                ans[i].add(level[i]);
-            }
-        }
+            long ans = 0;
+            a = n + x - 2;
+            ls = new ArrayList<>();
 
-        // Compute final answer
-        for (int i = 0; i < n; i++) {
-            Collections.sort(ans[i]);
-            long totalCost = 0;
-            for (int j = 0; j < s; j++) {
-                totalCost += ans[i].get(j);
+            factor(a);
+            for (long i : ls) {
+                if (i % 2 == 0) {
+                    set.add((i + 2) / 2);
+                }
             }
-            System.out.print(totalCost + " ");
+
+            for (long i : set) {
+                if (i >= x) {
+                    ans++;
+                }
+            }
+
+            System.out.println(ans);
         }
-        System.out.println();
-        in.close();
     }
 
-    public static void main(String[] args) {
-        solve();
+    public static void factor(long n) {
+        for (int i = 1; i * i <= n; i++) {
+            if (n % i == 0) {
+                // i -> is the one factor
+                ls.add((long) i);
+                if (i != n / i) {
+                    // n / i -> is the other factor
+                    ls.add(n / i);
+                }
+            }
+        }
     }
 }

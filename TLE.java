@@ -1,12 +1,9 @@
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static java.util.Collections.max;
-import static java.util.Collections.min;
 import static java.lang.Math.abs;
 import static java.lang.Math.ceilDiv;
 import java.io.*;
 import java.util.*;
-import javax.xml.namespace.QName;
 
 public class TLE {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
