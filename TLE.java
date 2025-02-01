@@ -8,7 +8,6 @@ import java.util.*;
 public class TLE {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
     static FASTIO in = new FASTIO();
-    static final long INF = Long.MAX_VALUE / 2;
     // static final int MOD = (int) 1e9 + 7;
     static final int MOD = 998244353;
 
@@ -22,80 +21,11 @@ public class TLE {
 
     static void Subh() throws IOException {
         int n = in.nextInt();
-        int m = in.nextInt();
-        List<List<int[]>> adj = new ArrayList<>();
+        int[] a = new int[n];
         for (int i = 0; i < n; i++) {
-            adj.add(new ArrayList<>());
+            a[i] = in.nextInt();
         }
 
-        for (int i = 0; i < m; i++) {
-            int u = in.nextInt() - 1;
-            int v = in.nextInt() - 1;
-            int w = in.nextInt();
-            adj.get(u).add(new int[] { v, w });
-            adj.get(v).add(new int[] { u, w });
-        }
-
-        int[] bikes = new int[n];
-        for (int i = 0; i < n; i++) {
-            bikes[i] = in.nextInt();
-        }
-
-        long[][] dp = new long[n][1001];
-        for (int i = 0; i < n; i++) {
-            Arrays.fill(dp[i], INF);
-        }
-
-        PriorityQueue<Tuple> pq = new PriorityQueue<>();
-        pq.add(new Tuple(0, 0, bikes[0]));
-        dp[0][bikes[0]] = 0;
-
-        while (!pq.isEmpty()) {
-            Tuple t = pq.poll();
-            int currNode = t.node;
-            long dist = t.cost;
-            int bike = t.bikeNum;
-
-            if (dist > dp[currNode][bike])
-                continue;
-
-            for (int[] neighbour : adj.get(currNode)) {
-                int adjN = neighbour[0];
-                int len = neighbour[1];
-
-                int newBike = min(bike, bikes[adjN]);
-                long newDist = dist + (long) (bike * len);
-
-                if (newDist < dp[adjN][newBike]) {
-                    dp[adjN][newBike] = newDist;
-                    pq.add(new Tuple(adjN, newDist, newBike));
-                }
-            }
-        }
-
-        long minCost = INF;
-        for (int i = 0; i < 1001; i++) {
-            minCost = min(minCost, dp[n - 1][i]);
-        }
-
-        out.println(minCost == INF ? -1 : minCost);
-    }
-
-    static class Tuple implements Comparable<Tuple> {
-        int node;
-        long cost;
-        int bikeNum;
-
-        public Tuple(int node, long cost, int bikeNum) {
-            this.node = node;
-            this.cost = cost;
-            this.bikeNum = bikeNum;
-        }
-
-        @Override
-        public int compareTo(Tuple o) {
-            return Long.compare(this.cost, o.cost);
-        }
     }
     /*------------------------------------------------------------------------------------------------------------- */
 

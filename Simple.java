@@ -3,40 +3,40 @@ import java.util.*;
 public class Simple {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        int T = in.nextInt();
-        while (T-- > 0) {
+        int t = in.nextInt();
+        while (t-- > 0) {
             int n = in.nextInt();
-            int k = in.nextInt();
-            int m = in.nextInt();
-            String s = in.next();
-            int[] count = new int[k];
-            int block = 0;
-            HashSet<Character> set = new HashSet<>();
-            String ans = "";
-            for (int i = 0; i < m; i++) {
-                char ch = s.charAt(i);
-                count[ch - 'a']++;
-                set.add(ch);
-                if (set.size() == k) {
-                    block++;
-                    ans += ch;
-                    set = new HashSet<>();
+            long[] a = new long[n];
+            long max = 0, min = Long.MAX_VALUE;
+            for (int i = 0; i < n; i++) {
+                a[i] = in.nextLong();
+                max = Math.max(max, a[i]);
+                min = Math.min(min, a[i]);
+            }
+            int count = 0;
+            List<Integer> ls = new ArrayList<>();
+            while (max != min) {
+                count++;
+                if (min % 2 == 0) {
+                    max /= 2;
+                    min /= 2;
+                    ls.add(0);
+                } else {
+                    max = (max + 1) / 2;
+                    min = (min + 1) / 2;
+                    ls.add(1);
                 }
             }
-            if (ans.length() < n) {
-                System.out.println("NO");
-                for (int i = 0; i < k; i++) {
-                    char ch = (char) (i + 'a');
-                    if (!set.contains(ch)) {
-                        while (ans.length() < n) {
-                            ans += ch;
-                        }
-                        break;
-                    }
-                }
-                System.out.println(ans);
+            if (n == 1) {
+                System.out.println(0);
+            } else if (count > n) {
+                System.out.println(count);
             } else {
-                System.out.println("YES");
+                System.out.println(count);
+                for (int i : ls) {
+                    System.out.print(i + " ");
+                }
+                System.out.println();
             }
         }
     }
