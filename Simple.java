@@ -1,55 +1,42 @@
 import java.util.*;
 
 public class Simple {
-    static List<Long> ls;
-
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        int t = in.nextInt();
-        while (t-- > 0) {
-            ls = new ArrayList<>();
-            long n = in.nextLong();
-            long x = in.nextLong();
-            long a = n - x;
-            HashSet<Long> set = new HashSet<>();
-            factor(a);
-
-            for (long i : ls) {
-                if (i % 2 == 0) {
-                    set.add((i + 2) / 2);
+        int T = in.nextInt();
+        while (T-- > 0) {
+            int n = in.nextInt();
+            int k = in.nextInt();
+            int m = in.nextInt();
+            String s = in.next();
+            int[] count = new int[k];
+            int block = 0;
+            HashSet<Character> set = new HashSet<>();
+            String ans = "";
+            for (int i = 0; i < m; i++) {
+                char ch = s.charAt(i);
+                count[ch - 'a']++;
+                set.add(ch);
+                if (set.size() == k) {
+                    block++;
+                    ans += ch;
+                    set = new HashSet<>();
                 }
             }
-
-            long ans = 0;
-            a = n + x - 2;
-            ls = new ArrayList<>();
-
-            factor(a);
-            for (long i : ls) {
-                if (i % 2 == 0) {
-                    set.add((i + 2) / 2);
+            if (ans.length() < n) {
+                System.out.println("NO");
+                for (int i = 0; i < k; i++) {
+                    char ch = (char) (i + 'a');
+                    if (!set.contains(ch)) {
+                        while (ans.length() < n) {
+                            ans += ch;
+                        }
+                        break;
+                    }
                 }
-            }
-
-            for (long i : set) {
-                if (i >= x) {
-                    ans++;
-                }
-            }
-
-            System.out.println(ans);
-        }
-    }
-
-    public static void factor(long n) {
-        for (int i = 1; i * i <= n; i++) {
-            if (n % i == 0) {
-                // i -> is the one factor
-                ls.add((long) i);
-                if (i != n / i) {
-                    // n / i -> is the other factor
-                    ls.add(n / i);
-                }
+                System.out.println(ans);
+            } else {
+                System.out.println("YES");
             }
         }
     }

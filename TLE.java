@@ -7,47 +7,118 @@ import java.util.*;
 
 public class TLE {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
-    static FastReader in = new FastReader();
+    static FASTIO in = new FASTIO();
+    static final long INF = Long.MAX_VALUE / 2;
     // static final int MOD = (int) 1e9 + 7;
     static final int MOD = 998244353;
 
-    /*
-     * @Sulabh Ambule
-     */
-
     public static void main(String[] Hi) throws IOException {
-        int T = in.nextInt();
-        while (T-- > 0) {
-            Code_Subh();
+        int cp = in.nextInt();
+        while (cp-- > 0) {
+            Subh();
         }
         out.close();
     }
 
-    static void Code_Subh() throws IOException {
-        
+    static void Subh() throws IOException {
+        int n = in.nextInt();
+        int m = in.nextInt();
+        List<List<int[]>> adj = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        for (int i = 0; i < m; i++) {
+            int u = in.nextInt() - 1;
+            int v = in.nextInt() - 1;
+            int w = in.nextInt();
+            adj.get(u).add(new int[] { v, w });
+            adj.get(v).add(new int[] { u, w });
+        }
+
+        int[] bikes = new int[n];
+        for (int i = 0; i < n; i++) {
+            bikes[i] = in.nextInt();
+        }
+
+        long[][] dp = new long[n][1001];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dp[i], INF);
+        }
+
+        PriorityQueue<Tuple> pq = new PriorityQueue<>();
+        pq.add(new Tuple(0, 0, bikes[0]));
+        dp[0][bikes[0]] = 0;
+
+        while (!pq.isEmpty()) {
+            Tuple t = pq.poll();
+            int currNode = t.node;
+            long dist = t.cost;
+            int bike = t.bikeNum;
+
+            if (dist > dp[currNode][bike])
+                continue;
+
+            for (int[] neighbour : adj.get(currNode)) {
+                int adjN = neighbour[0];
+                int len = neighbour[1];
+
+                int newBike = min(bike, bikes[adjN]);
+                long newDist = dist + (long) (bike * len);
+
+                if (newDist < dp[adjN][newBike]) {
+                    dp[adjN][newBike] = newDist;
+                    pq.add(new Tuple(adjN, newDist, newBike));
+                }
+            }
+        }
+
+        long minCost = INF;
+        for (int i = 0; i < 1001; i++) {
+            minCost = min(minCost, dp[n - 1][i]);
+        }
+
+        out.println(minCost == INF ? -1 : minCost);
+    }
+
+    static class Tuple implements Comparable<Tuple> {
+        int node;
+        long cost;
+        int bikeNum;
+
+        public Tuple(int node, long cost, int bikeNum) {
+            this.node = node;
+            this.cost = cost;
+            this.bikeNum = bikeNum;
+        }
+
+        @Override
+        public int compareTo(Tuple o) {
+            return Long.compare(this.cost, o.cost);
+        }
     }
     /*------------------------------------------------------------------------------------------------------------- */
 
-    // static class Pair implements Comparable<Pair> {
-    // long first;
-    // int second;
+    static class Pair implements Comparable<Pair> {
+        long first;
+        int second;
 
-    // Pair(long f, int s) {
-    // this.first = f;
-    // this.second = s;
-    // }
+        Pair(long f, int s) {
+            this.first = f;
+            this.second = s;
+        }
 
-    // @Override
-    // public int compareTo(Pair other) {
-    // return (int) (this.first - other.first);
-    // }
-    // }
+        @Override
+        public int compareTo(Pair other) {
+            return (int) (this.first - other.first);
+        }
+    }
 
-    static class FastReader {
+    static class FASTIO {
         BufferedReader br;
         StringTokenizer st;
 
-        public FastReader() {
+        public FASTIO() {
             br = new BufferedReader(new InputStreamReader(System.in));
         }
 
@@ -148,13 +219,6 @@ public class TLE {
     static int sumOfArr(int[] a) {
         int s = 0;
         for (int i : a)
-            s += i;
-        return s;
-    }
-
-    static long sumOfArr(long[] a) {
-        long s = 0;
-        for (long i : a)
             s += i;
         return s;
     }
