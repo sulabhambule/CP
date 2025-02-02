@@ -13,19 +13,15 @@ public class TLE {
     public static void main(String[] Hi) throws IOException {
         int cp = in.nextInt();
         while (cp-- > 0) {
-            Subh();
+            solve();
         }
         out.close();
     }
 
-    /*
-     * @Linear :(
-     */
-
-    static void Subh() throws IOException {
-
+    static void solve() {
+        
     }
-    /*------------------------------------------------------------------------------------------------------------- */
+    /*------------------------------------------------------------------------------------------------------*/
 
     static class Pair implements Comparable<Pair> {
         long first;
