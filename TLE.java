@@ -1,15 +1,14 @@
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
-import static java.lang.Math.ceilDiv;
 import java.io.*;
 import java.util.*;
 
 public class TLE {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
     static FASTIO in = new FASTIO();
-    // static final int MOD = (int) 1e9 + 7;
-    static final int MOD = 998244353;
+    static final int MOD = (int) 1e9 + 7;
+    // static final int MOD = 998244353;
 
     public static void main(String[] Hi) throws IOException {
         int cp = in.nextInt();
@@ -19,12 +18,11 @@ public class TLE {
         out.close();
     }
 
+    /*
+     * @Linear :(
+     */
+
     static void Subh() throws IOException {
-        int n = in.nextInt();
-        int[] a = new int[n];
-        for (int i = 0; i < n; i++) {
-            a[i] = in.nextInt();
-        }
 
     }
     /*------------------------------------------------------------------------------------------------------------- */

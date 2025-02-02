@@ -645,4 +645,131 @@ public class Utility {
         dfs(neighbour, edges, node, level);
   }
 
+  /*--------------------------------------------------------------------------------------------- */
+  // GRAPH
+  static class Pair implements Comparable<Pair> {
+    int node, weight;
+
+    Pair(int node, int weight) {
+      this.node = node;
+      this.weight = weight;
+    }
+
+    public int compareTo(Pair other) {
+      return this.weight - other.weight;
+    }
+  }
+
+  static int[] dijkstra(List<List<Pair>> graph, int src, int n) {
+    PriorityQueue<Pair> pq = new PriorityQueue<>();
+    int[] dist = new int[n];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+    dist[src] = 0;
+    pq.add(new Pair(src, 0));
+
+    while (!pq.isEmpty()) {
+      Pair p = pq.poll();
+      int u = p.node;
+      for (Pair neighbor : graph.get(u)) {
+        int v = neighbor.node, weight = neighbor.weight;
+        if (dist[u] + weight < dist[v]) {
+          dist[v] = dist[u] + weight;
+          pq.add(new Pair(v, dist[v]));
+        }
+      }
+    }
+    return dist;
+  }
+
+  static void bfs(List<List<Integer>> graph, int start) {
+    int n = graph.size();
+    boolean[] vis = new boolean[n];
+    Queue<Integer> q = new LinkedList<>();
+    q.add(start);
+    vis[start] = true;
+
+    while (!q.isEmpty()) {
+      int node = q.poll();
+      // System.out.print(node + " ");
+      for (int neighbor : graph.get(node)) {
+        if (!vis[neighbor]) {
+          vis[neighbor] = true;
+          q.add(neighbor);
+        }
+      }
+    }
+  }
+
+  static void dfs(List<List<Integer>> graph, int node, boolean[] vis) {
+    vis[node] = true;
+    System.out.print(node + " ");
+    for (int neighbor : graph.get(node)) {
+      if (!vis[neighbor]) {
+        dfs(graph, neighbor, vis);
+      }
+    }
+  }
+
+  // static final int INF = 1_000_000_000;
+  static void floydWarshall(int[][] dist, int n) {
+    for (int k = 0; k < n; k++) {
+      for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+          if (dist[i][k] < INF && dist[k][j] < INF)
+            dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
+        }
+      }
+    }
+  }
+
+}
+
+/*---------------------------------------------------------------------------------- */
+// GRAPH
+
+// DSU (both by size and by rank)
+class DSU {
+  private int[] parent, rank, size;
+
+  public DSU(int n) {
+    parent = new int[n];
+    rank = new int[n];
+    size = new int[n]; //
+    for (int i = 0; i < n; i++) {
+      parent[i] = i;
+      size[i] = 1;//
+    }
+  }
+
+  public int find(int x) {
+    if (parent[x] != x) {
+      parent[x] = find(parent[x]);
+    }
+    return parent[x];
+  }
+
+  public boolean union(int u, int v) {
+    int rootU = find(u);
+    int rootV = find(v);
+    if (rootU == rootV)
+      return false;
+
+    if (rank[rootU] > rank[rootV]) {
+      parent[rootV] = rootU;
+      size[rootU] += size[rootV];//
+    } else if (rank[rootU] < rank[rootV]) {
+      parent[rootU] = rootV;
+      size[rootV] += size[rootU];//
+    } else {
+      parent[rootV] = rootU;
+      rank[rootU]++;
+      size[rootU] += size[rootV];//
+    }
+    return true;
+  }
+
+  //
+  public int getSize(int x) {
+    return size[find(x)];
+  }
 }
