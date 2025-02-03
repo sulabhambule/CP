@@ -28,7 +28,7 @@ public class TLE {
             int p = 0;
             for (int j = n - 1; j >= 0; j--) {
                 if (a[i][j] != 1) {
-                    break;  
+                    break;
                 }
                 p++;
             }
@@ -46,7 +46,12 @@ public class TLE {
         }
         out.println(min(p, n));
     }
-    /*------------------------------------------------------------------------------------------------------*/
+
+    /*
+     * Read the question carefully, Integer Overflow, Think in terms of Bit.
+     */
+
+    /*-----------------------------------------------------------------------------------------------------------------------*/
 
     static class Pair implements Comparable<Pair> {
         long first;
