@@ -1,5 +1,7 @@
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.util.Collections.max;
+import static java.util.Collections.min;
 import static java.lang.Math.abs;
 import java.io.*;
 import java.util.*;
@@ -19,7 +21,30 @@ public class TLE {
     }
 
     static void solve() {
-        
+        int n = in.nextInt();
+        long[][] a = inputLongArr(n, n);
+        ArrayList<Integer> suff = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int p = 0;
+            for (int j = n - 1; j >= 0; j--) {
+                if (a[i][j] != 1) {
+                    break;  
+                }
+                p++;
+            }
+            if (p > 0) {
+                suff.add(p);
+            }
+        }
+        Collections.sort(suff);
+
+        int p = 1;
+        for (int i : suff) {
+            if (i >= p) {
+                p++;
+            }
+        }
+        out.println(min(p, n));
     }
     /*------------------------------------------------------------------------------------------------------*/
 
