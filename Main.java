@@ -1,19 +1,9 @@
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-import static java.lang.Math.abs;
-import static java.lang.Math.ceilDiv;
 import java.io.*;
 import java.util.*;
 
-/*
- * Read the question carefully, Integer Overflow, Think in terms of Bit.
- */
 public class Main {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
     static FastReader in = new FastReader();
-    // static final int MOD = (int) 1e9 + 7;
-    static final int MOD = 998244353;
-    static List<List<Integer>> adj;
 
     public static void main(String[] Hi) {
         int T = in.nextInt();
@@ -24,61 +14,61 @@ public class Main {
     }
 
     static void solve() {
-
-    }
-
-    /*-------------------------------------------------------------------------------------------------------------- */
-
-    class Pair {
-        int first, second;
-
-        Pair(int f, int s) {
-            first = f;
-            second = s;
+        String s = in.next();
+        int n = s.length();
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = s.charAt(i) - '0';
         }
-    }
+        int[] sortedArr = arr.clone();
+        Arrays.sort(sortedArr);
+        List<Integer> ans = new ArrayList<>();
 
-    static long gcd(long a, long b) {
-        if (a == 0)
-            return b;
-        return gcd(b % a, a);
-    }
-
-    static long lcm(long a, long b) {
-        return Math.abs(a * b) / gcd(a, b);
-    }
-
-    static void reverse(int[] a, int l, int r) {
-        while (l < r) {
-            int t = a[l];
-            a[l] = a[r];
-            a[r] = t;
-            l++;
-            r--;
-        }
-    }
-
-    static void reverse(long[] a, int l, int r) {
-        while (l < r) {
-            long t = a[l];
-            a[l] = a[r];
-            a[r] = t;
-            l++;
-            r--;
-        }
-    }
-
-    static long modPow(long b, long e, long mod) {
-        long r = 1;
-        b = b % mod;
-        while (e > 0) {
-            if ((e & 1) == 1) {
-                r = (r * b) % mod;
+        int num = sortedArr[0];
+        int idx = -1;
+        for (int ii = 0; ii < n; ii++) {
+            if (arr[ii] == num) {
+                idx = ii;
             }
-            b = (b * b) % mod;
-            e >>= 1;
         }
-        return r;
+        List<Integer> ls = new ArrayList<>();
+        for (int j = 0; j <= idx; j++) {
+            if (arr[j] != num) {
+                ls.add(Math.min(9, arr[j] + 1));
+            } else {
+                ans.add(num);
+            }
+        }
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int jj = idx + 1; jj < n; jj++) {
+            // set.add(arr[jj]);
+            map.put(arr[jj], jj);
+        }
+        idx++;
+        int nn = num + 1;
+        while (nn <= 9) {
+            if (map.containsKey(nn)) {
+                int idx22 = map.get(nn);
+                if (idx22 >= idx) {
+                    while (idx <= idx22) {
+                        if (arr[idx] == nn && nn != 9) {
+                            ls.add(nn);
+                        } else {
+                            ls.add(Math.min(9, arr[idx] + 1));
+                        }
+                        idx++;
+                    }
+                }
+                nn++;
+            } else {
+                nn++;
+            }
+        }
+        Collections.sort(ls);
+        ans.addAll(ls);
+        for (int val : ans)
+            System.out.print(val);
+        System.out.println();
     }
 
     static class FastReader {
@@ -103,106 +93,5 @@ public class Main {
         int nextInt() {
             return Integer.parseInt(next());
         }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-    }
-
-    static void sort(int[] a) {
-        ArrayList<Integer> ls = new ArrayList<Integer>();
-        for (int x : a)
-            ls.add(x);
-        Collections.sort(ls);
-        for (int i = 0; i < a.length; i++)
-            a[i] = ls.get(i);
-    }
-
-    static void print(int[][] arr) {
-        for (int[] a : arr) {
-            for (int i : a)
-                out.print(i + " ");
-            out.println();
-        }
-    }
-
-    static void print(long[][] arr) {
-        for (long[] a : arr) {
-            for (long i : a)
-                out.print(i + " ");
-            out.println();
-        }
-    }
-
-    static void print(int[] a) {
-        for (int i : a)
-            out.print(i + " ");
-        out.println();
-    }
-
-    static void print(char[] a) {
-        for (char i : a)
-            out.print(i + " ");
-        out.println();
-    }
-
-    static void print(long[] a) {
-        for (long i : a)
-            out.print(i + " ");
-        out.println();
-    }
-
-    static <T extends Number> void print(ArrayList<T> ls) {
-        for (T i : ls)
-            out.print(i + " ");
-        out.println();
-    }
-
-    static int[] inputIntArr(int n) {
-        int[] a = new int[n];
-        for (int i = 0; i < n; i++)
-            a[i] = in.nextInt();
-        return a;
-    }
-
-    static long[] inputLongArr(int n) {
-        long[] a = new long[n];
-        for (int i = 0; i < n; i++)
-            a[i] = in.nextLong();
-        return a;
-    }
-
-    static int[][] inputIntArr(int n, int m) {
-        int[][] a = new int[n][m];
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < m; j++)
-                a[i][j] = in.nextInt();
-        return a;
-    }
-
-    static long[][] inputLongArr(int n, int m) {
-        long[][] a = new long[n][m];
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < m; j++)
-                a[i][j] = in.nextLong();
-        return a;
-    }
-
-    static ArrayList<Integer> inputIntList(int n) {
-        ArrayList<Integer> ls = new ArrayList<>();
-        for (int i = 0; i < n; i++)
-            ls.add(in.nextInt());
-        return ls;
-    }
-
-    static ArrayList<Long> inputLongList(int n) {
-        ArrayList<Long> ls = new ArrayList<>();
-        for (int i = 0; i < n; i++)
-            ls.add(in.nextLong());
-        return ls;
     }
 }

@@ -1,72 +1,87 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+
 using namespace std;
 
-int n;
-vector<vector<int>> graph;
+typedef pair<long long, int> pii;
 
-int bfs(int start)
+const long long INF = 1e12;
+
+void dijkstra(int start, vector<long long> &dist, const vector<vector<pair<int, long long>>> &adj)
 {
-    vector<int> visited(n + 1, 0);
-    queue<int> q;
-    q.push(start);
-    visited[start] = 1;
-    int level = 0;
+    dist[start] = 0;
+    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    pq.push({0, start});
 
-    while (!q.empty())
+    while (!pq.empty())
     {
-        int size = q.size();
-        for (int i = 0; i < size; i++)
-        {
-            int node = q.front();
-            q.pop();
+        long long distance = pq.top().first;
+        int node = pq.top().second;
+        pq.pop();
 
-            for (int neighbor : graph[node])
+        if (distance > dist[node])
+        {
+            continue;
+        }
+
+        for (const auto &edge : adj[node])
+        {
+            int adjNode = edge.first;
+            long long edgeWeight = edge.second;
+
+            if (dist[node] + edgeWeight < dist[adjNode])
             {
-                if (!visited[neighbor])
-                {
-                    visited[neighbor] = 1;
-                    q.push(neighbor);
-                }
-                else if (neighbor == start)
-                {
-                    return level + 1;
-                }
+                dist[adjNode] = dist[node] + edgeWeight;
+                pq.push({dist[adjNode], adjNode});
             }
         }
-        level++;
     }
-    return -1;
 }
 
 int main()
 {
     ios::sync_with_stdio(false);
-    cin.tie(0);
+    cin.tie(nullptr);
 
-    cin >> n;
-    graph.resize(n + 1);
+    int n, m;
+    cin >> n >> m;
 
+    vector<vector<pair<int, long long>>> adj(n + 1);
+
+    // Read the edges
+    for (int i = 0; i < m; i++)
+    {
+        long long a, b, c;
+        cin >> a >> b >> c;
+        adj[a].push_back({b, c});
+        adj[b].push_back({a, c});
+    }
+
+    // Initialize distances for both directions
+    vector<long long> dist1(n + 1, INF);
+    vector<long long> dist2(n + 1, INF);
+
+    // Run Dijkstra's algorithm from node 1 and node n
+    dijkstra(1, dist1, adj);
+    dijkstra(n, dist2, adj);
+
+    long long ans = INF;
+
+    // Checking each edge for the minimum distance with coupon use
     for (int i = 1; i <= n; i++)
     {
-        for (int j = 1; j <= n; j++)
+        for (const auto &adJ : adj[i])
         {
-            int x;
-            cin >> x;
-            if (x == 1)
-            {
-                graph[i].push_back(j);
-            }
+            int node = adJ.first;
+            long long wght = adJ.second;
+            ans = min(ans, dist1[i] + (wght / 2) + dist2[node]);
+            ans = min(ans, dist1[node] + (wght / 2) + dist2[i]);
         }
     }
 
-    for (int i = 1; i <= n; i++)
-    {
-        int ans = bfs(i);
-        if (ans == -1)
-            cout << "NO WAY\n";
-        else
-            cout << ans << "\n";
-    }
+    cout << ans << endl;
 
     return 0;
 }

@@ -22,34 +22,44 @@ public class TLE {
 
     static void solve() {
         int n = in.nextInt();
-        long[][] a = inputLongArr(n, n);
-        ArrayList<Integer> suff = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            int p = 0;
-            for (int j = n - 1; j >= 0; j--) {
-                if (a[i][j] != 1) {
-                    break;
-                }
-                p++;
-            }
-            if (p > 0) {
-                suff.add(p);
-            }
-        }
-        Collections.sort(suff);
+        long[][] x = new long[n][2];
 
-        int p = 1;
-        for (int i : suff) {
-            if (i >= p) {
-                p++;
+        for (int i = 0; i < n; i++) {
+            x[i][0] = in.nextLong();
+            x[i][1] = i;
+        }
+
+        long[] t = inputLongArr(n);
+
+        Arrays.sort(x, Comparator.comparingLong(a -> a[0]));
+
+        double low = x[0][0], high = x[n - 1][0];
+        double ans = -1, minTime = Double.MAX_VALUE;
+
+        while (high - low > 1e-7) {
+            double mid = (high + low) / 2.0;
+            double maxT = fun(mid, t, x);
+
+            if (maxT < minTime) {
+                minTime = maxT;
+                ans = mid;
+                high = mid - 1e-7;
+            } else {
+                low = mid + 1e-7;
             }
         }
-        out.println(min(p, n));
+
+        System.out.printf("%.6f\n", max(0, ans));
     }
 
-    /*
-     * Read the question carefully, Integer Overflow, Think in terms of Bit.
-     */
+    static double fun(double x0, long[] t, long[][] x) {
+        int n = t.length;
+        double maxT = 0;
+        for (int i = 0; i < n; i++) {
+            maxT = Math.max(maxT, t[i] + Math.abs(x[i][0] - x0));
+        }
+        return maxT;
+    }
 
     /*-----------------------------------------------------------------------------------------------------------------------*/
 
@@ -219,6 +229,22 @@ public class TLE {
         Collections.sort(ls);
         for (int i = 0; i < a.length; i++)
             a[i] = ls.get(i);
+    }
+
+    static void print(int x) {
+        out.print(x);
+    }
+
+    static void println(int x) {
+        out.println(x);
+    }
+
+    static void print(long x) {
+        out.print(x);
+    }
+
+    static void println(long x) {
+        out.println(x);
     }
 
     static void print(int[][] arr) {
