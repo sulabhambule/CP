@@ -2,86 +2,90 @@
 #include <vector>
 #include <queue>
 #include <climits>
+#include <tuple>
+#include <algorithm>
 
 using namespace std;
 
-typedef pair<long long, int> pii;
+const long long INF = LLONG_MAX;
 
-const long long INF = 1e12;
-
-void dijkstra(int start, vector<long long> &dist, const vector<vector<pair<int, long long>>> &adj)
+struct Edge
 {
+    int to;
+    long long weight;
+};
+
+vector<long long> dijkstra(int start, int n, const vector<vector<Edge>> &adj)
+{
+    vector<long long> dist(n + 1, INF);
     dist[start] = 0;
-    priority_queue<pii, vector<pii>, greater<pii>> pq;
+
+    priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
     pq.push({0, start});
 
     while (!pq.empty())
     {
-        long long distance = pq.top().first;
+        long long d = pq.top().first;
         int node = pq.top().second;
         pq.pop();
 
-        if (distance > dist[node])
-        {
+        if (d > dist[node])
             continue;
-        }
 
         for (const auto &edge : adj[node])
         {
-            int adjNode = edge.first;
-            long long edgeWeight = edge.second;
+            int next = edge.to;
+            long long weight = edge.weight;
 
-            if (dist[node] + edgeWeight < dist[adjNode])
+            if (dist[node] + weight < dist[next])
             {
-                dist[adjNode] = dist[node] + edgeWeight;
-                pq.push({dist[adjNode], adjNode});
+                dist[next] = dist[node] + weight;
+                pq.push({dist[next], next});
             }
         }
     }
+
+    return dist;
 }
 
 int main()
 {
     ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    cin.tie(0);
 
     int n, m;
     cin >> n >> m;
 
-    vector<vector<pair<int, long long>>> adj(n + 1);
+    vector<vector<Edge>> adj(n + 1), revAdj(n + 1);
+    vector<tuple<int, int, long long>> edges;
 
-    // Read the edges
-    for (int i = 0; i < m; i++)
+    for (int i = 0; i < m; ++i)
     {
-        long long a, b, c;
+        int a, b;
+        long long c;
         cin >> a >> b >> c;
         adj[a].push_back({b, c});
-        adj[b].push_back({a, c});
+        revAdj[b].push_back({a, c});
+        edges.push_back(make_tuple(a, b, c)); // Using make_tuple here
     }
 
-    // Initialize distances for both directions
-    vector<long long> dist1(n + 1, INF);
-    vector<long long> dist2(n + 1, INF);
+    vector<long long> dist1 = dijkstra(1, n, adj);
+    vector<long long> distN = dijkstra(n, n, revAdj);
 
-    // Run Dijkstra's algorithm from node 1 and node n
-    dijkstra(1, dist1, adj);
-    dijkstra(n, dist2, adj);
+    long long minCost = dist1[n];
 
-    long long ans = INF;
-
-    // Checking each edge for the minimum distance with coupon use
-    for (int i = 1; i <= n; i++)
+    for (const auto &edge : edges)
     {
-        for (const auto &adJ : adj[i])
+        int u = get<0>(edge), v = get<1>(edge);
+        long long w = get<2>(edge);
+
+        if (dist1[u] != INF && distN[v] != INF)
         {
-            int node = adJ.first;
-            long long wght = adJ.second;
-            ans = min(ans, dist1[i] + (wght / 2) + dist2[node]);
-            ans = min(ans, dist1[node] + (wght / 2) + dist2[i]);
+            minCost = min(minCost, dist1[u] + (w / 2) + distN[v]);
         }
     }
 
-    cout << ans << endl;
+    cout << minCost << "\n";
 
     return 0;
 }
