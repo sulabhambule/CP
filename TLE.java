@@ -1,7 +1,5 @@
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static java.util.Collections.max;
-import static java.util.Collections.min;
 import static java.lang.Math.abs;
 import java.io.*;
 import java.util.*;
@@ -22,49 +20,8 @@ public class TLE {
 
     static void solve() {
         int n = in.nextInt();
-        int[] a = new int[n];
-        for (int i = 0; i < n; i++) {
-            a[i] = in.nextInt();
-        }
-        int low = 1, high = n;
-        int ans = 0;
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            if (isPossible(mid, a)) {
-                ans = mid;
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
-        }
-        System.out.println(ans);
-    }
-
-    private static boolean isPossible(int mid, int[] a) {
-        TreeMap<Integer, Integer> set = new TreeMap<>();
-        for (int x : a) {
-            set.put(x, set.getOrDefault(x, 0) + 1);
-        }
-        for (int i = 0; i < mid; i++) {
-            Integer lower = set.floorKey(mid - i);
-            if (lower == null || set.get(lower) == 0) {
-                return false;
-            }
-            set.put(lower, set.get(lower) - 1);
-            if (set.get(lower) == 0) {
-                set.remove(lower);
-            }
-            if (!set.isEmpty()) {
-                int smal = set.firstKey();
-                set.put(smal, set.get(smal) - 1);
-                if (set.get(smal) == 0) {
-                    set.remove(smal);
-                }
-
-                set.put(smal + (mid - i), set.getOrDefault(smal + (mid - i), 0) + 1);
-            }
-        }
-        return true;
+        int m = in.nextInt();
+        
     }
     /*-----------------------------------------------------------------------------------------------------------------------*/
 
@@ -219,7 +176,7 @@ public class TLE {
             a[i] = ls.get(i);
     }
 
-    static <T extends Comparable<T>> void sort(ArrayList<T> list) {
+    static <T extends Comparable<T>> void sort_(ArrayList<T> list) {
         Collections.sort(list);
     }
 
@@ -249,6 +206,14 @@ public class TLE {
     }
 
     static void println(long x) {
+        out.println(x);
+    }
+
+    static void print(char x) {
+        out.print(x);
+    }
+
+    static void println(char x) {
         out.println(x);
     }
 
