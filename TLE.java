@@ -1,5 +1,7 @@
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.util.Collections.max;
+import static java.util.Collections.min;
 import static java.lang.Math.abs;
 import java.io.*;
 import java.util.*;
@@ -20,45 +22,50 @@ public class TLE {
 
     static void solve() {
         int n = in.nextInt();
-        long[][] x = new long[n][2];
-
+        int[] a = new int[n];
         for (int i = 0; i < n; i++) {
-            x[i][0] = in.nextLong();
-            x[i][1] = i;
+            a[i] = in.nextInt();
         }
-
-        long[] t = inputLongArr(n);
-
-        Arrays.sort(x, Comparator.comparingLong(a -> a[0]));
-
-        double low = x[0][0], high = x[n - 1][0];
-        double ans = -1, minTime = Double.MAX_VALUE;
-
-        while (high - low > 1e-7) {
-            double mid = (high + low) / 2.0;
-            double maxT = fun(mid, t, x);
-
-            if (maxT < minTime) {
-                minTime = maxT;
+        int low = 1, high = n;
+        int ans = 0;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (isPossible(mid, a)) {
                 ans = mid;
-                high = mid - 1e-7;
+                low = mid + 1;
             } else {
-                low = mid + 1e-7;
+                high = mid - 1;
             }
         }
-
-        System.out.printf("%.6f\n", max(0, ans));
+        System.out.println(ans);
     }
 
-    static double fun(double x0, long[] t, long[][] x) {
-        int n = t.length;
-        double maxT = 0;
-        for (int i = 0; i < n; i++) {
-            maxT = Math.max(maxT, t[i] + Math.abs(x[i][0] - x0));
+    private static boolean isPossible(int mid, int[] a) {
+        TreeMap<Integer, Integer> set = new TreeMap<>();
+        for (int x : a) {
+            set.put(x, set.getOrDefault(x, 0) + 1);
         }
-        return maxT;
-    }
+        for (int i = 0; i < mid; i++) {
+            Integer lower = set.floorKey(mid - i);
+            if (lower == null || set.get(lower) == 0) {
+                return false;
+            }
+            set.put(lower, set.get(lower) - 1);
+            if (set.get(lower) == 0) {
+                set.remove(lower);
+            }
+            if (!set.isEmpty()) {
+                int smal = set.firstKey();
+                set.put(smal, set.get(smal) - 1);
+                if (set.get(smal) == 0) {
+                    set.remove(smal);
+                }
 
+                set.put(smal + (mid - i), set.getOrDefault(smal + (mid - i), 0) + 1);
+            }
+        }
+        return true;
+    }
     /*-----------------------------------------------------------------------------------------------------------------------*/
 
     static class Pair implements Comparable<Pair> {
