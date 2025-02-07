@@ -21,7 +21,45 @@ public class TLE {
     static void solve() {
         int n = in.nextInt();
         int m = in.nextInt();
-        
+        int[] a = inputIntArr(n);
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            adj.add(new ArrayList<>());
+        }
+        int[] indegree = new int[n + 1];
+        for (int i = 0; i < m; i++) {
+            int u = in.nextInt();
+            int v = in.nextInt();
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+            indegree[u]++;
+            indegree[v]++;
+        }
+
+        if (m % 2 == 0) {
+            println(0);
+            return;
+        }
+
+        long ans = Long.MAX_VALUE;
+        for (int i = 1; i <= n; i++) {
+            if (indegree[i] % 2 == 1) {
+                ans = min(ans, a[i - 1]);
+            }
+        }
+
+        for (int i = 1; i <= n; i++) {
+            if (indegree[i] % 2 == 0) {
+                for (int adjNode : adj.get(i)) {
+                    if (indegree[adjNode] % 2 == 0) {
+                        ans = min(ans, a[i - 1] + a[adjNode - 1]);
+                    }
+                }
+            }
+        }
+
+        println(ans);
+
     }
     /*-----------------------------------------------------------------------------------------------------------------------*/
 
@@ -128,21 +166,21 @@ public class TLE {
         return r;
     }
 
-    static int max_inArr(int[] arr) {
+    static int maxA(int[] arr) {
         int m = Integer.MIN_VALUE;
         for (int i : arr)
             m = max(m, i);
         return m;
     }
 
-    static int min_inArr(int[] arr) {
+    static int minA(int[] arr) {
         int m = Integer.MAX_VALUE;
         for (int i : arr)
             m = min(m, i);
         return m;
     }
 
-    static int sumOfArr(int[] a) {
+    static int sum(int[] a) {
         int s = 0;
         for (int i : a)
             s += i;
