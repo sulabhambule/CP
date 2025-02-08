@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.util.*;
 
@@ -6,7 +5,6 @@ public class Simple {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
     static FASTIO in = new FASTIO();
     static final int MOD = (int) 1e9 + 7;
-    // static final int MOD = 998244353;
 
     public static void main(String[] Hi) throws IOException {
         int cp = in.nextInt();
