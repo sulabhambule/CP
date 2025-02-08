@@ -40,14 +40,12 @@ public class TLE {
             println(0);
             return;
         }
-
         long ans = Long.MAX_VALUE;
         for (int i = 1; i <= n; i++) {
             if (indegree[i] % 2 == 1) {
                 ans = min(ans, a[i - 1]);
             }
         }
-
         for (int i = 1; i <= n; i++) {
             if (indegree[i] % 2 == 0) {
                 for (int adjNode : adj.get(i)) {
@@ -57,9 +55,7 @@ public class TLE {
                 }
             }
         }
-
         println(ans);
-
     }
     /*-----------------------------------------------------------------------------------------------------------------------*/
 
@@ -108,7 +104,6 @@ public class TLE {
         double nextDouble() {
             return Double.parseDouble(next());
         }
-
     }
 
     /*----------------------------------------------------------------------------------------------------------- */

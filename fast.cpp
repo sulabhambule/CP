@@ -1,91 +1,97 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <climits>
-#include <tuple>
-#include <algorithm>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-const long long INF = LLONG_MAX;
-
-struct Edge
+class DSU
 {
-    int to;
-    long long weight;
+private:
+    vector<int> parent, rank, size;
+
+public:
+    DSU(int n)
+    {
+        parent.resize(n);
+        rank.resize(n, 0);
+        size.resize(n, 1);
+        for (int i = 0; i < n; i++)
+        {
+            parent[i] = i;
+        }
+    }
+
+    int find(int x)
+    {
+        if (parent[x] != x)
+        {
+            parent[x] = find(parent[x]); // Path compression
+        }
+        return parent[x];
+    }
+
+    void unite(int u, int v)
+    {
+        int rootU = find(u);
+        int rootV = find(v);
+        if (rootU == rootV)
+            return;
+
+        if (rank[rootU] > rank[rootV])
+        {
+            parent[rootV] = rootU;
+            size[rootU] += size[rootV];
+        }
+        else if (rank[rootU] < rank[rootV])
+        {
+            parent[rootU] = rootV;
+            size[rootV] += size[rootU];
+        }
+        else
+        {
+            parent[rootV] = rootU;
+            rank[rootU]++;
+            size[rootU] += size[rootV];
+        }
+    }
+
+    int getSize(int x)
+    {
+        return size[find(x)];
+    }
 };
 
-vector<long long> dijkstra(int start, int n, const vector<vector<Edge>> &adj)
+void solve()
 {
-    vector<long long> dist(n + 1, INF);
-    dist[start] = 0;
+    int n, m;
+    cin >> n >> m;
+    DSU dsu(n + 1);
 
-    priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
-    pq.push({0, start});
-
-    while (!pq.empty())
+    for (int i = 0; i < m; i++)
     {
-        long long d = pq.top().first;
-        int node = pq.top().second;
-        pq.pop();
-
-        if (d > dist[node])
-            continue;
-
-        for (const auto &edge : adj[node])
+        int k;
+        cin >> k;
+        if (k > 0)
         {
-            int next = edge.to;
-            long long weight = edge.weight;
-
-            if (dist[node] + weight < dist[next])
+            int num;
+            cin >> num;
+            for (int j = 1; j < k; j++)
             {
-                dist[next] = dist[node] + weight;
-                pq.push({dist[next], next});
+                int nn;
+                cin >> nn;
+                dsu.unite(num, nn);
             }
         }
     }
 
-    return dist;
+    for (int i = 1; i <= n; i++)
+    {
+        cout << dsu.getSize(i) << " ";
+    }
+    cout << endl;
 }
 
 int main()
 {
     ios::sync_with_stdio(false);
-    cin.tie(0);
-
-    int n, m;
-    cin >> n >> m;
-
-    vector<vector<Edge>> adj(n + 1), revAdj(n + 1);
-    vector<tuple<int, int, long long>> edges;
-
-    for (int i = 0; i < m; ++i)
-    {
-        int a, b;
-        long long c;
-        cin >> a >> b >> c;
-        adj[a].push_back({b, c});
-        revAdj[b].push_back({a, c});
-        edges.push_back(make_tuple(a, b, c)); // Using make_tuple here
-    }
-
-    vector<long long> dist1 = dijkstra(1, n, adj);
-    vector<long long> distN = dijkstra(n, n, revAdj);
-
-    long long minCost = dist1[n];
-
-    for (const auto &edge : edges)
-    {
-        int u = get<0>(edge), v = get<1>(edge);
-        long long w = get<2>(edge);
-
-        if (dist1[u] != INF && distN[v] != INF)
-        {
-            minCost = min(minCost, dist1[u] + (w / 2) + distN[v]);
-        }
-    }
-
-    cout << minCost << "\n";
-
+    cin.tie(nullptr);
+    solve();
     return 0;
 }
