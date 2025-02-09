@@ -15,6 +15,11 @@ public class Simple {
     }
 
     static void solve() {
+        int n = in.nextInt();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = in.nextInt();
+        }
         
     }
 
