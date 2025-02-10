@@ -19,7 +19,9 @@ public class TLE {
     }
 
     static void solve() {
-
+        int n = in.nextInt();
+        long[] a = inputLongArr(n);
+    
     }
     /*-----------------------------------------------------------------------------------------------------------------------*/
 
@@ -68,6 +70,7 @@ public class TLE {
         double nextDouble() {
             return Double.parseDouble(next());
         }
+
     }
 
     /*----------------------------------------------------------------------------------------------------------- */
@@ -192,6 +195,14 @@ public class TLE {
 
     static void print(int x) {
         out.print(x);
+    }
+
+    static void print(String s) {
+        out.print(s);
+    }
+
+    static void println(String s) {
+        out.println(s);
     }
 
     static void println(int x) {
