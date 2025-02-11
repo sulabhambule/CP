@@ -18,7 +18,6 @@ class Codechef {
     }
 
     private static void Accepted() {
-        
 
     }
 
