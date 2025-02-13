@@ -21,22 +21,7 @@ public class TLE {
     static void solve() {
         int n = in.nextInt();
         int[] a = inputIntArr(n);
-        sort_(a);
-
-        int i = 0;
-        while (i < n) {
-            if (a[i] != a[i + 1]) {
-                println("NO");
-                return;
-            }
-            for (int j = i + 2; j < n; j++) {
-                if (a[j] == a[i]) {
-                    a[j]++;
-                }
-            }
-            i += 2;
-        }
-        println("YES");
+        
     }
     /*-----------------------------------------------------------------------------------------------------------------------*/
 
