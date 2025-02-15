@@ -11,7 +11,7 @@ public class TLE {
     // static final int MOD = 998244353;
 
     public static void main(String[] Hi) throws IOException {
-        int cp = in.nextInt();
+        int cp = 1;
         while (cp-- > 0) {
             solve();
         }
@@ -20,11 +20,24 @@ public class TLE {
 
     static void solve() {
         int n = in.nextInt();
+        int k = in.nextInt();
         int[] a = inputIntArr(n);
-        
+        int ans = -1;
+        long max = Long.MAX_VALUE;
+        int[] count = new int[k];
+        for (int i = 0; i < n; i++) {
+            count[i % k] += a[i];
+        }
+        for (int i = 0; i < k; i++) {
+            if (count[i] < max) {
+                ans = i + 1;
+                max = count[i];
+            }
+        }
+        println(ans);
     }
-    /*-----------------------------------------------------------------------------------------------------------------------*/
 
+    /*-----------------------------------------------------------------------------------------------------------------------*/
     static class Pair implements Comparable<Pair> {
         long first;
         int second;
