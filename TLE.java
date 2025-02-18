@@ -9,9 +9,10 @@ public class TLE {
     static FASTIO in = new FASTIO();
     static final int MOD = (int) 1e9 + 7;
     // static final int MOD = 998244353;
+    static final int inf = (int) 1e9;
 
     public static void main(String[] Hi) throws IOException {
-        int cp = 1;
+        int cp = in.nextInt();
         while (cp-- > 0) {
             solve();
         }
@@ -19,6 +20,7 @@ public class TLE {
     }
 
     static void solve() {
+        int n = in.nextInt();
         
     }
 
@@ -189,6 +191,14 @@ public class TLE {
         Collections.sort(ls);
         for (int i = 0; i < a.length; i++)
             a[i] = ls.get(i);
+    }
+
+    static void yes() {
+        out.println("YES");
+    }
+
+    static void no() {
+        out.println("NO");
     }
 
     static void print(int x) {

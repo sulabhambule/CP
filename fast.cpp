@@ -1,97 +1,52 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
 
-class DSU
+long long maxCoins(vector<int> &a)
 {
-private:
-    vector<int> parent, rank, size;
+    int n = a.size();
+    vector<long long> prefixSum(n + 1, 0);
+    vector<long long> suffixSum(n + 1, 0);
 
-public:
-    DSU(int n)
+    for (int i = 0; i < n; i++)
     {
-        parent.resize(n);
-        rank.resize(n, 0);
-        size.resize(n, 1);
-        for (int i = 0; i < n; i++)
-        {
-            parent[i] = i;
-        }
+        prefixSum[i + 1] = prefixSum[i] + max(0, a[i]);
     }
 
-    int find(int x)
+    for (int i = n - 1; i >= 0; i--)
     {
-        if (parent[x] != x)
-        {
-            parent[x] = find(parent[x]); // Path compression
-        }
-        return parent[x];
+        suffixSum[i] = suffixSum[i + 1] + max(0, -a[i]);
     }
 
-    void unite(int u, int v)
+    long long maxSum = 0;
+    for (int i = 0; i <= n; i++)
     {
-        int rootU = find(u);
-        int rootV = find(v);
-        if (rootU == rootV)
-            return;
-
-        if (rank[rootU] > rank[rootV])
-        {
-            parent[rootV] = rootU;
-            size[rootU] += size[rootV];
-        }
-        else if (rank[rootU] < rank[rootV])
-        {
-            parent[rootU] = rootV;
-            size[rootV] += size[rootU];
-        }
-        else
-        {
-            parent[rootV] = rootU;
-            rank[rootU]++;
-            size[rootU] += size[rootV];
-        }
+        maxSum = max(maxSum, prefixSum[i] + suffixSum[i]);
     }
 
-    int getSize(int x)
-    {
-        return size[find(x)];
-    }
-};
-
-void solve()
-{
-    int n, m;
-    cin >> n >> m;
-    DSU dsu(n + 1);
-
-    for (int i = 0; i < m; i++)
-    {
-        int k;
-        cin >> k;
-        if (k > 0)
-        {
-            int num;
-            cin >> num;
-            for (int j = 1; j < k; j++)
-            {
-                int nn;
-                cin >> nn;
-                dsu.unite(num, nn);
-            }
-        }
-    }
-
-    for (int i = 1; i <= n; i++)
-    {
-        cout << dsu.getSize(i) << " ";
-    }
-    cout << endl;
+    return maxSum;
 }
 
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    solve();
+    int t;
+    cin >> t;
+
+    while (t--)
+    {
+        int n;
+        cin >> n;
+
+        vector<int> a(n);
+        for (int i = 0; i < n; i++)
+        {
+            cin >> a[i];
+        }
+
+        cout << maxCoins(a) << endl;
+    }
+
     return 0;
 }
