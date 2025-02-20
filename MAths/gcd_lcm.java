@@ -1,7 +1,6 @@
 
 import java.io.*;
 import java.util.*;
-// Author : Sulabh Ambule
 
 // problem link : https://codeforces.com/problemset/problem/1349/A
 
@@ -22,13 +21,6 @@ public class gcd_lcm {
     out.close();
   }
 
-  /*
-   * 
-   * 
-   * || JAI SHREE RAM ||
-   * 
-   * 
-   */
 
   static final int MAXN = 200001;
   static int[] spf = new int[MAXN];

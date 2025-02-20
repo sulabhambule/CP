@@ -14,8 +14,20 @@ public class Main {
     }
 
     static void solve() {
-        int n = in.nextInt();
+        long xa = in.nextLong();
+        long ya = in.nextLong();
+        long xb = in.nextLong();
+        long yb = in.nextLong();
+        long xc = in.nextLong();
+        long yc = in.nextLong();
+        long distAB = dist(xa, ya, xb, yb);
+        long distAC = dist(xa, ya, xc, yc);
+        long distBC = dist(xb, yc, xc, yc);
+        out.println((distAB + distAC - distBC) / 2 + 1);
+    }
 
+    public static long dist(long x1, long y1, long x2, long y2) {
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
 
     static class FASTIO {
