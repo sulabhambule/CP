@@ -22,7 +22,7 @@ public class Main {
         long yc = in.nextLong();
         long distAB = dist(xa, ya, xb, yb);
         long distAC = dist(xa, ya, xc, yc);
-        long distBC = dist(xb, yc, xc, yc);
+        long distBC = dist(xb, yb, xc, yc);
         out.println((distAB + distAC - distBC) / 2 + 1);
     }
 

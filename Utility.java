@@ -472,6 +472,10 @@ public class Utility {
     arr[(int) j] = t;
   }
 
+  public static long MahantaDist(long x1, long y1, long x2, long y2) {
+    return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+  }
+
   public static long numberOfDivisors(long num) {
     long total = 1;
     for (long i = 2; i * i <= num; i++) {
@@ -720,6 +724,120 @@ public class Utility {
         }
       }
     }
+  }
+
+  // TOPOSORT
+  public static boolean dfs(int node, int[] used, List<List<Integer>> adj, List<Integer> ans) {
+    used[node] = 1; // in stack
+    for (int adjNode : adj.get(node)) {
+      if (used[adjNode] == 1) {
+        // detected a cycle
+        return false;
+      } else if (used[adjNode] == 0) {
+        // not visited
+        if (!dfs(adjNode, used, adj, ans)) {
+          return false;
+        }
+      }
+    }
+    used[node] = 2; // visited but out of stack
+    ans.add(node);
+    return true;
+  }
+
+  public static boolean dfsCycleDG(int node, List<List<Integer>> adj, boolean[] visited, boolean[] onStack) {
+    visited[node] = true;
+    onStack[node] = true;
+
+    for (int neighbor : adj.get(node)) {
+      if (!visited[neighbor]) {
+        if (dfsCycleDG(neighbor, adj, visited, onStack))
+          return true;
+      } else if (onStack[neighbor]) {
+        return true; // Cycle detected
+      }
+    }
+
+    onStack[node] = false;
+    return false;
+  }
+
+  public static boolean hasCycle(int n, List<List<Integer>> adj) {
+    int[] inDegree = new int[n];
+    for (int u = 0; u < n; u++) {
+      for (int v : adj.get(u))
+        inDegree[v]++;
+    }
+
+    Queue<Integer> q = new LinkedList<>();
+    for (int i = 0; i < n; i++) {
+      if (inDegree[i] == 0)
+        q.add(i);
+    }
+
+    int count = 0;
+    while (!q.isEmpty()) {
+      int u = q.poll();
+      count++;
+      for (int v : adj.get(u)) {
+        if (--inDegree[v] == 0)
+          q.add(v);
+      }
+    }
+
+    return count != n; // If count < n, there is a cycle
+  }
+
+  public static List<Integer> topoSortDfs(int n, List<List<Integer>> adj) {
+    boolean[] visited = new boolean[n];
+    Stack<Integer> stack = new Stack<>();
+
+    for (int i = 0; i < n; i++) {
+      if (!visited[i])
+        dfsTopo(i, adj, visited, stack);
+    }
+
+    List<Integer> topo = new ArrayList<>();
+    while (!stack.isEmpty())
+      topo.add(stack.pop());
+    return topo;
+  }
+
+  public static void dfsTopo(int node, List<List<Integer>> adj, boolean[] visited, Stack<Integer> stack) {
+    visited[node] = true;
+    for (int neighbor : adj.get(node)) {
+      if (!visited[neighbor]) {
+        dfsTopo(neighbor, adj, visited, stack);
+      }
+    }
+    stack.push(node);
+  }
+
+  public static List<Integer> topoSortBFS(int n, List<List<Integer>> adj) {
+    int[] inDegree = new int[n];
+    for (int u = 0; u < n; u++) {
+      for (int v : adj.get(u)) {
+        inDegree[v]++;
+      }
+    }
+
+    Queue<Integer> q = new LinkedList<>();
+    for (int i = 0; i < n; i++) {
+      if (inDegree[i] == 0)
+        q.add(i);
+    }
+
+    List<Integer> topo = new ArrayList<>();
+    while (!q.isEmpty()) {
+      int u = q.poll();
+      topo.add(u);
+      for (int v : adj.get(u)) {
+        if (--inDegree[v] == 0)
+          q.add(v);
+      }
+    }
+
+    return topo.size() == n ? topo : new ArrayList<>(); // Return empty if cycle exists
   }
 
 }

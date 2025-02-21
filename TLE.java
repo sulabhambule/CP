@@ -12,7 +12,7 @@ public class TLE {
     static final int inf = (int) 1e9;
 
     public static void main(String[] Hi) throws IOException {
-        int cp = in.nextInt();
+        int cp = 1;
         while (cp-- > 0) {
             solve();
         }
@@ -20,9 +20,7 @@ public class TLE {
     }
 
     static void solve() {
-        int n = in.nextInt();
-        long[] a = inputLongArr(n);
-
+        
     }
 
     /*-----------------------------------------------------------------------------------------------------------------------*/
@@ -104,6 +102,10 @@ public class TLE {
             l++;
             r--;
         }
+    }
+
+    public static long MahantaDist(long x1, long y1, long x2, long y2) {
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
 
     static void reverse(long[] a, int l, int r) {
