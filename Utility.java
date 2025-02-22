@@ -726,13 +726,13 @@ public class Utility {
     }
   }
 
-  // TOPOSORT
+  // TOPOSORT and all that stuff
+  // toposort + cycle detection
   public static boolean dfs(int node, int[] used, List<List<Integer>> adj, List<Integer> ans) {
-    used[node] = 1; // in stack
+    used[node] = 1; // in recurtion stack
     for (int adjNode : adj.get(node)) {
       if (used[adjNode] == 1) {
-        // detected a cycle
-        return false;
+        return false; // detected a cycle
       } else if (used[adjNode] == 0) {
         // not visited
         if (!dfs(adjNode, used, adj, ans)) {
@@ -745,6 +745,7 @@ public class Utility {
     return true;
   }
 
+  // DFS cycle detection (Recomended)
   public static boolean dfsCycleDG(int node, List<List<Integer>> adj, boolean[] visited, boolean[] onStack) {
     visited[node] = true;
     onStack[node] = true;
@@ -757,24 +758,22 @@ public class Utility {
         return true; // Cycle detected
       }
     }
-
     onStack[node] = false;
     return false;
   }
 
+  // BFS Cycle Detection (Kahn’s Algorithm)
   public static boolean hasCycle(int n, List<List<Integer>> adj) {
     int[] inDegree = new int[n];
     for (int u = 0; u < n; u++) {
       for (int v : adj.get(u))
         inDegree[v]++;
     }
-
     Queue<Integer> q = new LinkedList<>();
     for (int i = 0; i < n; i++) {
       if (inDegree[i] == 0)
         q.add(i);
     }
-
     int count = 0;
     while (!q.isEmpty()) {
       int u = q.poll();
@@ -788,29 +787,28 @@ public class Utility {
     return count != n; // If count < n, there is a cycle
   }
 
+  // DFS-Based Topological Sort
   public static List<Integer> topoSortDfs(int n, List<List<Integer>> adj) {
     boolean[] visited = new boolean[n];
-    Stack<Integer> stack = new Stack<>();
+    List<Integer> topo = new ArrayList<>();
 
     for (int i = 0; i < n; i++) {
       if (!visited[i])
-        dfsTopo(i, adj, visited, stack);
+        dfsTopo(i, adj, visited, topo);
     }
 
-    List<Integer> topo = new ArrayList<>();
-    while (!stack.isEmpty())
-      topo.add(stack.pop());
+    Collections.reverse(topo);
     return topo;
   }
 
-  public static void dfsTopo(int node, List<List<Integer>> adj, boolean[] visited, Stack<Integer> stack) {
+  public static void dfsTopo(int node, List<List<Integer>> adj, boolean[] visited, List<Integer> topo) {
     visited[node] = true;
     for (int neighbor : adj.get(node)) {
       if (!visited[neighbor]) {
-        dfsTopo(neighbor, adj, visited, stack);
+        dfsTopo(neighbor, adj, visited, topo);
       }
     }
-    stack.push(node);
+    topo.add(node);
   }
 
   public static List<Integer> topoSortBFS(int n, List<List<Integer>> adj) {
@@ -820,13 +818,11 @@ public class Utility {
         inDegree[v]++;
       }
     }
-
     Queue<Integer> q = new LinkedList<>();
     for (int i = 0; i < n; i++) {
       if (inDegree[i] == 0)
         q.add(i);
     }
-
     List<Integer> topo = new ArrayList<>();
     while (!q.isEmpty()) {
       int u = q.poll();
@@ -836,10 +832,8 @@ public class Utility {
           q.add(v);
       }
     }
-
     return topo.size() == n ? topo : new ArrayList<>(); // Return empty if cycle exists
   }
-
 }
 
 /*---------------------------------------------------------------------------------- */

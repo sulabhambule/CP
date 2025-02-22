@@ -12,7 +12,7 @@ public class TLE {
     static final int inf = (int) 1e9;
 
     public static void main(String[] Hi) throws IOException {
-        int cp = 1;
+        int cp = in.nextInt();
         while (cp-- > 0) {
             solve();
         }
@@ -20,7 +20,18 @@ public class TLE {
     }
 
     static void solve() {
-        
+        int x = in.nextInt();
+        long m = in.nextLong();
+        // we will iterate from 1 to 2 * x
+
+        int ans = 0;
+        for (int i = 1; i <= (min(2L * x, m)); i++) {
+            if (x != i && (x % (x ^ i) == 0 || i % (x ^ i) == 0)) {
+                ans++;
+            }
+        }
+
+        out.println(ans);
     }
 
     /*-----------------------------------------------------------------------------------------------------------------------*/
