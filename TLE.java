@@ -9,8 +9,8 @@ import java.util.*;
 public class TLE {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
     static FASTIO in = new FASTIO();
-    static final int MOD = (int) 1e9 + 7;
-    // static final int MOD = 998244353;
+    // static final int MOD = (int) 1e9 + 7;
+    static final int MOD = 998244353;
     static final int inf = (int) 1e9;
 
     public static void main(String[] Hi) throws IOException {
@@ -21,14 +21,7 @@ public class TLE {
         out.close();
     }
 
-    /*
-     * :)
-     * Read the question again (Carefuly)
-     * Integer overFlow
-     */
-
     static void solve() {
-        int n = in.nextInt();
 
     }
 
