@@ -6,6 +6,45 @@ public class Utility {
 
   }
 
+  // vector<int> dp(4, 0);
+  // dp[0] = 1;
+  // while (n--) {
+  // int x;
+  // cin >> x;
+  // if (x == 2) dp[x] = add(dp[x], dp[x]);
+  // dp[x] = add(dp[x], dp[x - 1]);
+  // }
+  // cout << dp[3] << '\n';
+
+  // int n = in.nextInt();
+  // int m = in.nextInt();
+
+  // int[][] a = inputIntArr(n, m);
+  // int size = n * m;
+  // int[] hasColor = new int[size];
+  // int[] hasBad = new int[size];
+
+  // for (int i = 0; i < n; i++) {
+  // for (int j = 0; j < m; j++) {
+  // hasColor[a[i][j] - 1] = 1;
+
+  // if (i + 1 < n && a[i][j] == a[i + 1][j]) {
+  // hasBad[a[i][j] - 1] = 1;
+  // }
+  // if (j + 1 < m && a[i][j] == a[i][j + 1]) {
+  // hasBad[a[i][j] - 1] = 1;
+  // }
+  // }
+  // }
+  // int sumColor = 0, sumBad = 0, maxBad = 0;
+  // for (int i = 0; i < size; i++) {
+  // sumColor += hasColor[i];
+  // sumBad += hasBad[i];
+  // maxBad = Math.max(maxBad, hasBad[i]);
+  // }
+
+  // System.out.println(sumColor + sumBad - 1 - maxBad);
+
   // if ax + by = c then Let g = gcd(a, b) then there exists integers x, y such
   // that ax + by = g. Therefore c % g == 0, for the above conditions.
 

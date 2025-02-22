@@ -4,6 +4,8 @@ import static java.lang.Math.abs;
 import java.io.*;
 import java.util.*;
 
+/* Code Author : Sulabh Ambule */
+
 public class TLE {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
     static FASTIO in = new FASTIO();
@@ -20,11 +22,13 @@ public class TLE {
     }
 
     /*
-     * Read the question again
+     * :)
+     * Read the question again (Carefuly)
      * Integer overFlow
      */
 
     static void solve() {
+        int n = in.nextInt();
 
     }
 
@@ -135,16 +139,6 @@ public class TLE {
         }
         return r;
     }
-
-    // vector<int> dp(4, 0);
-    // dp[0] = 1;
-    // while (n--) {
-    // int x;
-    // cin >> x;
-    // if (x == 2) dp[x] = add(dp[x], dp[x]);
-    // dp[x] = add(dp[x], dp[x - 1]);
-    // }
-    // cout << dp[3] << '\n';
 
     static int maxA(int[] arr) {
         int m = Integer.MIN_VALUE;
@@ -306,35 +300,6 @@ public class TLE {
             a[i] = in.nextLong();
         return a;
     }
-
-    // int n = in.nextInt();
-    // int m = in.nextInt();
-
-    // int[][] a = inputIntArr(n, m);
-    // int size = n * m;
-    // int[] hasColor = new int[size];
-    // int[] hasBad = new int[size];
-
-    // for (int i = 0; i < n; i++) {
-    // for (int j = 0; j < m; j++) {
-    // hasColor[a[i][j] - 1] = 1;
-
-    // if (i + 1 < n && a[i][j] == a[i + 1][j]) {
-    // hasBad[a[i][j] - 1] = 1;
-    // }
-    // if (j + 1 < m && a[i][j] == a[i][j + 1]) {
-    // hasBad[a[i][j] - 1] = 1;
-    // }
-    // }
-    // }
-    // int sumColor = 0, sumBad = 0, maxBad = 0;
-    // for (int i = 0; i < size; i++) {
-    // sumColor += hasColor[i];
-    // sumBad += hasBad[i];
-    // maxBad = Math.max(maxBad, hasBad[i]);
-    // }
-
-    // System.out.println(sumColor + sumBad - 1 - maxBad);
 
     static int[][] inputIntArr(int n, int m) {
         int[][] a = new int[n][m];
