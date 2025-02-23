@@ -1,20 +1,20 @@
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.util.Collections.max;
+import static java.util.Collections.min;
 import static java.lang.Math.abs;
 import java.io.*;
 import java.util.*;
 
-/* Code Author : Sulabh Ambule */
-
 public class TLE {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
     static FASTIO in = new FASTIO();
-    // static final int MOD = (int) 1e9 + 7;
-    static final int MOD = 998244353;
+    static final int MOD = (int) 1e9 + 7;
+    // static final int MOD = 998244353;
     static final int inf = (int) 1e9;
 
     public static void main(String[] Hi) throws IOException {
-        int cp = in.nextInt();
+        int cp = 1;
         while (cp-- > 0) {
             solve();
         }
@@ -22,7 +22,37 @@ public class TLE {
     }
 
     static void solve() {
-
+        int n = in.nextInt();
+        int[] q = inputIntArr(n);
+        int m = in.nextInt();
+        List<List<int[]>> adj = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int i = 0; i < m; i++) {
+            int u = in.nextInt() - 1;
+            int v = in.nextInt() - 1;
+            int w = in.nextInt();
+            adj.get(v).add(new int[] { w, u });
+        }
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (adj.get(i).isEmpty()) {
+                count++;
+            }
+        }
+        if (count > 1) {
+            println(-1);
+            return;
+        }
+        long ans = 0;
+        for (int i = 0; i < n; i++) {
+            Collections.sort(adj.get(i), (x, y) -> (x[0] - y[0]));
+            if (!adj.get(i).isEmpty()) {
+                ans += adj.get(i).get(0)[0];
+            }
+        }
+        println(ans);
     }
 
     /*-----------------------------------------------------------------------------------------------------------------------*/
