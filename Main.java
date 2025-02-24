@@ -2,26 +2,36 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
-    static FASTIO in = new FASTIO();
+    static FastIO in = new FastIO();
+    static PrintWriter out = new PrintWriter(System.out);
 
-    public static void main(String[] Hi) throws IOException {
-        int cp = in.nextInt();
-        while (cp-- > 0) {
-            solve();
-        }
+    public static void main(String[] args) {
+        solve();
         out.close();
     }
 
     static void solve() {
-
+        int n = in.nextInt();
+        String s = in.next();
+        int zero = 0, one = 0;
+        for (char c : s.toCharArray()) {
+            if (c == '0') {
+                zero++;
+            } else {
+                one++;
+            }
+        }
+        if (one == 0 || zero == 0) {
+            out.println(0);
+            return;
+        }
     }
 
-    static class FASTIO {
+    static class FastIO {
         BufferedReader br;
         StringTokenizer st;
 
-        public FASTIO() {
+        public FastIO() {
             br = new BufferedReader(new InputStreamReader(System.in));
         }
 
@@ -42,10 +52,6 @@ public class Main {
 
         long nextLong() {
             return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
         }
     }
 }
