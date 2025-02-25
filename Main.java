@@ -4,27 +4,18 @@ import java.util.*;
 public class Main {
     static FastIO in = new FastIO();
     static PrintWriter out = new PrintWriter(System.out);
+    static final int MOD = (int) 1e9 + 7;
 
     public static void main(String[] args) {
-        solve();
+        int t = in.nextInt();
+        while (t-- > 0) {
+            solve();
+        }
         out.close();
     }
 
     static void solve() {
-        int n = in.nextInt();
-        String s = in.next();
-        int zero = 0, one = 0;
-        for (char c : s.toCharArray()) {
-            if (c == '0') {
-                zero++;
-            } else {
-                one++;
-            }
-        }
-        if (one == 0 || zero == 0) {
-            out.println(0);
-            return;
-        }
+        
     }
 
     static class FastIO {

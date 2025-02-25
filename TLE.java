@@ -1,7 +1,5 @@
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static java.util.Collections.max;
-import static java.util.Collections.min;
 import static java.lang.Math.abs;
 import java.io.*;
 import java.util.*;
@@ -14,7 +12,7 @@ public class TLE {
     static final int inf = (int) 1e9;
 
     public static void main(String[] Hi) throws IOException {
-        int cp = 1;
+        int cp = in.nextInt();
         while (cp-- > 0) {
             solve();
         }
@@ -22,37 +20,9 @@ public class TLE {
     }
 
     static void solve() {
-        int n = in.nextInt();
-        int[] q = inputIntArr(n);
-        int m = in.nextInt();
-        List<List<int[]>> adj = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
-            adj.add(new ArrayList<>());
-        }
-        for (int i = 0; i < m; i++) {
-            int u = in.nextInt() - 1;
-            int v = in.nextInt() - 1;
-            int w = in.nextInt();
-            adj.get(v).add(new int[] { w, u });
-        }
-        int count = 0;
-        for (int i = 0; i < n; i++) {
-            if (adj.get(i).isEmpty()) {
-                count++;
-            }
-        }
-        if (count > 1) {
-            println(-1);
-            return;
-        }
-        long ans = 0;
-        for (int i = 0; i < n; i++) {
-            Collections.sort(adj.get(i), (x, y) -> (x[0] - y[0]));
-            if (!adj.get(i).isEmpty()) {
-                ans += adj.get(i).get(0)[0];
-            }
-        }
-        println(ans);
+        long a = in.nextLong();
+        long b = in.nextLong();
+        
     }
 
     /*-----------------------------------------------------------------------------------------------------------------------*/
@@ -136,7 +106,7 @@ public class TLE {
         }
     }
 
-    public static long MahantaDist(long x1, long y1, long x2, long y2) {
+    public static long mahantaDist(long x1, long y1, long x2, long y2) {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
 
