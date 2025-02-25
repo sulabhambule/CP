@@ -15,7 +15,16 @@ public class Main {
     }
 
     static void solve() {
-        
+        String s = in.next();
+        int n = s.length();
+        int count = 0;
+        int i = 0;
+
+        while (i < n && s.charAt(i) == 'b') {
+            count++;
+            i++;
+        }
+        int j = 
     }
 
     static class FastIO {
