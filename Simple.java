@@ -6,7 +6,7 @@ public class Simple {
     static FASTIO in = new FASTIO();
 
     public static void main(String[] Hi) throws IOException {
-        int cp = in.nextInt();
+        int cp = 1;
         while (cp-- > 0) {
             solve();
         }

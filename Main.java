@@ -1,48 +1,41 @@
-import java.io.*;
 import java.util.*;
 
 public class Main {
-    static FastIO in = new FastIO();
-    static PrintWriter out = new PrintWriter(System.out);
-    static final int MOD = (int) 1e9 + 7;
-
     public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
         int t = in.nextInt();
         while (t-- > 0) {
-            solve();
-        }
-        out.close();
-    }
-
-    static void solve() {
-
-    }
-
-    static class FastIO {
-        BufferedReader br;
-        StringTokenizer st;
-
-        public FastIO() {
-            br = new BufferedReader(new InputStreamReader(System.in));
-        }
-
-        String next() {
-            while (st == null || !st.hasMoreElements()) {
-                try {
-                    st = new StringTokenizer(br.readLine());
-                } catch (IOException e) {
-                    e.printStackTrace();
+            int k = in.nextInt();
+            if (k == 0) {
+                System.out.println(1);
+                System.out.println("0 0");
+                continue;
+            }
+            List<Integer> ls = new ArrayList<>();
+            int rem = k;
+            while (rem > 0) {
+                for (int m = 500; m >= 2; m--) {
+                    int tri = m * (m - 1) / 2;
+                    if (tri <= rem) {
+                        ls.add(m);
+                        rem -= tri;
+                        break;
+                    }
                 }
             }
-            return st.nextToken();
+            int total = 0;
+            for (int g : ls)
+                total += g;
+            System.out.println(total);
+            for (int i = 0; i < ls.size(); i++) {
+                int g = ls.get(i);
+                int baseX = i * 1000;
+                int y = i;
+                for (int j = 0; j < g; j++) {
+                    System.out.println((baseX + j) + " " + y);
+                }
+            }
         }
-
-        int nextInt() {
-            return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
+        in.close();
     }
 }
