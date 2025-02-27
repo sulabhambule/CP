@@ -20,26 +20,7 @@ public class TLE {
     }
 
     static void solve() {
-        int k = in.nextInt();
-        List<int[]> ls = new ArrayList<>();
-        int x = 0;
-        int y = 0;
-        int nn = 500;
-        while (k > 0) {
-            if (nn * (nn - 1) / 2 <= k) {
-                k -= (nn * (nn - 1) / 2);
-                for (int j = 0; j < nn; j++) {
-                    ls.add(new int[] { x, ++y });
-                }
-                x++;
-            } else {
-                nn--;
-            }
-        }
-        println(ls.size());
-        for (int[] aa : ls) {
-            out.println(aa[0] + " " + aa[1]);
-        }
+
     }
 
     /*-----------------------------------------------------------------------------------------------------------------*/
@@ -88,7 +69,6 @@ public class TLE {
         double nextDouble() {
             return Double.parseDouble(next());
         }
-
     }
 
     /*----------------------------------------------------------------------------------------------------------- */

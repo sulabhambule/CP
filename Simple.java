@@ -4,9 +4,10 @@ import java.util.*;
 public class Simple {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
     static FASTIO in = new FASTIO();
+    static final int MOD = 998244353;
 
     public static void main(String[] Hi) throws IOException {
-        int cp = 1;
+        int cp = in.nextInt();
         while (cp-- > 0) {
             solve();
         }
@@ -14,7 +15,7 @@ public class Simple {
     }
 
     static void solve() {
-
+        
     }
 
     static class FASTIO {
