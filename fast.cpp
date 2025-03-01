@@ -1,36 +1,14 @@
 #include <iostream>
 #include <vector>
+#include <unordered_set>
 #include <algorithm>
-
 using namespace std;
-
-long long maxCoins(vector<int> &a)
-{
-    int n = a.size();
-    vector<long long> prefixSum(n + 1, 0);
-    vector<long long> suffixSum(n + 1, 0);
-
-    for (int i = 0; i < n; i++)
-    {
-        prefixSum[i + 1] = prefixSum[i] + max(0, a[i]);
-    }
-
-    for (int i = n - 1; i >= 0; i--)
-    {
-        suffixSum[i] = suffixSum[i + 1] + max(0, -a[i]);
-    }
-
-    long long maxSum = 0;
-    for (int i = 0; i <= n; i++)
-    {
-        maxSum = max(maxSum, prefixSum[i] + suffixSum[i]);
-    }
-
-    return maxSum;
-}
 
 int main()
 {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int t;
     cin >> t;
 
@@ -38,14 +16,40 @@ int main()
     {
         int n;
         cin >> n;
-
         vector<int> a(n);
         for (int i = 0; i < n; i++)
         {
             cin >> a[i];
         }
+        vector<int> prefix(n + 1, 0);
+        for (int i = 0; i < n; i++)
+        {
+            prefix[i + 1] = prefix[i] ^ a[i];
+        }
 
-        cout << maxCoins(a) << endl;
+        int ans = 0;
+        for (int candidate = (1 << 8) - 1; candidate >= 0; candidate--)
+        {
+            unordered_set<int> s;
+            bool found = false;
+            for (int num : prefix)
+            {
+        
+                if (s.find(num ^ candidate) != s.end())
+                {
+                    ans = max(ans, candidate);
+                    found = true;
+                    break;
+                }
+                s.insert(num);
+            }
+            if (found)
+            {
+                break;
+            }
+        }
+
+        cout << ans << "\n";
     }
 
     return 0;
