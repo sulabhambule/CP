@@ -832,7 +832,8 @@ public class Utility {
           q.add(v);
       }
     }
-    return topo.size() == n ? topo : new ArrayList<>(); // Return empty if cycle exists
+    return topo.size() == n ? topo : new ArrayList<>();
+    // Return empty if cycle exists
   }
 }
 
@@ -928,27 +929,23 @@ static class Edge implements Comparable<Edge> {
 }
 
 // MST using PriorityQueue Prims Algorythm
-static long primMST(int n, List<List<int[]>> adj) {
+static long primsMST(int n, List<List<int[]>> adj) {
   boolean[] visited = new boolean[n + 1];
-  PriorityQueue<int[]> pq = new PriorityQueue<>((x, y) -> (x[0] - y[0]));
+  PriorityQueue<int[]> pq = new PriorityQueue<>((x, y) -> (x[1] - y[1]));
   pq.add(new int[] { 1, 0 }); // Start from node 1
   long mstWeight = 0;
-
   while (!pq.isEmpty()) {
     int[] curr = pq.poll();
-    int u = curr.node, w = curr.weight;
-
+    int u = curr[0], w = curr[1];
     if (visited[u])
       continue;
     visited[u] = true;
     mstWeight += w;
-
     for (int[] v : adj.get(u)) {
-      if (!visited[v.node]) {
-        pq.add(new int[] { v.node, v.weight });
+      if (!visited[v[0]]) {
+        pq.add(new int[] { v[0], v[1] });
       }
     }
   }
-
   return mstWeight;
 }

@@ -1,5 +1,8 @@
 import java.io.*;
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class Simple {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
@@ -15,7 +18,7 @@ public class Simple {
     }
 
     static void solve() {
-        
+
     }
 
     static class FASTIO {

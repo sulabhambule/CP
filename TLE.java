@@ -1,5 +1,7 @@
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.util.Collections.max;
+import static java.util.Collections.min;
 import static java.lang.Math.abs;
 import java.io.*;
 import java.util.*;
@@ -19,11 +21,59 @@ public class TLE {
         out.close();
     }
 
-    static void solve() {
+    /* I lost in search of my luck! - maybe today I'll find it. :( */
 
+    static void solve() {
+        int n = in.nextInt();
+        int st = in.nextInt();
+        int en = in.nextInt();
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int i = 0; i < n - 1; i++) {
+            int u = in.nextInt();
+            int v = in.nextInt();
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+        List<Integer> order = bfs(adj, n, st);
+        for (int i = 0; i < n; i++) {
+            if (order.get(i) == en) {
+                Collections.swap(order, i, n - 1);
+                break;
+            }
+        }
+        for (int num : order) {
+            out.print(num + " ");
+        }
+        out.println();
+    }
+
+    private static List<Integer> bfs(List<List<Integer>> adj, int n, int start) {
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] visited = new boolean[n + 1];
+        List<Integer> order = new ArrayList<>();
+
+        queue.add(start);
+        visited[start] = true;
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            order.add(node);
+
+            for (int neighbor : adj.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.add(neighbor);
+                }
+            }
+        }
+        return order;
     }
 
     /*-----------------------------------------------------------------------------------------------------------------*/
+
     static class Pair implements Comparable<Pair> {
         long first;
         int second;
