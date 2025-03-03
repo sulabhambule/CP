@@ -1,4 +1,4 @@
-package ImpTech;
+package Template.SeiveSPF;
 import java.util.Scanner;
 
 public class SPF {

@@ -1,4 +1,4 @@
-package DataStructures;
+package Template.DataStructures;
 
 import java.util.*;
 

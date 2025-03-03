@@ -1,5 +1,3 @@
-package DataStructures;
-
 class Trie {
 
     private Node root;

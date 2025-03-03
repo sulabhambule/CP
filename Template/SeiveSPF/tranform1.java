@@ -1,75 +1,101 @@
-package ImpTech;
+package Template.SeiveSPF;
 // Author : Sulabh Ambule
 
 import java.util.*;
 
-class Interactor {
-    long n;
-    int majorityElement = -1;
-    int[] arr;
-
-    public Interactor(long n1) {
-        n = n1;
-        arr = new int[] { 10, 20, 10, 30, 10, 10, 10 };
-        majorityElement = 10;
-    }
-
-    String queryInteractor(long index) {
-        if (arr[(int) (index - 1)] == majorityElement) {
-            return "YES";
-        } else {
-            return "NO";
-        }
-    }
-}
-
-public class INTERACTIVEP {
+public class tranform1 {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        int cases = in.nextInt();
-        while (cases-- > 0) {
-            Accepted(in);
-        }
+        // int cases = in.nextInt();
+        // while (cases-- > 0) {
+        Accepted(in);
+        // }
         in.close();
     }
 
     // JAI SHREE RAM
 
     private static void Accepted(Scanner in) {
-        long n = in.nextLong();
-        Interactor it = new Interactor(n);
-
-        int iterations = 20;
-        int ans = -1;
+        int n = in.nextInt();
+        int d = in.nextInt();
+        double[] a = new double[n];
+        for (int i = 0; i < a.length; i++) {
+            a[i] = in.nextInt();
+        }
+        double low = 0, high = 100;
+        int iterations = 100;
         for (int i = 0; i < iterations; i++) {
-            int x = getRandomNumber(1, n);
-            // gives a random number from 1 -> n
-
-            String result = query(x, it, in);
-            if (result == "YES") {
-                break;
+            double mid = (low + high) / 2;
+            if (isPossible(mid, a, d, n)) {
+                low = mid;
+            } else {
+                high = mid;
             }
         }
-        System.out.println("! " + ans);
+        // TTTTTTTFFFFFF // first t is answer
+        // System.out.println(low);
+        int[] index = bestSubArray(low, a, d, n);
+
+        System.out.println((index[0] + 1) + " " + (index[1] + 1));
     }
 
-    private static int getRandomNumber(int i, long n) {
-
-    }
-
-    static boolean testing = true; // when testing make it true while submitiing on CF make it false.
-
-    private static String query(long x, Interactor it, Scanner in) {
-        System.out.println("? " + x);
-        String outPut;
-        // outPut = in.next();
-        if (testing) {
-            outPut = it.queryInteractor(x);
-            System.out.println("Interactor outPut:" + outPut);
-        } else {
-            outPut = in.next();
+    private static int[] bestSubArray(double low, double[] a, int d, int n) {
+        double[] trans = new double[n];
+        for (int i = 0; i < n; i++) {
+            trans[i] = a[i] - low;
         }
-        return outPut;
+        return anySubarrWithPosSum(trans, d, n);
+    }
+
+    private static boolean isPossible(double mid, double[] a, int d, int n) {
+        double[] trans = new double[n];
+        for (int i = 0; i < n; i++) {
+            trans[i] = a[i] - mid;
+        }
+        return (maximumSum(trans, d, n)) >= 0;
+        // find out the best possible subarray sum in transformed array of subarray
+        // length at least d.
+        // if this maximum sum >= 0, return true else return false.
+    }
+
+    private static double maximumSum(double[] trans, int d, int n) {
+        double[] prefixSum = new double[n];
+        prefixSum[0] = trans[0];
+        for (int i = 1; i < n; i++) {
+            prefixSum[i] = prefixSum[i - 1] + trans[i];
+        }
+        double ans = -1e18;
+        double minSoFar = 0;
+        for (int r = d - 1; r < n; r++) {
+            double bestSubArrEndingHere = prefixSum[r] - minSoFar;
+            minSoFar = Math.min(minSoFar, prefixSum[r - d + 1]);
+            ans = Math.max(ans, bestSubArrEndingHere);
+        }
+        return ans;
+    }
+
+    private static int[] anySubarrWithPosSum(double[] trans, int d, int n) {
+        double[] prefixSum = new double[n];
+        prefixSum[0] = trans[0];
+        for (int i = 1; i < n; i++) {
+            prefixSum[i] = prefixSum[i - 1] + trans[i];
+        }
+        double ans = -1e18;
+        double minSoFar = 0;
+        int bestLeftIndex = -1;
+        for (int r = d - 1; r < n; r++) {
+            double bestSubArrEndingHere = prefixSum[r] - minSoFar;
+            ans = Math.max(ans, bestSubArrEndingHere);
+            if (ans >= 0)
+                return new int[] { bestLeftIndex + 1, r };
+
+            if (minSoFar > prefixSum[r - d + 1]) {
+                minSoFar = prefixSum[r - d + 1];
+                bestLeftIndex = r - d + 1;
+            }
+        }
+        // return ans;
+        return new int[] { -1, -1 }; // never going to happer
     }
 
     // ---------------------------------------------------

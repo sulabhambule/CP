@@ -1,4 +1,4 @@
-package ImpTech;
+package Template.SeiveSPF;
 
 public class SIEVELargeInpuut {
   public static void main(String[] args) {
