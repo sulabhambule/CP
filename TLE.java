@@ -23,37 +23,11 @@ public class TLE {
         if (System.getProperty("ONLINE_JUDGE") == null) {
             System.err.println("Executed in " + ((endTime - startTime) / 1_000.0) + " s.");
         }
-
         out.close();
     }
 
     static void solve() {
-        long n = in.nextLong();
-        if (n % 2 == 0) {
-            println(-1);
-            return;
-        }
-        int count = 0;
 
-        List<Integer> ls = new ArrayList<>();
-        boolean flag = false;
-
-        for (int i = 30; i >= 1; i--) {
-            if (((n >> i) & 1) != 0) {
-                flag = true;
-                ls.add(2);
-            } else {
-                if (flag) {
-                    ls.add(1);
-                }
-            }
-        }
-
-        println(ls.size());
-        for (int i : ls) {
-            out.print(i + " ");
-        }
-        out.println();
     }
 
     /*-----------------------------------------------------------------------------------------------------------------*/

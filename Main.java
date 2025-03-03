@@ -21,7 +21,7 @@ public class Main {
             cost[i] = in.nextLong();
         }
         int m = in.nextInt();
-
+        
     }
 
     static class FASTIO {
