@@ -7,7 +7,7 @@ public class Main {
     static final int MOD = 1000000007;
 
     public static void main(String[] Hi) throws IOException {
-        int cp = in.nextInt();
+        int cp = 1;
         while (cp-- > 0) {
             solve();
         }
@@ -16,29 +16,14 @@ public class Main {
 
     static void solve() {
         int n = in.nextInt();
-        long[] a = new long[n];
-        boolean flag = true;
-        boolean f = true;
+        int m = in.nextInt();
+        int[][] grid = new int[n][m];
         for (int i = 0; i < n; i++) {
-            a[i] = in.nextLong();
-            if (i > 0 && a[i] != a[i - 1]) {
-                flag = false;
-            }
-            if (a[i] == 1) {
-                f = false;
+            for (int j = 0; j < m; j++) {
+                grid[i][j] = in.nextInt();
             }
         }
-        if (flag) {
-            out.println(0);
-            return;
-        }
-
-        if (f) {
-            out.println(0);
-            return;
-        }
-
-        
+        long[][] ways = new long[n][m];
     }
 
     static class FASTIO {

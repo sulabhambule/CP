@@ -25,7 +25,7 @@ public class TLE {
     }
 
     static void solve() {
-
+        
     }
 
     /*-----------------------------------------------------------------------------------------------------------------*/
@@ -60,7 +60,6 @@ public class TLE {
         double nextDouble() {
             return Double.parseDouble(next());
         }
-
     }
 
     /*----------------------------------------------------------------------------------------------------------- */
@@ -97,16 +96,6 @@ public class TLE {
 
     public static long mahantaDist(long x1, long y1, long x2, long y2) {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-    }
-
-    static void reverse(long[] a, int l, int r) {
-        while (l < r) {
-            long t = a[l];
-            a[l] = a[r];
-            a[r] = t;
-            l++;
-            r--;
-        }
     }
 
     static long modPow(long b, long e, long mod) {
