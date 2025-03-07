@@ -60,7 +60,6 @@ public class kosaraju {
     sccs = new ArrayList<>();
     sccId = new int[n];
 
-    sccCoins = new long[n];
     for (int node : order) {
       if (!visited[node]) {
         List<Integer> comp = new ArrayList<>();

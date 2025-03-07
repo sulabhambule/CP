@@ -14,50 +14,26 @@ public class Simple {
         out.close();
     }
 
+    // find the 1st element > x in the range
+
     static void solve() {
         int n = in.nextInt();
-        long[][] arr = new long[n][2];
+        int[] arr = new int[n];
         for (int i = 0; i < n; i++) {
-            long u = in.nextLong();
-            long v = in.nextLong();
-            arr[i][0] = u;
-            arr[i][1] = v;
+            arr[i] = in.nextInt();
         }
+        SegTree tree = new SegTree(n, arr);
 
-        List<Edge> edges = new ArrayList<>();
+        int q = in.nextInt();
+        while (q-- > 0) {
+            int type = in.nextInt();
+            if (type == 1) {
 
-        for (int i = 0; i < n; i++) {
-            long[] curr = arr[i];
-            for (int j = i + 1; j < n; j++) {
-                long[] next = arr[j];
-                long dist = Math.min(Math.abs(curr[0] - next[0]), Math.abs(curr[1] - next[1]));
-                edges.add(new Edge(i, j, dist));
+            } else {
+                int l = in.nextInt();
+                int r = in.nextInt();
+                out.println(tree.makeQuery(l, r).val);
             }
-        }
-
-        Collections.sort(edges);
-        DSU dsu = new DSU(n);
-        int mstWeight = 0;
-
-        for (Edge e : edges) {
-            if (dsu.union((int) e.u, (int) e.v)) {
-                mstWeight += e.w;
-            }
-        }
-        out.println(mstWeight);
-    }
-
-    static class Edge implements Comparable<Edge> {
-        long u, v, w;
-
-        Edge(long u, long v, long w) {
-            this.u = u;
-            this.v = v;
-            this.w = w;
-        }
-
-        public int compareTo(Edge o) {
-            return Long.compare(this.w, o.w);
         }
     }
 
@@ -94,38 +70,105 @@ public class Simple {
     }
 }
 
-class DSU {
-    private int[] parent, rank;
+class SegTree {
+    private Node[] tree;
+    private int[] arr;
+    private int n;
+    private int s;
 
-    public DSU(int n) {
-        parent = new int[n];
-        rank = new int[n];
-        for (int i = 0; i < n; i++) {
-            parent[i] = i;
+    public SegTree(int a_len, int[] a) {
+        this.arr = a;
+        this.n = a_len;
+        this.s = 1;
+        while (s < 2 * n) {
+            s = s << 1;
         }
+        tree = new Node[s];
+        Arrays.fill(tree, new Node());
+        build(0, n - 1, 1);
     }
 
-    public int find(int x) {
-        if (parent[x] != x) {
-            parent[x] = find(parent[x]);
+    private void build(int start, int end, int index) {
+        if (start == end) {
+            tree[index] = new Node(arr[start]);
+            return;
         }
-        return parent[x];
+        int mid = (start + end) / 2;
+        build(start, mid, 2 * index);
+        build(mid + 1, end, 2 * index + 1);
+        tree[index] = new Node();
+        tree[index].merge(tree[2 * index], tree[2 * index + 1]);
     }
 
-    public boolean union(int u, int v) {
-        int rootU = find(u);
-        int rootV = find(v);
-        if (rootU == rootV)
-            return false;
-
-        if (rank[rootU] > rank[rootV]) {
-            parent[rootV] = rootU;
-        } else if (rank[rootU] < rank[rootV]) {
-            parent[rootU] = rootV;
+    private void update(int start, int end, int index, int queryIndex, Update u) {
+        if (start == end) {
+            u.apply(tree[index]);
+            return;
+        }
+        int mid = (start + end) / 2;
+        if (mid >= queryIndex) {
+            update(start, mid, 2 * index, queryIndex, u);
         } else {
-            parent[rootV] = rootU;
-            rank[rootU]++;
+            update(mid + 1, end, 2 * index + 1, queryIndex, u);
         }
-        return true;
+        tree[index].merge(tree[2 * index], tree[2 * index + 1]);
+    }
+
+    private Node query(int start, int end, int index, int left, int right) {
+        if (start > right || end < left) {
+            return new Node();
+        }
+        if (start >= left && end <= right) {
+            return tree[index];
+        }
+        int mid = (start + end) / 2;
+        Node l = query(start, mid, 2 * index, left, right);
+        Node r = query(mid + 1, end, 2 * index + 1, left, right);
+        Node ans = new Node();
+        ans.merge(l, r);
+        return ans;
+    }
+
+    public void makeUpdate(int index, int x) {
+        Update newUpdate = new Update(x);
+        update(0, n - 1, 1, index, newUpdate);
+    }
+
+    public Node makeQuery(int left, int right) {
+        return query(0, n - 1, 1, left, right);
+    }
+}
+
+class Node {
+    int min1;
+    int min2;
+
+    public Node() {
+        this.min1 = (int) 1e9;
+        this.min2 = (int) 1e9;
+    }
+
+    public Node(int p1) {
+        this.min1 = p1;
+        this.min2 = (int) 1e9;
+    }
+
+    public void merge(Node l, Node r) {
+        int[] v = { l.min1, l.min2, r.min1, min2 };
+        Arrays.sort(v);
+        min1 = v[0];
+        min2 = v[1];
+    }
+}
+
+class Update {
+    int x;
+
+    public Update(int x1) {
+        this.x = x1;
+    }
+
+    public void apply(Node a) {
+        a.min1 = x;
     }
 }
