@@ -28,11 +28,30 @@ public class Simple {
         while (q-- > 0) {
             int type = in.nextInt();
             if (type == 1) {
-
+                int ind = in.nextInt();
+                int x = in.nextInt();
+                tree.makeUpdate(ind, x);
             } else {
                 int l = in.nextInt();
                 int r = in.nextInt();
-                out.println(tree.makeQuery(l, r).val);
+                int x = in.nextInt();
+                // find out first i such that a[i] > x int the range from l -> r.
+                int low = l, high = r;
+                int ans = -1;
+                while (low <= high) {
+                    int mid = (low + high) / 2;
+                    if (tree.makeQuery(low, mid).val > x) {
+                        ans = mid;
+                        high = mid - 1;
+                    } else {
+                        low = mid + 1;
+                    }
+                }
+                if (ans == -1) {
+                    out.println(-1);
+                } else {
+                    out.println(ans);
+                }
             }
         }
     }
@@ -140,24 +159,18 @@ class SegTree {
 }
 
 class Node {
-    int min1;
-    int min2;
+    int val;
 
     public Node() {
-        this.min1 = (int) 1e9;
-        this.min2 = (int) 1e9;
+        this.val = (int) 1e9;
     }
 
     public Node(int p1) {
-        this.min1 = p1;
-        this.min2 = (int) 1e9;
+        val = p1;
     }
 
     public void merge(Node l, Node r) {
-        int[] v = { l.min1, l.min2, r.min1, min2 };
-        Arrays.sort(v);
-        min1 = v[0];
-        min2 = v[1];
+        val = Math.max(l.val, r.val);
     }
 }
 
@@ -169,6 +182,6 @@ class Update {
     }
 
     public void apply(Node a) {
-        a.min1 = x;
+        a.val = x;
     }
 }
