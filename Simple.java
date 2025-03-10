@@ -15,6 +15,13 @@ public class Simple {
     }
 
     static void solve() {
+        int w = in.nextInt();
+        int d = in.nextInt();
+        int h = in.nextInt();
+        int a = in.nextInt();
+        int b = in.nextInt();
+        int f = in.nextInt();
+        int g = in.nextInt();
 
     }
 
