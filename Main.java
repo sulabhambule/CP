@@ -15,11 +15,7 @@ public class Main {
     }
 
     static void solve() {
-        int n = in.nextInt();
-        int k = in.nextInt();
-        String a = in.next();
-        String b = in.next();
-        
+
     }
 
     static class FASTIO {
