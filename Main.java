@@ -4,18 +4,17 @@ import java.util.*;
 public class Main {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
     static FASTIO in = new FASTIO();
-    static final int MOD = 1000000007;
 
-    public static void main(String[] Hi) throws IOException {
-        int cp = 1;
-        while (cp-- > 0) {
+    public static void main(String[] args) throws IOException {
+        int t = in.nextInt();
+        while (t-- > 0) {
             solve();
         }
         out.close();
     }
 
     static void solve() {
-        
+
     }
 
     static class FASTIO {
@@ -43,10 +42,6 @@ public class Main {
 
         long nextLong() {
             return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
         }
     }
 }
