@@ -12,18 +12,17 @@ public class TLE {
     static final int inf = (int) 1e9;
 
     public static void main(String[] Hi) throws IOException {
-        int cp = in.nextInt();
+        int cp = 1;
         while (cp-- > 0) {
-            solve();
+            subh();
         }
 
         out.close();
     }
 
-    static void solve() {
+    static void subh() {
 
     }
-
     /*---------------------------------------------------------------------------------------------------------*/
 
     static class FASTIO {
@@ -56,6 +55,7 @@ public class TLE {
         double nextDouble() {
             return Double.parseDouble(next());
         }
+
     }
 
     /*----------------------------------------------------------------------------------------------------------- */

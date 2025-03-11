@@ -15,7 +15,7 @@ public class TLAM {
         out.close();
     }
 
-    private static void solve() {
+    static void solve() {
 
     }
 
