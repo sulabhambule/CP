@@ -7,7 +7,7 @@ public class Main {
     static final int MOD = 1000000007;
 
     public static void main(String[] Hi) throws IOException {
-        int cp = in.nextInt();
+        int cp = 1;
         while (cp-- > 0) {
             solve();
         }
@@ -15,7 +15,7 @@ public class Main {
     }
 
     static void solve() {
-
+        
     }
 
     static class FASTIO {

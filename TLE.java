@@ -1,5 +1,7 @@
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.util.Collections.max;
+import static java.util.Collections.min;
 import static java.lang.Math.abs;
 import java.io.*;
 import java.util.*;
@@ -13,21 +15,18 @@ public class TLE {
 
     public static void main(String[] Hi) throws IOException {
         int cp = in.nextInt();
-        long startTime = System.currentTimeMillis();
         while (cp-- > 0) {
             solve();
         }
-        long endTime = System.currentTimeMillis();
-        if (System.getProperty("ONLINE_JUDGE") == null) {
-            System.err.println("Executed in " + ((endTime - startTime) / 1_000.0) + " s.");
-        }
+
         out.close();
     }
 
     static void solve() {
 
     }
-    /*------------------------------------------------------------------------------------------------------------------*/
+
+    /*---------------------------------------------------------------------------------------------------------*/
 
     static class FASTIO {
         BufferedReader br;
