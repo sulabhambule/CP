@@ -3,100 +3,180 @@ using namespace std;
 
 #define int long long
 
-class SegmentTree
+struct Node
 {
-private:
-    int size;
-    vector<int> tree;
+    long long val;
 
-    void build(vector<int> &arr, int node, int start, int end)
+    Node() : val(0) {}
+
+    Node(long long p1) : val(p1) {}
+
+    void merge(const Node &l, const Node &r)
+    {
+        val = l.val + r.val;
+    }
+};
+
+struct Update
+{
+    long long val;
+
+    Update() : val(0) {}
+
+    Update(long long val1) : val(val1) {}
+
+    void apply(Node &node, int start, int end)
+    {
+        node.val += val * (end - start + 1);
+    }
+
+    void combine(const Update &newUpdate, int start, int end)
+    {
+        val += newUpdate.val;
+    }
+};
+
+struct LazySGT
+{
+    vector<Node> tree;
+    vector<Update> updates;
+    vector<bool> lazy;
+    int n;
+
+    LazySGT(int n, vector<long long> &arr)
+    {
+        this->n = n;
+        tree.resize(4 * n);
+        updates.resize(4 * n);
+        lazy.resize(4 * n, false);
+        build(0, n - 1, 1, arr);
+    }
+
+    void build(int start, int end, int index, vector<long long> &arr)
     {
         if (start == end)
         {
-            tree[node] = arr[start];
+            tree[index] = Node(arr[start]);
+            return;
         }
-        else
-        {
-            int mid = (start + end) / 2;
-            build(arr, 2 * node + 1, start, mid);
-            build(arr, 2 * node + 2, mid + 1, end);
-            tree[node] = (tree[2 * node + 1] ^ tree[2 * node + 2]);
-        }
-    }
 
-    void update(int node, int start, int end, int index, int value)
-    {
-        if (start == end)
-        {
-            tree[node] = value;
-        }
-        else
-        {
-            int mid = (start + end) / 2;
-            if (index <= mid)
-            {
-                update(2 * node + 1, start, mid, index, value);
-            }
-            else
-            {
-                update(2 * node + 2, mid + 1, end, index, value);
-            }
-            tree[node] = (tree[2 * node + 1] ^ tree[2 * node + 2]);
-        }
-    }
-
-    int query(int node, int start, int end, int l, int r)
-    {
-        if (r < start || end < l)
-            return 0;
-        if (l <= start && end <= r)
-            return tree[node];
         int mid = (start + end) / 2;
-        int leftSum = query(2 * node + 1, start, mid, l, r);
-        int rightSum = query(2 * node + 2, mid + 1, end, l, r);
-        return (leftSum ^ rightSum);
+        build(start, mid, 2 * index, arr);
+        build(mid + 1, end, 2 * index + 1, arr);
+        tree[index].merge(tree[2 * index], tree[2 * index + 1]);
     }
 
-public:
-    SegmentTree(vector<int> &arr)
+    void pushdown(int index, int start, int end)
     {
-        size = arr.size();
-        tree.resize(4 * size);
-        build(arr, 0, 0, size - 1);
+        if (lazy[index])
+        {
+            int mid = (start + end) / 2;
+            apply(2 * index, start, mid, updates[index]);
+            apply(2 * index + 1, mid + 1, end, updates[index]);
+            updates[index] = Update(0);
+            lazy[index] = false;
+        }
     }
 
-    void update(int index, int value)
+    void apply(int index, int start, int end, Update &u)
     {
-        update(0, 0, size - 1, index, value);
+        if (start != end)
+        {
+            lazy[index] = true;
+            updates[index].combine(u, start, end);
+        }
+        u.apply(tree[index], start, end);
     }
 
-    int query(int l, int r)
+    void update(int start, int end, int index, int left, int right, Update u)
     {
-        return query(0, 0, size - 1, l, r);
+        if (start > right || end < left)
+        {
+            return;
+        }
+
+        if (start >= left && end <= right)
+        {
+            apply(index, start, end, u);
+            return;
+        }
+
+        pushdown(index, start, end);
+        int mid = (start + end) / 2;
+        update(start, mid, 2 * index, left, right, u);
+        update(mid + 1, end, 2 * index + 1, left, right, u);
+        tree[index].merge(tree[2 * index], tree[2 * index + 1]);
+    }
+
+    Node query(int start, int end, int index, int left, int right)
+    {
+        if (start > right || end < left)
+        {
+            return Node();
+        }
+
+        if (start >= left && end <= right)
+        {
+            pushdown(index, start, end);
+            return tree[index];
+        }
+
+        pushdown(index, start, end);
+        int mid = (start + end) / 2;
+        Node l = query(start, mid, 2 * index, left, right);
+        Node r = query(mid + 1, end, 2 * index + 1, left, right);
+
+        Node ans;
+        ans.merge(l, r);
+        return ans;
+    }
+
+    void makeUpdate(int left, int right, long long val)
+    {
+        Update newUpdate(val);
+        update(0, n - 1, 1, left, right, newUpdate);
+    }
+
+    long long makeQuery(int left, int right)
+    {
+        return query(0, n - 1, 1, left, right).val;
     }
 };
 
 int32_t main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
 
     int n, q;
     cin >> n >> q;
-    vector<int> arr(n);
+
+    vector<long long> x(n);
     for (int i = 0; i < n; i++)
     {
-        cin >> arr[i];
+        cin >> x[i];
     }
 
-    SegmentTree segTree(arr);
+    LazySGT lazy(n, x);
 
     while (q--)
     {
-
-        int l, r;
-        cin >> l >> r;
-        cout << segTree.query(l - 1, r - 1) << '\n';
+        int type;
+        cin >> type;
+        if (type == 1)
+        {
+            int a, b;
+            long long u;
+            cin >> a >> b >> u;
+            lazy.makeUpdate(a - 1, b - 1, u);
+        }
+        else
+        {
+            int k;
+            cin >> k;
+            cout << lazy.makeQuery(k - 1, k - 1) << "\n";
+        }
     }
 
     return 0;
