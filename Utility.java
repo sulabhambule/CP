@@ -6,6 +6,12 @@ public class Utility {
 
   }
 
+  /*
+   * Important tip : if we do the Xor and we allso take the Xor of the twp numebr
+   * then the bit parity never changes
+   * means : 1 ^ 1 -> 0 and 1 & 1 = 0. the bit remains the same at that bit.
+   */
+
   // if ax + by = c then Let g = gcd(a, b) then there exists integers x, y such
   // that ax + by = g. Therefore c % g == 0, for the above conditions.
 

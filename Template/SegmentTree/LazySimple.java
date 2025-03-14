@@ -25,6 +25,7 @@ public class LazySimple {
       if (start != end) {
         int mid = (start + end) / 2;
         int diff = (mid + 1) - start;
+        // diff is the right child index in the tree
         lazy[2 * node + 1][0] += lazy[node][0];
         lazy[2 * node + 2][0] += lazy[node][0] + diff * lazy[node][1];
         lazy[2 * node + 1][1] += lazy[node][1];
