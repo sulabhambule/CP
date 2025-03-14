@@ -3,179 +3,135 @@ using namespace std;
 
 #define int long long
 
-struct Node
+struct LazySimple
 {
-    long long val;
-
-    Node() : val(0) {}
-
-    Node(long long p1) : val(p1) {}
-
-    void merge(const Node &l, const Node &r)
-    {
-        val = l.val + r.val;
-    }
-};
-
-struct Update
-{
-    long long val;
-
-    Update() : val(0) {}
-
-    Update(long long val1) : val(val1) {}
-
-    void apply(Node &node, int start, int end)
-    {
-        node.val += val * (end - start + 1);
-    }
-
-    void combine(const Update &newUpdate, int start, int end)
-    {
-        val += newUpdate.val;
-    }
-};
-
-struct LazySGT
-{
-    vector<Node> tree;
-    vector<Update> updates;
-    vector<bool> lazy;
     int n;
+    vector<int> st;
+    vector<pair<int, int>> lazy; // {start term, common difference}
 
-    LazySGT(int n, vector<long long> &arr)
+    void init(int _n)
     {
-        this->n = n;
-        tree.resize(4 * n);
-        updates.resize(4 * n);
-        lazy.resize(4 * n, false);
-        build(0, n - 1, 1, arr);
+        n = _n;
+        st.assign(4 * n, 0);
+        lazy.assign(4 * n, {0, 0});
     }
 
-    void build(int start, int end, int index, vector<long long> &arr)
+    int combine(int a, int b)
+    {
+        return a + b;
+    }
+
+    void push(int start, int end, int node)
+    {
+        if (lazy[node].second != 0)
+        {
+            int len = end - start + 1;
+            st[node] += len * (lazy[node].first - lazy[node].second) + lazy[node].second * len * (len + 1) / 2;
+
+            if (start != end)
+            {
+                int mid = (start + end) / 2;
+                int diff = (mid + 1) - start;
+
+                lazy[2 * node + 1].first += lazy[node].first;
+                lazy[2 * node + 2].first += lazy[node].first + diff * lazy[node].second;
+                lazy[2 * node + 1].second += lazy[node].second;
+                lazy[2 * node + 2].second += lazy[node].second;
+            }
+            lazy[node] = {0, 0};
+        }
+    }
+
+    void build(int start, int end, int node, vector<int> &v)
     {
         if (start == end)
         {
-            tree[index] = Node(arr[start]);
+            st[node] = v[start];
             return;
         }
+        int mid = (start + end) / 2;
+        build(start, mid, 2 * node + 1, v);
+        build(mid + 1, end, 2 * node + 2, v);
+        st[node] = combine(st[2 * node + 1], st[2 * node + 2]);
+    }
+
+    int query(int start, int end, int l, int r, int node)
+    {
+        push(start, end, node);
+        if (start > r || end < l)
+            return 0;
+        if (start >= l && end <= r)
+            return st[node];
 
         int mid = (start + end) / 2;
-        build(start, mid, 2 * index, arr);
-        build(mid + 1, end, 2 * index + 1, arr);
-        tree[index].merge(tree[2 * index], tree[2 * index + 1]);
+        int q1 = query(start, mid, l, r, 2 * node + 1);
+        int q2 = query(mid + 1, end, l, r, 2 * node + 2);
+        return combine(q1, q2);
     }
 
-    void pushdown(int index, int start, int end)
+    void update(int start, int end, int node, int l, int r, int value)
     {
-        if (lazy[index])
+        push(start, end, node);
+        if (start > r || end < l)
+            return;
+        if (start >= l && end <= r)
         {
-            int mid = (start + end) / 2;
-            apply(2 * index, start, mid, updates[index]);
-            apply(2 * index + 1, mid + 1, end, updates[index]);
-            updates[index] = Update(0);
-            lazy[index] = false;
-        }
-    }
-
-    void apply(int index, int start, int end, Update &u)
-    {
-        if (start != end)
-        {
-            lazy[index] = true;
-            updates[index].combine(u, start, end);
-        }
-        u.apply(tree[index], start, end);
-    }
-
-    void update(int start, int end, int index, int left, int right, Update u)
-    {
-        if (start > right || end < left)
-        {
+            lazy[node] = {start - l + 1, 1};
+            push(start, end, node);
             return;
         }
-
-        if (start >= left && end <= right)
-        {
-            apply(index, start, end, u);
-            return;
-        }
-
-        pushdown(index, start, end);
         int mid = (start + end) / 2;
-        update(start, mid, 2 * index, left, right, u);
-        update(mid + 1, end, 2 * index + 1, left, right, u);
-        tree[index].merge(tree[2 * index], tree[2 * index + 1]);
+        update(start, mid, 2 * node + 1, l, r, value);
+        update(mid + 1, end, 2 * node + 2, l, r, value);
+        st[node] = combine(st[2 * node + 1], st[2 * node + 2]);
     }
 
-    Node query(int start, int end, int index, int left, int right)
+    void build(vector<int> &v)
     {
-        if (start > right || end < left)
-        {
-            return Node();
-        }
-
-        if (start >= left && end <= right)
-        {
-            pushdown(index, start, end);
-            return tree[index];
-        }
-
-        pushdown(index, start, end);
-        int mid = (start + end) / 2;
-        Node l = query(start, mid, 2 * index, left, right);
-        Node r = query(mid + 1, end, 2 * index + 1, left, right);
-
-        Node ans;
-        ans.merge(l, r);
-        return ans;
+        build(0, n - 1, 0, v);
     }
 
-    void makeUpdate(int left, int right, long long val)
+    int query(int l, int r)
     {
-        Update newUpdate(val);
-        update(0, n - 1, 1, left, right, newUpdate);
+        return query(0, n - 1, l, r, 0);
     }
 
-    long long makeQuery(int left, int right)
+    void update(int l, int r, int x)
     {
-        return query(0, n - 1, 1, left, right).val;
+        update(0, n - 1, 0, l, r, x);
     }
 };
 
 int32_t main()
 {
     ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
+    cin.tie(NULL);
 
     int n, q;
     cin >> n >> q;
 
-    vector<long long> x(n);
+    vector<int> t(n);
     for (int i = 0; i < n; i++)
     {
-        cin >> x[i];
+        cin >> t[i];
     }
 
-    LazySGT lazy(n, x);
+    LazySimple tree;
+    tree.init(n);
+    tree.build(t);
 
     while (q--)
     {
-        int type;
-        cin >> type;
+        int type, a, b;
+        cin >> type >> a >> b;
+        a--, b--; // 0-indexed
         if (type == 1)
         {
-            int a, b;
-            long long u;
-            cin >> a >> b >> u;
-            lazy.makeUpdate(a - 1, b - 1, u);
+            tree.update(a, b, 1); // Range Update
         }
         else
         {
-            int k;
-            cin >> k;
-            cout << lazy.makeQuery(k - 1, k - 1) << "\n";
+            cout << tree.query(a, b) << '\n'; // Range Sum Query
         }
     }
 

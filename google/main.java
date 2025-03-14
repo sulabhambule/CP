@@ -3,8 +3,6 @@ public class main {
   
 }
 
-
-
    /*
     What qualities do successful employees in this role typically have?
     1) Why should we hire you ?
