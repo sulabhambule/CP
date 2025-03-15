@@ -8,21 +8,15 @@ public class TLAM {
     private static final int MOD = 998244353;
 
     public static void main(String[] args) {
-        int T = in.nextInt();
-        while (T-- > 0) {
+        int t = in.nextInt();
+        while (t-- > 0) {
             solve();
         }
         out.close();
     }
 
     static void solve() {
-        int n = in.nextInt();
-        long k = in.nextInt();
-        long[] a = new long[n];
-        for (int i = 0; i < n; i++) {
-            a[i] = in.nextLong();
-        }
-        
+
     }
 
     static class FastReader {
