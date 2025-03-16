@@ -6,9 +6,9 @@ public class Main {
      static FastReader in = new FastReader();
 
      public static void main(String[] args) {
-          int t = in.nextInt();
+          int t = 1;
           while (t-- > 0) {
-               
+
           }
           out.flush();
      }
