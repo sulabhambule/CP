@@ -1,5 +1,7 @@
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.util.Collections.max;
+import static java.util.Collections.min;
 import static java.lang.Math.abs;
 import java.io.*;
 import java.util.*;
@@ -21,7 +23,7 @@ public class TLE {
     }
 
     static void solve() {
-
+    
     }
     /*---------------------------------------------------------------------------------------------------------*/
 

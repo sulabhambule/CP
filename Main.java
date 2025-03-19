@@ -1,48 +1,52 @@
+
 import java.io.*;
 import java.util.*;
 
 public class Main {
-     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
-     static FastReader in = new FastReader();
 
-     public static void main(String[] args) {
-          int t = in.nextInt();
-          while (t-- > 0) {
-               long n = in.nextLong();
-               long m = in.nextLong();
-               long nn = n;
-               int cnt2 = 0, cnt5 = 0;
-               while (n > 0 && n % 2 == 0) {
-                    cnt2++;
-                    n /= 2;
+     static FastReader in;
+     static PrintWriter out;
+     static int MOD = (int) 1e9 + 7;
+
+     static void solve() {
+          int n = in.nextInt();
+          long[] a = new long[n];
+          long min = Long.MAX_VALUE;
+          for (int i = 0; i < n; i++) {
+               a[i] = in.nextLong();
+               min = Math.min(min, a[i]);
+          }
+          int minCount = 0;
+          for (long x : a) {
+               if (min == x) {
+                    minCount++;
                }
-               while (n > 0 && n % 5 == 0) {
-                    cnt5++;
-                    n /= 5;
-               }
-               long k = 1;
-               while (cnt2 < cnt5 && 2 * k <= m) {
-                    cnt2++;
-                    k *= 2;
-               }
-               while (cnt5 < cnt2 && 5 * k <= m) {
-                    cnt5++;
-                    k *= 5;
-               }
-               while (k * 10 <= m) {
-                    k *= 10;
-               }
-               if (k == 1) {
-                    out.println(m * nn);
-               } else {
-                    k *= (m / k); // 1 <= m / k < 10
-                    out.println(k * nn);
+               if ((min & x) != min) {
+                    out.println(0);
+                    return;
                }
           }
-          out.flush();
+          long fact = 1;
+          for (int i = 1; i <= n - 2; i++) {
+               fact = (fact * i) % MOD;
+          }
+          long ans = (1L * minCount * (minCount - 1)) % MOD;
+          ans = (ans * fact) % MOD;
+          out.println(ans);
+     }
+
+     public static void main(String[] args) {
+          in = new FastReader();
+          out = new PrintWriter(System.out);
+          int t = in.nextInt();
+          while (t-- > 0) {
+               solve();
+          }
+          out.close();
      }
 
      static class FastReader {
+
           BufferedReader br;
           StringTokenizer st;
 

@@ -1,33 +1,97 @@
 import java.util.*;
+import java.io.*;
+import java.util.*;
 
 public class Simple {
-     public static void main(String[] args) {
-          Scanner in = new Scanner(System.in);
+     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
+     static FASTIO in = new FASTIO();
+     static final int MOD = 998244353;
+
+     public static void main(String[] Hi) throws IOException {
+          int cp = 1;
+          while (cp-- > 0) {
+               solve();
+          }
+          out.close();
+     }
+
+     static void solve() {
           int n = in.nextInt();
-          int m = in.nextInt();
-          long[] arr = new long[n];
+          int[] arr = new int[n];
           for (int i = 0; i < n; i++) {
-               arr[i] = in.nextLong();
+               arr[i] = in.nextInt();
           }
-          SegTree segTree = new SegTree(n, arr);
-          System.out.println(Math.max(0, segTree.makeQuery(0, n - 1).maxSubarray));
-          for (int i = 0; i < m; i++) {
-               int index = in.nextInt();
-               long value = in.nextLong();
-               segTree.makeUpdate(index, value);
-               System.out.println(Math.max(0, segTree.makeQuery(0, n - 1).maxSubarray));
+          SegTree tree = new SegTree(n, arr);
+
+          int q = in.nextInt();
+          while (q-- > 0) {
+               int type = in.nextInt();
+               if (type == 1) {
+                    int ind = in.nextInt();
+                    int x = in.nextInt();
+                    tree.makeUpdate(ind, x);
+               } else {
+                    int l = in.nextInt();
+                    int r = in.nextInt();
+                    int x = in.nextInt();
+                    int sum = x + 1;
+                    // find out first i such that a[i] > x int the range from l -> r.
+                    int low = l, high = r;
+                    int ans = -1;
+                    while (low <= high) {
+                         int mid = (low + high) / 2;
+                         if (tree.makeQuery(low, mid).val >= sum) {
+                              ans = mid;
+                              high = mid - 1;
+                         } else {
+                              low = mid + 1;
+                         }
+                    }
+                    out.println(ans);
+               }
           }
-          in.close();
+     }
+
+     static class FASTIO {
+          BufferedReader br;
+          StringTokenizer st;
+
+          public FASTIO() {
+               br = new BufferedReader(new InputStreamReader(System.in));
+          }
+
+          String next() {
+               while (st == null || !st.hasMoreElements()) {
+                    try {
+                         st = new StringTokenizer(br.readLine());
+                    } catch (IOException e) {
+                         e.printStackTrace();
+                    }
+               }
+               return st.nextToken();
+          }
+
+          int nextInt() {
+               return Integer.parseInt(next());
+          }
+
+          long nextLong() {
+               return Long.parseLong(next());
+          }
+
+          double nextDouble() {
+               return Double.parseDouble(next());
+          }
      }
 }
 
 class SegTree {
      private Node[] tree;
-     private long[] arr;
+     private int[] arr;
      private int n;
      private int s;
 
-     public SegTree(int a_len, long[] a) {
+     public SegTree(int a_len, int[] a) {
           this.arr = a;
           this.n = a_len;
           this.s = 1;
@@ -80,8 +144,8 @@ class SegTree {
           return ans;
      }
 
-     public void makeUpdate(int index, long val) {
-          Update newUpdate = new Update(val);
+     public void makeUpdate(int index, int x) {
+          Update newUpdate = new Update(x);
           update(0, n - 1, 1, index, newUpdate);
      }
 
@@ -91,32 +155,29 @@ class SegTree {
 }
 
 class Node {
-     long sum, prefix, suffix, maxSubarray;
+     int val;
 
-     Node(long value) {
-          sum = prefix = suffix = maxSubarray = value;
+     public Node() {
+          this.val = (int) 1e9;
      }
 
-     Node() {
-          sum = prefix = suffix = maxSubarray = 0;
+     public Node(int p1) {
+          val = p1;
      }
 
-     public void merge(Node left, Node right) {
-          sum = left.sum + right.sum;
-          prefix = Math.max(left.prefix, left.sum + right.prefix);
-          suffix = Math.max(right.suffix, right.sum + left.suffix);
-          maxSubarray = Math.max(Math.max(left.maxSubarray, right.maxSubarray), left.suffix + right.prefix);
+     public void merge(Node l, Node r) {
+          val = l.val + r.val;
      }
 }
 
 class Update {
-     long val;
+     int x;
 
-     public Update(long p1) {
-          this.val = p1;
+     public Update(int x1) {
+          this.x = x1;
      }
 
      public void apply(Node a) {
-          a.sum = a.prefix = a.suffix = a.maxSubarray = val;
+          a.val = x;
      }
 }
