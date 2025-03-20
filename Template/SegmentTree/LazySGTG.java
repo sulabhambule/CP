@@ -94,7 +94,7 @@ class LazySGTG {
           u.apply(tree[index], start, end);
      }
 
-     private void update(int start, int end, int index, int left, int right, Update u) { // Never Change this
+     private void update(int start, int end, int index, int left, int right, Update u) {
           if (start > right || end < left)
                return;
           if (start >= left && end <= right) {
@@ -108,7 +108,7 @@ class LazySGTG {
           tree[index].merge(tree[2 * index], tree[2 * index + 1]);
      }
 
-     private Node query(int start, int end, int index, int left, int right) { // Never change this
+     private Node query(int start, int end, int index, int left, int right) {
           if (start > right || end < left)
                return new Node();
           if (start >= left && end <= right) {
