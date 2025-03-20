@@ -15,7 +15,22 @@ public class Simple {
      }
 
      static void solve() {
-
+          int n = in.nextInt();
+          int q = in.nextInt();
+          long[] p = new long[n];
+          for (int i = 0; i < n; i++) {
+               p[i] = in.nextLong();
+          }
+          while (q-- > 0) {
+               char type = in.next().charAt(0);
+               if (type == '!') {
+                    int k = in.nextInt();
+                    long x = in.nextLong();
+               } else {
+                    long a = in.nextLong();
+                    long b = in.nextLong();
+               }
+          }
      }
 
      static class FASTIO {

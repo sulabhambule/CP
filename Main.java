@@ -2,13 +2,12 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-
      static FastReader in;
      static PrintWriter out;
      static int MOD = (int) 1e9 + 7;
 
      static void solve() {
-          
+
      }
 
      public static void main(String[] args) {
@@ -22,7 +21,6 @@ public class Main {
      }
 
      static class FastReader {
-
           BufferedReader br;
           StringTokenizer st;
 
