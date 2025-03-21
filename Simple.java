@@ -7,23 +7,19 @@ public class Simple {
           PrintWriter out = new PrintWriter(System.out);
 
           int n = in.nextInt();
-          int[] arr = new int[n];
+          int[] a = new int[n];
 
           for (int i = 0; i < n; i++) {
-               arr[i] = in.nextInt();
+               a[i] = in.nextInt();
           }
 
-          int[] a = new int[n];
-          Arrays.fill(a, 1);
           int[] ans = new int[n];
-
-          SegTree tree = new SegTree(n, a);
+          SegTree tree = new SegTree(n);
 
           for (int i = n - 1; i >= 0; i--) {
-               int count = arr[i] + 1;
-               int index = tree.findKthOne(count);
-               ans[index] = i + 1;
-               tree.flip(index);
+               int index = tree.findKthOneFromRight(a[i] + 1); // Finding (a[i]+1)th one from the right
+               ans[i] = index + 1; // Convert 0-based to 1-based
+               tree.flip(index); // Mark as used
           }
 
           for (int i = 0; i < n; i++) {
@@ -35,19 +31,17 @@ public class Simple {
 
 class SegTree {
      private int[] tree;
-     private int[] arr;
      private int n;
 
-     public SegTree(int size, int[] array) {
+     public SegTree(int size) {
           this.n = size;
-          this.arr = array;
           this.tree = new int[4 * n];
           build(0, 0, n - 1);
      }
 
      private void build(int node, int start, int end) {
           if (start == end) {
-               tree[node] = arr[start];
+               tree[node] = 1;
                return;
           }
           int mid = (start + end) / 2;
@@ -58,7 +52,6 @@ class SegTree {
 
      private void update(int node, int start, int end, int idx) {
           if (start == end) {
-               arr[idx] = 0; // Mark the position as used (flip 1 → 0)
                tree[node] = 0;
                return;
           }
@@ -79,15 +72,17 @@ class SegTree {
           if (start == end)
                return start;
 
-          int leftCount = tree[2 * node + 1];
-          if (k > leftCount) {
-               return findKthOne(2 * node + 2, (start + end) / 2 + 1, end, k - leftCount);
+          int rightCount = tree[2 * node + 2];
+          int mid = (start + end) / 2;
+
+          if (k <= rightCount) {
+               return findKthOne(2 * node + 2, mid + 1, end, k);
           } else {
-               return findKthOne(2 * node + 1, start, (start + end) / 2, k);
+               return findKthOne(2 * node + 1, start, mid, k - rightCount);
           }
      }
 
-     public int findKthOne(int k) {
+     public int findKthOneFromRight(int k) {
           return findKthOne(0, 0, n - 1, k);
      }
 }
