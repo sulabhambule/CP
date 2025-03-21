@@ -7,7 +7,7 @@ public class Main {
      static int MOD = (int) 1e9 + 7;
 
      static void solve() {
-
+          
      }
 
      public static void main(String[] args) {

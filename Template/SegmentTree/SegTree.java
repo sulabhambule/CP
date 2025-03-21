@@ -82,7 +82,7 @@ class Node {
   }
 
   public void merge(Node l, Node r) {
-    this.val = l.val ^ r.val;
+    this.val = l.val + r.val;
   }
 }
 

@@ -16,21 +16,25 @@ public class Simple {
 
      static void solve() {
           int n = in.nextInt();
-          int q = in.nextInt();
           long[] p = new long[n];
           for (int i = 0; i < n; i++) {
-               p[i] = in.nextLong();
+               p[i] = in.nextLong() - 1;
           }
-          while (q-- > 0) {
-               char type = in.next().charAt(0);
-               if (type == '!') {
-                    int k = in.nextInt();
-                    long x = in.nextLong();
+          SegTree tree = new SegTree(n, new long[n]);
+          int[] ans = new int[n];
+          for (int i = 0; i < n; i++) {
+               int num = (int) p[i];
+               if (num == n - 1) {
+                    ans[i] = 0;
                } else {
-                    long a = in.nextLong();
-                    long b = in.nextLong();
+                    ans[i] = (int) tree.makeQuery(num + 1, n - 1).val;
                }
+               tree.makeUpdate(num, 1);
           }
+          for (int i : ans) {
+               out.print(i + " ");
+          }
+          out.println();
      }
 
      static class FASTIO {
@@ -66,84 +70,99 @@ public class Simple {
      }
 }
 
-class LazySimple {
+class SegTree {
+     private Node[] tree;
+     private long[] arr;
      private int n;
-     private int[] st;
-     private int[] lazy;
+     private int s;
 
-     public void init(int _n) {
-          this.n = _n;
-          st = new int[4 * n];
-          lazy = new int[4 * n];
-     }
-
-     private int combine(int a, int b) {
-          return a ^ b;
-     }
-
-     private void push(int start, int end, int node) {
-          if (lazy[node] != 0) {
-               int len = end - start + 1;
-               if (len % 2 == 0) {
-                    st[node] = 0;
-               } else {
-                    st[node] = lazy[node];
-               }
-               if (start != end) {
-                    lazy[2 * node + 1] = lazy[node];
-                    lazy[2 * node + 2] = lazy[node];
-               }
-               lazy[node] = 0;
+     public SegTree(int a_len, long[] a) {
+          this.arr = a;
+          this.n = a_len;
+          this.s = 1;
+          while (s < 2 * n) {
+               s = s << 1;
           }
+          tree = new Node[s];
+          Arrays.fill(tree, new Node());
+          build(0, n - 1, 1);
      }
 
-     private void build(int start, int end, int node, int[] v) {
+     private void build(int start, int end, int index) {
           if (start == end) {
-               st[node] = v[start];
+               tree[index] = new Node(arr[start]);
                return;
           }
           int mid = (start + end) / 2;
-          build(start, mid, 2 * node + 1, v);
-          build(mid + 1, end, 2 * node + 2, v);
-          st[node] = combine(st[2 * node + 1], st[2 * node + 2]);
+          build(start, mid, 2 * index);
+          build(mid + 1, end, 2 * index + 1);
+          tree[index] = new Node();
+          tree[index].merge(tree[2 * index], tree[2 * index + 1]);
      }
 
-     private int query(int start, int end, int l, int r, int node) {
-          push(start, end, node);
-          if (start > r || end < l)
-               return 0;
-          if (start >= l && end <= r)
-               return st[node];
-          int mid = (start + end) / 2;
-          int q1 = query(start, mid, l, r, 2 * node + 1);
-          int q2 = query(mid + 1, end, l, r, 2 * node + 2);
-          return combine(q1, q2);
-     }
-
-     private void update(int start, int end, int node, int l, int r, int value) {
-          push(start, end, node);
-          if (start > r || end < l)
-               return;
-          if (start >= l && end <= r) {
-               lazy[node] = value;
-               push(start, end, node);
+     private void update(int start, int end, int index, int queryIndex, Update u) {
+          if (start == end) {
+               u.apply(tree[index]);
                return;
           }
           int mid = (start + end) / 2;
-          update(start, mid, 2 * node + 1, l, r, value);
-          update(mid + 1, end, 2 * node + 2, l, r, value);
-          st[node] = combine(st[2 * node + 1], st[2 * node + 2]);
+          if (mid >= queryIndex) {
+               update(start, mid, 2 * index, queryIndex, u);
+          } else {
+               update(mid + 1, end, 2 * index + 1, queryIndex, u);
+          }
+          tree[index].merge(tree[2 * index], tree[2 * index + 1]);
      }
 
-     public void build(int[] v) {
-          build(0, n - 1, 0, v);
+     private Node query(int start, int end, int index, int left, int right) {
+          if (start > right || end < left) {
+               return new Node();
+          }
+          if (start >= left && end <= right) {
+               return tree[index];
+          }
+          int mid = (start + end) / 2;
+          Node l = query(start, mid, 2 * index, left, right);
+          Node r = query(mid + 1, end, 2 * index + 1, left, right);
+          Node ans = new Node();
+          ans.merge(l, r);
+          return ans;
      }
 
-     public int query(int l, int r) {
-          return query(0, n - 1, l, r, 0);
+     public void makeUpdate(int index, long val) {
+          Update newUpdate = new Update(val);
+          update(0, n - 1, 1, index, newUpdate);
      }
 
-     public void update(int l, int r, int x) {
-          update(0, n - 1, 0, l, r, x);
+     public Node makeQuery(int left, int right) {
+          return query(0, n - 1, 1, left, right);
+     }
+}
+
+class Node {
+     long val;
+
+     public Node() {
+          this.val = 0;
+     }
+
+     public Node(long p1) {
+          this.val = p1;
+     }
+
+     public void merge(Node l, Node r) {
+          this.val = l.val + r.val;
+     }
+}
+
+class Update {
+     long val;
+
+     public Update(long p1) {
+          this.val = p1;
+     }
+
+     public void apply(Node a) {
+          a.val = val;
      }
 }
