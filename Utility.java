@@ -7,6 +7,12 @@ public class Utility {
   }
 
   /*
+   * The formula (x+k)+(y+k)=(x+k)⊕(y+k) is equivalent to (x+k)&(y+k)=0, where &
+   * denotes the bitwise AND operation.
+   * It can be shown that such an non-negative integer k does not exist when x=y.
+   * When x≠y, one can show that k=2n−max(x,y) is a possible answer, where 2n is a
+   * power of 2 that is sufficiently large.
+   * 
    * Important tip : if we do the Xor and we allso take the Xor of the twp numebr
    * then the bit parity never changes
    * means : 1 ^ 1 -> 0 and 1 & 1 = 0. the bit remains the same at that bit.
