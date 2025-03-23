@@ -1,4 +1,4 @@
-package MAths;
+package Maths;
 // atcoder problem Link: https://atcoder.jp/contests/abc148/tasks/abc148_e
 
 // Heree the f(n) - n * f(n - 2).

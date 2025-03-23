@@ -1,3 +1,4 @@
+package Maths;
 
 import java.io.*;
 import java.util.*;
