@@ -21,65 +21,7 @@ public class TLE {
     }
 
     static void solve() {
-        int n = in.nextInt();
-        int m = in.nextInt();
-        int[][] arr = new int[n][m];
-        int[][] rp = new int[n][m];
-        int[][] cP = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            String ss = in.next();
-            for (int j = 0; j < m; j++) {
-                char x = ss.charAt(j);
-                if (x == '1') {
-                    arr[i][j] = 1;
-                } else {
-                    arr[i][j] = 0;
-                }
-            }
-        }
-
-        for (int i = 0; i < n; i++) {
-            rp[i][0] = arr[i][0];
-            int sum = rp[i][0];
-            for (int j = 1; j < m; j++) {
-
-                if (arr[i][j] == 1) {
-                    sum++;
-                    rp[i][j] = sum;
-                } else {
-                    sum = 0;
-                }
-            }
-        }
-
-        for (int j = 0; j < m; j++) {
-            cP[0][j] = arr[0][j];
-            int sum = cP[0][j];
-            for (int i = 1; i < n; i++) {
-                if (arr[i][j] == 1) {
-                    sum++;
-                    cP[i][j] = sum;
-                } else {
-                    sum = 0;
-                }
-            }
-        }
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (arr[i][j] == 1) {
-                    if (i == 0 || j == 0) {
-                        continue;
-                    }
-                    if (rp[i][j] == (j + 1) || cP[i][j] == (i + 1)) {
-                        continue;
-                    }
-                    no();
-                    return;
-                }
-            }
-        }
-        yes();
+        
     }
 
     /*---------------------------------------------------------------------------------------------------------*/

@@ -21,7 +21,7 @@ def get_solved_problems(handle):
 def get_latest_contests(count=400):
     """Fetches recent contests that match Div. 2, Educational, or Div. 3"""
     url = "https://codeforces.com/api/contest.list"
-    response = requests.get(url).json()
+    response = requests.get(url).json   ()
 
     if response["status"] != "OK":
         print("Error fetching contests!")

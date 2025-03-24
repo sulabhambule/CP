@@ -2,13 +2,15 @@ import java.io.*;
 import java.util.*;
 
 public class Simple {
-     static FastIO in = new FastIO();
-     static PrintWriter out = new PrintWriter(System.out);
+     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
+     static FASTIO in = new FASTIO();
+     static final int MOD = (int) 1e9 + 7;
+     // static final int MOD = 998244353;
+     static final int inf = (int) 1e9;
 
-     public static void main(String[] args) throws IOException {
-
-          int t = in.nextInt();
-          while (t-- > 0) {
+     public static void main(String[] Hi) throws IOException {
+          int cp = in.nextInt();
+          while (cp-- > 0) {
                solve();
           }
 
@@ -16,26 +18,40 @@ public class Simple {
      }
 
      static void solve() {
-
-     }
-}
-
-class FastIO {
-     BufferedReader br;
-     StringTokenizer st;
-
-     public FastIO() {
-          br = new BufferedReader(new InputStreamReader(System.in));
+          
      }
 
-     String next() throws IOException {
-          while (st == null || !st.hasMoreElements()) {
-               st = new StringTokenizer(br.readLine());
+     /*---------------------------------------------------------------------------------------------------------*/
+
+     static class FASTIO {
+          BufferedReader br;
+          StringTokenizer st;
+
+          public FASTIO() {
+               br = new BufferedReader(new InputStreamReader(System.in));
           }
-          return st.nextToken();
-     }
 
-     int nextInt() throws IOException {
-          return Integer.parseInt(next());
+          String next() {
+               while (st == null || !st.hasMoreElements()) {
+                    try {
+                         st = new StringTokenizer(br.readLine());
+                    } catch (IOException e) {
+                         e.printStackTrace();
+                    }
+               }
+               return st.nextToken();
+          }
+
+          int nextInt() {
+               return Integer.parseInt(next());
+          }
+
+          long nextLong() {
+               return Long.parseLong(next());
+          }
+
+          double nextDouble() {
+               return Double.parseDouble(next());
+          }
      }
 }
