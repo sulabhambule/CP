@@ -46,6 +46,22 @@ class SegmentTree {
     return query(0, 0, n - 1, left, right);
   }
 
+  private int findKthOne(int node, int start, int end, int k) {
+    if (start == end)
+      return start;
+
+    int leftCount = tree[2 * node + 1]; // Number of 1s in the left subtree
+    if (k < leftCount) {
+      return findKthOne(2 * node + 1, start, (start + end) / 2, k);
+    } else {
+      return findKthOne(2 * node + 2, (start + end) / 2 + 1, end, k - leftCount);
+    }
+  }
+
+  public int findKthOne(int k) {
+    return findKthOne(0, 0, n - 1, k);
+  }
+
   private int query(int node, int start, int end, int l, int r) {
     if (r < start || l > end)
       return 0; // Completely outside
