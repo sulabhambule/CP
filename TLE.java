@@ -11,26 +11,8 @@ public class TLE {
     // static final int MOD = 998244353;
     static final int inf = (int) 1e9;
 
-    static final int MAX_N = 10_000_005;
-    static boolean[] isPrime;
-
-    static void sieve() {
-        isPrime = new boolean[MAX_N];
-        Arrays.fill(isPrime, true);
-        isPrime[0] = isPrime[1] = false;
-
-        for (int p = 2; p * p < MAX_N; p++) {
-            if (isPrime[p]) {
-                for (int m = p * p; m < MAX_N; m += p) {
-                    isPrime[m] = false;
-                }
-            }
-        }
-    }
-
     public static void main(String[] Hi) throws IOException {
         int cp = in.nextInt();
-        sieve();
         while (cp-- > 0) {
             solve();
         }
@@ -38,23 +20,8 @@ public class TLE {
         out.close();
     }
 
-    
-    `
     static void solve() {
-        long n = in.nextInt();
-        long count = 0;
 
-        for (int g = 1; g <= n; g++) {
-            for (int m = 2 * g; m <= n; m += g) {
-                int F = m / g;
-                // a * b / g * g
-                // g * m / g * g => m / g
-                if (isPrime[F]) {
-                    count++;
-                }
-            }
-        }
-        println(count);
     }
 
     /*---------------------------------------------------------------------------------------------------------*/
