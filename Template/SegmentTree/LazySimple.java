@@ -3,39 +3,31 @@ import java.util.*;
 
 public class LazySimple {
   private int n;
-  private int[] st;
-  private int[][] lazy;
+  private long[] st;
+  private long[] lazy;
 
   public void init(int _n) {
     this.n = _n;
-    st = new int[4 * n];
-    lazy = new int[4 * n][2];
+    st = new long[4 * n];
+    lazy = new long[4 * n];
   }
 
-  private int combine(int a, int b) {
+  private long combine(long a, long b) {
     return a + b;
   }
 
   private void push(int start, int end, int node) {
-    if (lazy[node][1] != 0) {
-      // means that the common difference is greater than zero, we need to update it.
-      int len = end - start + 1;
-      st[node] += len * (lazy[node][0] - lazy[node][1]) + lazy[node][1] * len * (len + 1) / 2;
-
+    if (lazy[node] != 0) {
+      st[node] += (end - start + 1) * lazy[node];
       if (start != end) {
-        int mid = (start + end) / 2;
-        int diff = (mid + 1) - start;
-        // diff is the right child index in the tree
-        lazy[2 * node + 1][0] += lazy[node][0];
-        lazy[2 * node + 2][0] += lazy[node][0] + diff * lazy[node][1];
-        lazy[2 * node + 1][1] += lazy[node][1];
-        lazy[2 * node + 2][1] += lazy[node][1];
+        lazy[2 * node + 1] += lazy[node];
+        lazy[2 * node + 2] += lazy[node];
       }
-      lazy[node] = new int[] { 0, 0 };
+      lazy[node] = 0;
     }
   }
 
-  private void build(int start, int end, int node, int[] v) {
+  private void build(int start, int end, int node, long[] v) {
     if (start == end) {
       st[node] = v[start];
       return;
@@ -46,24 +38,24 @@ public class LazySimple {
     st[node] = combine(st[2 * node + 1], st[2 * node + 2]);
   }
 
-  private int query(int start, int end, int l, int r, int node) {
+  private long query(int start, int end, int l, int r, int node) {
     push(start, end, node);
     if (start > r || end < l)
       return 0;
     if (start >= l && end <= r)
       return st[node];
     int mid = (start + end) / 2;
-    int q1 = query(start, mid, l, r, 2 * node + 1);
-    int q2 = query(mid + 1, end, l, r, 2 * node + 2);
+    long q1 = query(start, mid, l, r, 2 * node + 1);
+    long q2 = query(mid + 1, end, l, r, 2 * node + 2);
     return combine(q1, q2);
   }
 
-  private void update(int start, int end, int node, int l, int r, int value) {
+  private void update(int start, int end, int node, int l, int r, long value) {
     push(start, end, node);
     if (start > r || end < l)
       return;
     if (start >= l && end <= r) {
-      lazy[node] = new int[] { start - l + 1, 1 };
+      lazy[node] = value;
       push(start, end, node);
       return;
     }
@@ -73,15 +65,15 @@ public class LazySimple {
     st[node] = combine(st[2 * node + 1], st[2 * node + 2]);
   }
 
-  public void build(int[] v) {
+  public void build(long[] v) {
     build(0, n - 1, 0, v);
   }
 
-  public int query(int l, int r) {
+  public long query(int l, int r) {
     return query(0, n - 1, l, r, 0);
   }
 
-  public void update(int l, int r, int x) {
+  public void update(int l, int r, long x) {
     update(0, n - 1, 0, l, r, x);
   }
 }
