@@ -20,7 +20,7 @@ class CodeChef {
   }
 
   static void solve() {
-    
+
   }
 
   static class FASTIO {
@@ -56,7 +56,19 @@ class CodeChef {
 
   }
 
-  /*----------------------------------------------------------------------------------------------------------- */
+  /*----------------------------------------------------------------------------- */
+
+  static int lowerBound(long[] arr, long X) {
+    int l = 0, r = arr.length;
+    while (l < r) {
+      int mid = (l + r) / 2;
+      if (arr[mid] < X)
+        l = mid + 1;
+      else
+        r = mid;
+    }
+    return l;
+  }
 
   static long gcd(long a, long b) {
     if (a == 0)
@@ -119,9 +131,9 @@ class CodeChef {
     return m;
   }
 
-  static int sum(int[] a) {
-    int s = 0;
-    for (int i : a)
+  static long sum(long[] a) {
+    long s = 0;
+    for (long i : a)
       s += i;
     return s;
   }

@@ -1,139 +1,118 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define int long long
+typedef long long ll;
+#define MOD 1000000007
+#define INF 1000000000
 
-struct LazySimple
-{
-    int n;
-    vector<int> st;
-    vector<pair<int, int>> lazy; // {start term, common difference}
-
-    void init(int _n)
-    {
-        n = _n;
-        st.assign(4 * n, 0);
-        lazy.assign(4 * n, {0, 0});
-    }
-
-    int combine(int a, int b)
-    {
-        return a + b;
-    }
-
-    void push(int start, int end, int node)
-    {
-        if (lazy[node].second != 0)
-        {
-            int len = end - start + 1;
-            st[node] += len * (lazy[node].first - lazy[node].second) + lazy[node].second * len * (len + 1) / 2;
-
-            if (start != end)
-            {
-                int mid = (start + end) / 2;
-                int diff = (mid + 1) - start;
-
-                lazy[2 * node + 1].first += lazy[node].first;
-                lazy[2 * node + 2].first += lazy[node].first + diff * lazy[node].second;
-                lazy[2 * node + 1].second += lazy[node].second;
-                lazy[2 * node + 2].second += lazy[node].second;
-            }
-            lazy[node] = {0, 0};
-        }
-    }
-
-    void build(int start, int end, int node, vector<int> &v)
-    {
-        if (start == end)
-        {
-            st[node] = v[start];
-            return;
-        }
-        int mid = (start + end) / 2;
-        build(start, mid, 2 * node + 1, v);
-        build(mid + 1, end, 2 * node + 2, v);
-        st[node] = combine(st[2 * node + 1], st[2 * node + 2]);
-    }
-
-    int query(int start, int end, int l, int r, int node)
-    {
-        push(start, end, node);
-        if (start > r || end < l)
-            return 0;
-        if (start >= l && end <= r)
-            return st[node];
-
-        int mid = (start + end) / 2;
-        int q1 = query(start, mid, l, r, 2 * node + 1);
-        int q2 = query(mid + 1, end, l, r, 2 * node + 2);
-        return combine(q1, q2);
-    }
-
-    void update(int start, int end, int node, int l, int r, int value)
-    {
-        push(start, end, node);
-        if (start > r || end < l)
-            return;
-        if (start >= l && end <= r)
-        {
-            lazy[node] = {start - l + 1, 1};
-            push(start, end, node);
-            return;
-        }
-        int mid = (start + end) / 2;
-        update(start, mid, 2 * node + 1, l, r, value);
-        update(mid + 1, end, 2 * node + 2, l, r, value);
-        st[node] = combine(st[2 * node + 1], st[2 * node + 2]);
-    }
-
-    void build(vector<int> &v)
-    {
-        build(0, n - 1, 0, v);
-    }
-
-    int query(int l, int r)
-    {
-        return query(0, n - 1, l, r, 0);
-    }
-
-    void update(int l, int r, int x)
-    {
-        update(0, n - 1, 0, l, r, x);
+struct Node {
+    ll val;
+    Node() : val(0) {}
+    Node(ll v) : val(v) {}
+    void merge(const Node &l, const Node &r) {
+        val = max(l.val, r.val);
     }
 };
 
-int32_t main()
-{
+struct Update {
+    ll x;
+    Update(ll v) : x(v) {}
+    void apply(Node &a) {
+        a.val = x;
+    }
+};
+
+class SegTree {
+private:
+    vector<Node> tree;
+    vector<ll> arr;
+    int n, s;
+
+    void build(int start, int end, int index) {
+        if (start == end) {
+            tree[index] = Node(arr[start]);
+            return;
+        }
+        int mid = (start + end) / 2;
+        build(start, mid, 2 * index);
+        build(mid + 1, end, 2 * index + 1);
+        tree[index].merge(tree[2 * index], tree[2 * index + 1]);
+    }
+
+    void update(int start, int end, int index, int queryIndex, Update u) {
+        if (start == end) {
+            u.apply(tree[index]);
+            return;
+        }
+        int mid = (start + end) / 2;
+        if (mid >= queryIndex) update(start, mid, 2 * index, queryIndex, u);
+        else update(mid + 1, end, 2 * index + 1, queryIndex, u);
+        tree[index].merge(tree[2 * index], tree[2 * index + 1]);
+    }
+
+    Node query(int start, int end, int index, int left, int right) {
+        if (start > right || end < left) return Node();
+        if (start >= left && end <= right) return tree[index];
+        int mid = (start + end) / 2;
+        Node l = query(start, mid, 2 * index, left, right);
+        Node r = query(mid + 1, end, 2 * index + 1, left, right);
+        Node ans;
+        ans.merge(l, r);
+        return ans;
+    }
+
+public:
+    SegTree(int a_len, vector<ll> &a) {
+        arr = a;
+        n = a_len;
+        s = 4 * n;
+        tree.resize(s);
+        build(0, n - 1, 1);
+    }
+
+    void makeUpdate(int index, ll x) {
+        update(0, n - 1, 1, index, Update(x));
+    }
+
+    Node makeQuery(int left, int right) {
+        return query(0, n - 1, 1, left, right);
+    }
+};
+
+void solve() {
+    int n, m;
+    cin >> n >> m;
+    vector<ll> arr(n);
+    for (int i = 0; i < n; i++) cin >> arr[i];
+    vector<ll> rm(m);
+    for (int i = 0; i < m; i++) cin >> rm[i];
+
+    SegTree tree(n, arr);
+    for (int i = 0; i < m; i++) {
+        ll x = rm[i];
+        int low = 0, high = n - 1, ans = -1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (tree.makeQuery(low, mid).val >= x) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        if (ans == -1) cout << 0 << " ";
+        else {
+            cout << (ans + 1) << " ";
+            tree.makeUpdate(ans, tree.makeQuery(ans, ans).val - x);
+            arr[ans] -= x;
+        }
+    }
+    cout << "\n";
+}
+
+int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-
-    int n, q;
-    cin >> n >> q;
-
-    vector<int> t(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> t[i];
-    }
-
-    LazySimple tree;
-    tree.init(n);
-    tree.build(t);
-
-    while (q--)
-    {
-        int type, a, b;
-        cin >> type >> a >> b;
-        a--, b--; // 0-indexed
-        if (type == 1)
-        {
-            tree.update(a, b, 1); // Range Update
-        }
-        else
-        {
-            cout << tree.query(a, b) << '\n'; // Range Sum Query
-        }
-    }
-
+    solve();
     return 0;
 }
