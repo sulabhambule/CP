@@ -61,7 +61,7 @@ public class Sliding_Advance {
     return ans;
   }
 
-  // max num is sliding window og size k. with Deque optimization
+  // max num is sliding window of size k. with Deque optimization
 
   public int[] maxSlidingWindow2(int[] nums, int k) {
     int n = nums.length;
@@ -116,7 +116,6 @@ public class Sliding_Advance {
         }
 
         if (!minSet.remove(i - k + 1)) {
-            
           maxSet.remove(i - k + 1);
         }
       }

@@ -9,7 +9,7 @@ public class Simple {
      static final int inf = (int) 1e9;
 
      public static void main(String[] Hi) throws IOException {
-          int cp = 1;
+          int cp = in.nextInt();
           while (cp-- > 0) {
                solve();
           }
@@ -18,8 +18,8 @@ public class Simple {
      }
 
      static void solve() {
-
-     }
+          
+     }  
 
      /*---------------------------------------------------------------------------------------------------------*/
 
