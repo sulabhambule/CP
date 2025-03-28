@@ -13,7 +13,6 @@ public class Simple {
           while (cp-- > 0) {
                solve();
           }
-
           out.close();
      }
 
