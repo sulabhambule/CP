@@ -21,7 +21,6 @@ public class TLE {
     }
 
     static void solve() {
-        
     }
 
     /*---------------------------------------------------------------------------------------------------------*/
@@ -61,15 +60,15 @@ public class TLE {
 
     /*----------------------------------------------------------------------------------------------------------- */
 
-    static int gcd(int a, int b) {
+    static long gcd(long a, long a2) {
         if (a == 0)
-            return b;
-        return gcd(b % a, a);
+            return a2;
+        return gcd(a2 % a, a);
     }
 
-    static int lcm(int a, int b) {
-        return Math.abs(a * b) / gcd(a, b);
-    }
+    // static int lcm(int a, int b) {
+    // return Math.abs(a * b) / gcd(a, b);
+    // }
 
     static boolean isPrime(long arr) {
         if (arr <= 1)
@@ -108,10 +107,10 @@ public class TLE {
         return r;
     }
 
-    static int maxA(int[] arr) {
-        int m = Integer.MIN_VALUE;
-        for (int i : arr)
-            m = max(m, i);
+    static long maxA(long[] arr) {
+        long m = 0;
+        for (long i : arr)
+            m = Math.max(m, i);
         return m;
     }
 
@@ -122,9 +121,9 @@ public class TLE {
         return m;
     }
 
-    static int sum(int[] a) {
-        int s = 0;
-        for (int i : a)
+    static long sum(long[] a) {
+        long s = 0;
+        for (long i : a)
             s += i;
         return s;
     }
