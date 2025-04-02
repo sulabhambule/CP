@@ -9,19 +9,19 @@ class SegmentTree {
 
   public SegmentTree(int[] arr) {
     this.n = arr.length;
-    this.tree = new int[4 * n]; // Segment tree size (4*n is safe)
+    this.tree = new int[4 * n];
     build(arr, 0, 0, n - 1);
   }
 
   private void build(int[] arr, int node, int start, int end) {
     if (start == end) {
-      tree[node] = arr[start]; // Leaf node stores the array value
+      tree[node] = arr[start]; 
       return;
     }
     int mid = (start + end) / 2;
     build(arr, 2 * node + 1, start, mid);
     build(arr, 2 * node + 2, mid + 1, end);
-    tree[node] = tree[2 * node + 1] + tree[2 * node + 2]; // Merge function (sum)
+    tree[node] = tree[2 * node + 1] + tree[2 * node + 2]; 
   }
 
   public void update(int index, int value) {
@@ -30,7 +30,7 @@ class SegmentTree {
 
   private void update(int node, int start, int end, int idx, int value) {
     if (start == end) {
-      tree[node] = value; // Update the leaf node
+      tree[node] = value; 
       return;
     }
     int mid = (start + end) / 2;
@@ -39,7 +39,7 @@ class SegmentTree {
     } else {
       update(2 * node + 2, mid + 1, end, idx, value);
     }
-    tree[node] = tree[2 * node + 1] + tree[2 * node + 2]; // Recalculate sum
+    tree[node] = tree[2 * node + 1] + tree[2 * node + 2]; 
   }
 
   public int query(int left, int right) {
@@ -50,7 +50,7 @@ class SegmentTree {
     if (start == end)
       return start;
 
-    int leftCount = tree[2 * node + 1]; // Number of 1s in the left subtree
+    int leftCount = tree[2 * node + 1];
     if (k < leftCount) {
       return findKthOne(2 * node + 1, start, (start + end) / 2, k);
     } else {

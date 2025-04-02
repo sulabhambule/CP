@@ -1,2 +1,5 @@
+f (n <= 6) {
 
-  public Update(long p1) {
+    // println((max - min) % MOD);
+    // return;
+    // }
