@@ -20,7 +20,7 @@ class CodeChef {
   }
 
   static void solve() {
-
+    
   }
 
   static class FASTIO {
