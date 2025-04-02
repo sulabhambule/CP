@@ -17,12 +17,8 @@ public class Simple {
      }
 
      static void solve() {
-          int n = in.nextInt();
-          long k = in.nextLong();
           
      }
-
-     /*---------------------------------------------------------------------------------------------------------*/
 
      static class FASTIO {
           BufferedReader br;
