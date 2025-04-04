@@ -22,50 +22,7 @@ class CodeChef {
   static void solve() {
     int n = in.nextInt();
     int k = in.nextInt();
-    char[] a = new char[n];
-    char[] b = new char[n];
-    // for (int i = 0; i < n; i++) {
-    // if (i % 3 == 0) {
-    // a[i] = 'A';
-    // } else if (i % 3 == 1) {
-    // a[i] = 'B';
-    // } else {
-    // a[i] = 'C';
-    // }
-    // }
-    
-    if (n == 1) {
-      if (k == 0) {
-        println('A');
-        println('B');
-      } else {
-        println('A');
-        println('A');
-      }
-      return;
-    }
 
-    if (k < (n / 2) || k > n) {
-      println(-1);
-      return;
-    }
-    int count = 0;
-    for (int i = 0; i < n; i++) {
-      if (i % 2 == 0) {
-        a[i] = 'A';
-      } else {
-        a[i] = 'C';
-      }
-    }
-    b = a.clone();
-    int j = 0;
-    while (j < n && count < n - k) {
-      count++;
-      b[j] = 'B';
-      j += 2;
-    }
-    println(new String(a));
-    println(new String(b));
   }
 
   private static void swap2(char[] array, int i, int j) {

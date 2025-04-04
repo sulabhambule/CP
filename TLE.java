@@ -7,11 +7,16 @@ import java.util.*;
 public class TLE {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
     static FASTIO in = new FASTIO();
-    static final int MOD = (int) 1e9 + 7;
-    // static final int MOD = 998244353;
+    // static final int MOD = (int) 1e9 + 7;
+    static final int MOD = 998244353;
     static final int inf = (int) 1e9;
+    static long[] fact = new long[(int) 5e5 + 5];
 
     public static void main(String[] Hi) throws IOException {
+        fact[0] = 1;
+        for (int i = 1; i < (int) 5e5 + 5; i++) {
+            fact[i] = (fact[i - 1] * i) % MOD;
+        }
         int cp = in.nextInt();
         while (cp-- > 0) {
             solve();
@@ -21,8 +26,38 @@ public class TLE {
     }
 
     static void solve() {
+        long[] c = new long[27];
+        for (int i = 1; i <= 26; i++) {
+            c[i] = in.nextLong();
+        }
+        long sum = sum(c);
+        long[][] dp = new long[27][(int) sum + 1];
+        dp[0][0] = 1;
+
+        for (int i = 1; i <= 26; i++) {
+            for (int j = 0; j <= sum / 2; j++) {
+                dp[i][j] = dp[i - 1][j];
+                if (c[i] > 0 && j - c[i] >= 0) {
+                    dp[i][j] = (dp[i][j] + dp[i - 1][(int) (j - c[i])]) % MOD;
+                }
+            }
+        }
+
+        long ans = dp[26][(int) (sum / 2)];
+        ans = (ans * fact[(int) (sum / 2)]) % MOD;
+        ans = (ans * fact[(int) ((sum + 1) / 2)]) % MOD;
+
+        for (int i = 1; i <= 26; i++) {
+            ans = (ans * modPow(fact[(int) c[i]], MOD - 2, MOD)) % MOD;
+        }
+
+        println(ans);
     }
 
+    static long modDiv(long x, long y, long mod) {
+        // x * y^(MOD-2) % MOD
+        return (x * modPow(y, mod - 2, mod)) % mod;
+    }
     /*---------------------------------------------------------------------------------------------------------*/
 
     static class FASTIO {
@@ -66,9 +101,9 @@ public class TLE {
         return gcd(a2 % a, a);
     }
 
-    // static int lcm(int a, int b) {
-    // return Math.abs(a * b) / gcd(a, b);
-    // }
+    static long lcm(long a, long b) {
+        return Math.abs(a * b) / gcd(a, b);
+    }
 
     static boolean isPrime(long arr) {
         if (arr <= 1)
@@ -80,9 +115,9 @@ public class TLE {
         return true;
     }
 
-    static void reverse(int[] a, int l, int r) {
+    static void reverse(long[] a, int l, int r) {
         while (l < r) {
-            int t = a[l];
+            long t = a[l];
             a[l] = a[r];
             a[r] = t;
             l++;
@@ -124,6 +159,13 @@ public class TLE {
     static long sum(long[] a) {
         long s = 0;
         for (long i : a)
+            s += i;
+        return s;
+    }
+
+    static int sum(int[] a) {
+        int s = 0;
+        for (int i : a)
             s += i;
         return s;
     }
