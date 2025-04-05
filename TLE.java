@@ -10,13 +10,8 @@ public class TLE {
     // static final int MOD = (int) 1e9 + 7;
     static final int MOD = 998244353;
     static final int inf = (int) 1e9;
-    static long[] fact = new long[(int) 5e5 + 5];
 
     public static void main(String[] Hi) throws IOException {
-        fact[0] = 1;
-        for (int i = 1; i < (int) 5e5 + 5; i++) {
-            fact[i] = (fact[i - 1] * i) % MOD;
-        }
         int cp = in.nextInt();
         while (cp-- > 0) {
             solve();
@@ -26,32 +21,23 @@ public class TLE {
     }
 
     static void solve() {
-        long[] c = new long[27];
-        for (int i = 1; i <= 26; i++) {
-            c[i] = in.nextLong();
+        int n = in.nextInt();
+        long[] a = inputLongArr(n);
+        long[] b = inputLongArr(n);
+        long s1 = sum(a);
+        long s2 = sum(b);
+        long min1 = Long.MAX_VALUE;
+        long min2 = Long.MAX_VALUE;
+        for (long nn : a) {
+            min1 = min(min1, nn);
         }
-        long sum = sum(c);
-        long[][] dp = new long[27][(int) sum + 1];
-        dp[0][0] = 1;
-
-        for (int i = 1; i <= 26; i++) {
-            for (int j = 0; j <= sum / 2; j++) {
-                dp[i][j] = dp[i - 1][j];
-                if (c[i] > 0 && j - c[i] >= 0) {
-                    dp[i][j] = (dp[i][j] + dp[i - 1][(int) (j - c[i])]) % MOD;
-                }
-            }
+        for (long nn : b) {
+            min2 = min(min2, nn);
         }
+        min1 *= n;
+        min2 *= n;
 
-        long ans = dp[26][(int) (sum / 2)];
-        ans = (ans * fact[(int) (sum / 2)]) % MOD;
-        ans = (ans * fact[(int) ((sum + 1) / 2)]) % MOD;
-
-        for (int i = 1; i <= 26; i++) {
-            ans = (ans * modPow(fact[(int) c[i]], MOD - 2, MOD)) % MOD;
-        }
-
-        println(ans);
+        println(min(min1 + s2, min2 + s1));
     }
 
     static long modDiv(long x, long y, long mod) {
