@@ -2,13 +2,14 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class TLE {
     public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
     static FASTIO in = new FASTIO();
-    // static final int MOD = (int) 1e9 + 7;
-    static final int MOD = 998244353;
+    static final int MOD = (int) 1e9 + 7;
+    // static final int MOD = 998244353;
     static final int inf = (int) 1e9;
 
     public static void main(String[] Hi) throws IOException {
@@ -21,29 +22,9 @@ public class TLE {
     }
 
     static void solve() {
-        int n = in.nextInt();
-        long[] a = inputLongArr(n);
-        long[] b = inputLongArr(n);
-        long s1 = sum(a);
-        long s2 = sum(b);
-        long min1 = Long.MAX_VALUE;
-        long min2 = Long.MAX_VALUE;
-        for (long nn : a) {
-            min1 = min(min1, nn);
-        }
-        for (long nn : b) {
-            min2 = min(min2, nn);
-        }
-        min1 *= n;
-        min2 *= n;
-
-        println(min(min1 + s2, min2 + s1));
+        
     }
 
-    static long modDiv(long x, long y, long mod) {
-        // x * y^(MOD-2) % MOD
-        return (x * modPow(y, mod - 2, mod)) % mod;
-    }
     /*---------------------------------------------------------------------------------------------------------*/
 
     static class FASTIO {
@@ -99,6 +80,11 @@ public class TLE {
                 return false;
         }
         return true;
+    }
+
+    static long modDiv(long x, long y, long mod) {
+        // x * y^(MOD-2) % MOD
+        return (x * modPow(y, mod - 2, mod)) % mod;
     }
 
     static void reverse(long[] a, int l, int r) {

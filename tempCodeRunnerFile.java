@@ -1,5 +1,4 @@
-f (n <= 6) {
-
-    // println((max - min) % MOD);
-    // return;
-    // }
+cm >= 2) {
+        // yes();
+        // return;
+        // }

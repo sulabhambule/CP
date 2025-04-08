@@ -10,10 +10,17 @@ public class Main {
     while (t-- > 0) {
       solve();
     }
+    out.flush();
   }
 
   static void solve() {
     
+  }
+
+  static long gcd(long a, long a2) {
+    if (a == 0)
+      return a2;
+    return gcd(a2 % a, a);
   }
 
   static class FastReader {

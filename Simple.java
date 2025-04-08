@@ -1,4 +1,5 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Simple {
@@ -75,22 +76,12 @@ class LazySeg {
      public void init(int n) {
           this.n = n;
           lazy = new long[4 * n];
+          Arrays.fill(lazy, -1);
           st = new long[4 * n];
      }
 
      public long combine(long a, long b) {
-          return (a & b);
-     }
-
-     public void push(int start, int end, int node) {
-          if (lazy[node] != 0) {
-               st[node] |= lazy[node];
-               if (start != end) {
-                    lazy[2 * node + 1] |= lazy[node];
-                    lazy[2 * node + 2] |= lazy[node];
-               }
-               lazy[node] = 0;
-          }
+          return (a + b);
      }
 
      public void build(int start, int end, int node, long[] v) {
@@ -104,26 +95,37 @@ class LazySeg {
           st[node] = combine(st[2 * node + 1], st[2 * node + 2]);
      }
 
-     public void update(int start, int end, int l, int r, int node, long val) {
+     public void push(int start, int end, int node) {
+          if (lazy[node] != -1) {
+               st[node] = lazy[node] * (end - start + 1);
+               if (start != end) {
+                    lazy[2 * node + 1] = lazy[node];
+                    lazy[2 * node + 2] = lazy[node];
+               }
+               lazy[node] = -1;
+          }
+     }
+
+     public void update(int start, int end, int l, int r, int node, long value) {
           push(start, end, node);
           if (start > r || end < l) {
                return;
           }
           if (start >= l && end <= r) {
-               lazy[node] |= (val);
+               lazy[node] = value;
                push(start, end, node);
                return;
           }
           int mid = (start + end) / 2;
-          update(start, mid, l, r, 2 * node + 1, val);
-          update(mid + 1, end, l, r, 2 * node + 2, val);
+          update(start, mid, l, r, 2 * node + 1, value);
+          update(mid + 1, end, l, r, 2 * node + 2, value);
           st[node] = combine(st[2 * node + 1], st[2 * node + 2]);
      }
 
      public long query(int start, int end, int l, int r, int node) {
           push(start, end, node);
           if (start > r || end < l) {
-               return ~0L;
+               return 0;
           }
           if (start >= l && end <= r) {
                return st[node];
