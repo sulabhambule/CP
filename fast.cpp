@@ -1,76 +1,72 @@
-    #include <bits/stdc++.h>
-    using namespace std;
-    #define int long long
-    #define MOD 1000000007
-    #define inf 1000000000
+#include <bits/stdc++.h>
+using namespace std;
 
-    void solve()
+#define int long long
+#define fast_io                  \
+    ios::sync_with_stdio(false); \
+    cin.tie(0);                  \
+    cout.tie(0);
+
+bool isP(vector<int> &a, int k, int mex)
+{
+    int n = a.size();
+    int count = 0;
+    vector<int> freq(mex, 0);
+    int cm = 0;
+    vector<bool> seen(mex, false);
+
+    for (int i = 0; i < n; i++)
     {
-        int n, k;
-        long long x;
-        cin >> n >> k >> x;
-        vector<long long> a(n);
-
-        for (int i = 0; i < n; i++)
+        int val = a[i];
+        if (val < mex && !seen[val])
         {
-            cin >> a[i];
+            seen[val] = true;
+            cm++;
         }
 
-        long long sum = accumulate(a.begin(), a.end(), 0LL);
-        reverse(a.begin(), a.end());
-
-        long long l = 1, h = n * k;
-        long long ans = 0;
-
-        while (l <= h)
+        if (cm == mex)
         {
-            int mid = (l + h) / 2;
-            if ([&]
-                {
-                int nn = mid / n;
-                int mn = mid % n;
-                if (mn == 0) {
-                    nn--;
-                    mn = n;
-                }
-                long long remaining_x = x - (nn * sum);
-                long long ss = 0;
-                for (int i = 0; i < mn; i++) {
-                    ss += a[i];
-                    if (ss >= remaining_x) return true;
-                }
-                return ss >= remaining_x; }())
-            {
-                ans = mid;
-                h = mid - 1;
-            }
-            else
-            {
-                l = mid + 1;
-            }
+            count++;
+            cm = 0;
+            fill(seen.begin(), seen.end(), false);
         }
-
-        if (ans == 0)
-        {
-            cout << 0 << '\n';
-            return;
-        }
-
-        long long aa = (long long)n * k - ans + 1;
-        cout << max(0LL, aa) << '\n';
     }
 
-    int32_t main()
+    return count >= k;
+}
+
+void solve()
+{
+    int n, k;
+    cin >> n >> k;
+    vector<int> a(n);
+    for (int &x : a)
+        cin >> x;
+
+    int low = 0, high = n + 1, ans = 0;
+
+    while (low <= high)
     {
-        ios_base::sync_with_stdio(false);
-        cin.tie(nullptr);
-
-        int cp;
-        cin >> cp;
-        while (cp--)
+        int mid = (low + high) / 2;
+        if (isP(a, k, mid))
         {
-            solve();
+            ans = mid;
+            low = mid + 1;
         }
-
-        return 0;
+        else
+        {
+            high = mid - 1;
+        }
     }
+
+    cout << ans << '\n';
+}
+
+int32_t main()
+{
+    fast_io;
+    int t;
+    cin >> t;
+    while (t--)
+        solve();
+}

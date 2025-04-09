@@ -2,7 +2,6 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class TLE {
@@ -22,7 +21,7 @@ public class TLE {
     }
 
     static void solve() {
-        
+
     }
 
     /*---------------------------------------------------------------------------------------------------------*/

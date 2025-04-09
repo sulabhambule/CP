@@ -14,7 +14,6 @@ public class Main {
   }
 
   static void solve() {
-    
   }
 
   static long gcd(long a, long a2) {
