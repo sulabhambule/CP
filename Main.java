@@ -4,6 +4,7 @@ import java.util.*;
 public class Main {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FastReader in = new FastReader();
+  static int mod = (int) 1e9 + 7;
 
   public static void main(String[] args) {
     int t = in.nextInt();
@@ -14,12 +15,12 @@ public class Main {
   }
 
   static void solve() {
-  }
-
-  static long gcd(long a, long a2) {
-    if (a == 0)
-      return a2;
-    return gcd(a2 % a, a);
+    int n = in.nextInt();
+    int[] p = new int[n];
+    for (int i = 0; i < n; i++) {
+      p[i] = in.nextInt();
+    }
+    
   }
 
   static class FastReader {
