@@ -7,7 +7,7 @@ public class Main {
   static int mod = (int) 1e9 + 7;
 
   public static void main(String[] args) {
-    int t = in.nextInt();
+    int t = 1;
     while (t-- > 0) {
       solve();
     }
@@ -15,11 +15,6 @@ public class Main {
   }
 
   static void solve() {
-    int n = in.nextInt();
-    int[] p = new int[n];
-    for (int i = 0; i < n; i++) {
-      p[i] = in.nextInt();
-    }
     
   }
 
