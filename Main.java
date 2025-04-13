@@ -7,7 +7,7 @@ public class Main {
   static int mod = (int) 1e9 + 7;
 
   public static void main(String[] args) {
-    int t = 1;
+    int t = in.nextInt();
     while (t-- > 0) {
       solve();
     }
@@ -15,7 +15,35 @@ public class Main {
   }
 
   static void solve() {
-    
+    long n = in.nextLong();
+    int m = in.nextInt();
+    long k = in.nextLong();
+
+    long[] a = new long[m];
+    for (int i = 0; i < m; i++) {
+      a[i] = in.nextLong();
+    }
+    long count = 0;
+    boolean f = false;
+    for (long i : a) {
+      if (i == (n + k - 1) / k) {
+        count++;
+      }
+      if (i > (n + k - 1) / k) {
+        f = true;
+        break;
+      }
+    }
+    if (f) {
+      out.println("NO");
+      return;
+    }
+
+    if (count <= (long) (n - 1) % k + 1) {
+      out.println("YES");
+    } else {
+      out.println("NO");
+    }
   }
 
   static class FastReader {

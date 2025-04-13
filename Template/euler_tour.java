@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Simple {
+public class euler_tour {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FASTIO in = new FASTIO();
   static int MOD = (int) 1e9 + 7;
