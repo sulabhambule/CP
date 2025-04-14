@@ -15,35 +15,22 @@ public class Main {
   }
 
   static void solve() {
-    long n = in.nextLong();
-    int m = in.nextInt();
-    long k = in.nextLong();
-
-    long[] a = new long[m];
-    for (int i = 0; i < m; i++) {
-      a[i] = in.nextLong();
+    int n = in.nextInt();
+    int a = in.nextInt();
+    int b = in.nextInt();
+    long[] x = new long[n + 1];
+    for (int i = 1; i <= n; i++) {
+      x[i] = in.nextLong();
     }
-    long count = 0;
-    boolean f = false;
-    for (long i : a) {
-      if (i == (n + k - 1) / k) {
-        count++;
-      }
-      if (i > (n + k - 1) / k) {
-        f = true;
-        break;
-      }
+    long[] p = new long[n + 1];
+    for (int i = 1; i <= n; i++) {
+      p[i] = (p[i - 1] + x[i]);
     }
-    if (f) {
-      out.println("NO");
-      return;
+    long ans = Long.MAX_VALUE;
+    for (int i = 0; i <= n; i++) {
+      ans = Math.min(ans, (a + b) * (x[i] - x[0]) + b * (p[n] - p[i] - (long) (n - i) * x[i]));
     }
-
-    if (count <= (long) (n - 1) % k + 1) {
-      out.println("YES");
-    } else {
-      out.println("NO");
-    }
+    out.println(ans);
   }
 
   static class FastReader {
