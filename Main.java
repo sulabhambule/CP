@@ -15,22 +15,7 @@ public class Main {
   }
 
   static void solve() {
-    int n = in.nextInt();
-    int a = in.nextInt();
-    int b = in.nextInt();
-    long[] x = new long[n + 1];
-    for (int i = 1; i <= n; i++) {
-      x[i] = in.nextLong();
-    }
-    long[] p = new long[n + 1];
-    for (int i = 1; i <= n; i++) {
-      p[i] = (p[i - 1] + x[i]);
-    }
-    long ans = Long.MAX_VALUE;
-    for (int i = 0; i <= n; i++) {
-      ans = Math.min(ans, (a + b) * (x[i] - x[0]) + b * (p[n] - p[i] - (long) (n - i) * x[i]));
-    }
-    out.println(ans);
+    
   }
 
   static class FastReader {

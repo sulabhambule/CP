@@ -21,7 +21,7 @@ public class TLE {
   }
 
   static void solve() {
-
+    
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
@@ -60,6 +60,18 @@ public class TLE {
   }
 
   /*----------------------------------------------------------------------------------------------------------- */
+
+  static void addOne(TreeMap<Long, Integer> map, long key) {
+    map.put(key, map.getOrDefault(key, 0) + 1);
+  }
+
+  static void removeOne(TreeMap<Long, Integer> map, long key) {
+    if (map.get(key) == 1) {
+      map.remove(key);
+    } else {
+      map.put(key, map.get(key) - 1);
+    }
+  }
 
   static long gcd(long a, long a2) {
     if (a == 0)
