@@ -1,1 +1,0 @@
-Math.max(n, m) - Math.min(n, m)
