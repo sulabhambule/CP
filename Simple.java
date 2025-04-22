@@ -1,195 +1,171 @@
 import java.util.*;
 
 public class Simple {
-  static final int BITS = 21;
+  public static void main(String[] args) {
+    Scanner in = new Scanner(System.in);
+    int n = in.nextInt();
+    int m = in.nextInt();
+    long[] a = new long[n];
+    LazySGTG tree = new LazySGTG(n, a);
 
+    for (int i = 0; i < m; i++) {
+      int l = in.nextInt();
+      int r = in.nextInt();
+      long val = in.nextLong();
+      tree.makeUpdate(l, r - 1, val);
+      System.out.println(tree.makeQuery(0, n - 1).maxSum);
+    }
+  }
+}
+
+class LazySGTG {
   static class Node {
-    long val;
+    long segSum;
+    long prefSum;
+    long suffSum;
+    long maxSum;
 
-    Node() {
-      this.val = 0;
+    Node() { // Identity element
+      segSum = 0;
+      prefSum = 0;
+      suffSum = 0;
+      maxSum = 0;
     }
 
-    Node(long v) {
-      this.val = v;
+    Node(long val) {
+      segSum = val;
+      prefSum = Math.max(0, val);
+      suffSum = Math.max(0, val);
+      maxSum = Math.max(0, val);
     }
 
-    public void merge(Node left, Node right) {
-      this.val = left.val + right.val;
-    }
-
-    public void setVal(long v) {
-      this.val = v;
+    void merge(Node l, Node r) { // Merge two child nodes
+      segSum = l.segSum + r.segSum;
+      prefSum = Math.max(l.prefSum, r.prefSum + l.segSum);
+      suffSum = Math.max(r.suffSum, r.segSum + l.suffSum);
+      maxSum = Math.max(l.maxSum, Math.max(r.maxSum, l.suffSum + r.prefSum));
     }
   }
 
   static class Update {
-    long val;
+    long val; // may change
 
-    Update() {
-      this.val = 0;
-    }
-
-    Update(long v) {
-      this.val = v;
-    }
-
-    void apply(Node node, int start, int end) {
-      if (val == 0)
-        return;
-      node.val += (end - start + 1) * val;
-    }
-
-    void combine(Update other, int start, int end) {
-      val += other.val;
-    }
-
-    boolean hasUpdate() {
-      return val != 0;
-    }
-
-    void reset() {
+    Update() { // Identity update
       val = 0;
     }
-  }
 
-  static class LazySegmentTree {
-    int n;
-    Node[] tree;
-    Update[] lazy;
-    boolean[] pendingUpdate;
-
-    LazySegmentTree(long[] arr) {
-      n = arr.length;
-      tree = new Node[4 * n];
-      lazy = new Update[4 * n];
-      pendingUpdate = new boolean[4 * n];
-
-      for (int i = 0; i < 4 * n; i++) {
-        tree[i] = new Node();
-        lazy[i] = new Update();
-      }
-
-      build(1, 0, n - 1, arr);
+    Update(long val1) { // Actual Update
+      val = val1;
     }
 
-    void build(int index, int l, int r, long[] arr) {
-      if (l == r) {
-        tree[index] = new Node(arr[l]);
-        return;
-      }
-      int mid = (l + r) / 2;
-      build(2 * index, l, mid, arr);
-      build(2 * index + 1, mid + 1, r, arr);
-      tree[index] = new Node();
-      tree[index].merge(tree[2 * index], tree[2 * index + 1]);
-    }
-
-    void pushDown(int index, int l, int r) {
-      if (!pendingUpdate[index])
-        return;
-
-      int mid = (l + r) / 2;
-
-      apply(2 * index, l, mid, lazy[index]);
-      apply(2 * index + 1, mid + 1, r, lazy[index]);
-
-      lazy[index].reset();
-      pendingUpdate[index] = false;
-    }
-
-    void apply(int index, int l, int r, Update upd) {
-      upd.apply(tree[index], l, r);
-      if (l != r) {
-        lazy[index].combine(upd, l, r);
-        pendingUpdate[index] = true;
-      }
-    }
-
-    void update(int index, int l, int r, int i, int j, Update upd) {
-      if (r < i || l > j)
-        return;
-
-      if (l >= i && r <= j) {
-        apply(index, l, r, upd);
-        return;
-      }
-
-      pushDown(index, l, r);
-      int mid = (l + r) / 2;
-      update(2 * index, l, mid, i, j, upd);
-      update(2 * index + 1, mid + 1, r, i, j, upd);
-      tree[index].merge(tree[2 * index], tree[2 * index + 1]);
-    }
-
-    Node query(int index, int l, int r, int i, int j) {
-      if (r < i || l > j)
-        return new Node(0);
-
-      if (l >= i && r <= j)
-        return tree[index];
-
-      pushDown(index, l, r);
-      int mid = (l + r) / 2;
-      Node left = query(2 * index, l, mid, i, j);
-      Node right = query(2 * index + 1, mid + 1, r, i, j);
-      Node result = new Node();
-      result.merge(left, right);
-      return result;
-    }
-
-    public void updateRange(int l, int r, long val) {
-      update(1, 0, n - 1, l, r, new Update(val));
-    }
-
-    public long queryRange(int l, int r) {
-      return query(1, 0, n - 1, l, r).val;
-    }
-  }
-
-  public static void main(String[] args) {
-    Scanner sc = new Scanner(System.in);
-    int n = sc.nextInt();
-
-    int[] arr = new int[n];
-    long[][] bitwiseArr = new long[BITS][n];
-
-    for (int i = 0; i < n; i++) {
-      arr[i] = sc.nextInt();
-      for (int j = 0; j < BITS; j++) {
-        if ((arr[i] & (1 << j)) != 0) {
-          bitwiseArr[j][i] = 1;
-        }
-      }
-    }
-
-    LazySegmentTree[] segTrees = new LazySegmentTree[BITS];
-    for (int i = 0; i < BITS; i++) {
-      segTrees[i] = new LazySegmentTree(bitwiseArr[i]);
-    }
-
-    int q = sc.nextInt();
-    while (q-- > 0) {
-      int type = sc.nextInt();
-      if (type == 2) {
-        int l = sc.nextInt() - 1;
-        int r = sc.nextInt() - 1;
-        int x = sc.nextInt();
-        for (int i = 0; i < BITS; i++) {
-          if ((x & (1 << i)) != 0) {
-            segTrees[i].updateRange(l, r, 1);
-          }
-        }
+    void apply(Node a, int start, int end) { // apply update to given node
+      a.segSum = (end - start + 1) * val;
+      if (val > 0) {
+        a.prefSum = a.segSum;
+        a.suffSum = a.segSum;
+        a.maxSum = a.segSum;
       } else {
-        int l = sc.nextInt() - 1;
-        int r = sc.nextInt() - 1;
-        long ans = 0;
-        for (int i = 0; i < BITS; i++) {
-          long count = segTrees[i].queryRange(l, r);
-          ans += count * (1L << i);
-        }
-        System.out.println(ans);
+        a.prefSum = 0;
+        a.suffSum = 0;
+        a.maxSum = 0;
       }
     }
+
+    void combine(Update newUpdate, int start, int end) {
+      val = newUpdate.val;
+    }
+  }
+
+  private Node[] tree;
+  private boolean[] lazy;
+  private Update[] updates;
+  private long[] arr; // type may change
+  private int n;
+  private int s;
+
+  LazySGTG(int a_len, long[] a) { // change if type updated
+    arr = Arrays.copyOf(a, a_len);
+    n = a_len;
+    s = 1;
+    while (s < 2 * n) {
+      s <<= 1;
+    }
+    tree = new Node[s];
+    lazy = new boolean[s];
+    updates = new Update[s];
+    for (int i = 0; i < s; i++) {
+      tree[i] = new Node();
+      updates[i] = new Update();
+    }
+    build(0, n - 1, 1);
+  }
+
+  private void build(int start, int end, int index) { // Never change this
+    if (start == end) {
+      tree[index] = new Node(arr[start]);
+      return;
+    }
+    int mid = (start + end) / 2;
+    build(start, mid, 2 * index);
+    build(mid + 1, end, 2 * index + 1);
+    tree[index] = new Node();
+    tree[index].merge(tree[2 * index], tree[2 * index + 1]);
+  }
+
+  private void pushdown(int index, int start, int end) {
+    if (lazy[index]) {
+      int mid = (start + end) / 2;
+      apply(2 * index, start, mid, updates[index]);
+      apply(2 * index + 1, mid + 1, end, updates[index]);
+      updates[index] = new Update();
+      lazy[index] = false;
+    }
+  }
+
+  private void apply(int index, int start, int end, Update u) {
+    if (start != end) {
+      lazy[index] = true;
+      updates[index].combine(u, start, end);
+    }
+    u.apply(tree[index], start, end);
+  }
+
+  private void update(int start, int end, int index, int left, int right, Update u) {
+    if (start > right || end < left)
+      return;
+    if (start >= left && end <= right) {
+      apply(index, start, end, u);
+      return;
+    }
+    pushdown(index, start, end);
+    int mid = (start + end) / 2;
+    update(start, mid, 2 * index, left, right, u);
+    update(mid + 1, end, 2 * index + 1, left, right, u);
+    tree[index].merge(tree[2 * index], tree[2 * index + 1]);
+  }
+
+  private Node query(int start, int end, int index, int left, int right) {
+    if (start > right || end < left)
+      return new Node();
+    if (start >= left && end <= right) {
+      pushdown(index, start, end);
+      return tree[index];
+    }
+    pushdown(index, start, end);
+    int mid = (start + end) / 2;
+    Node l = query(start, mid, 2 * index, left, right);
+    Node r = query(mid + 1, end, 2 * index + 1, left, right);
+    Node ans = new Node();
+    ans.merge(l, r);
+    return ans;
+  }
+
+  public void makeUpdate(int left, int right, long val) { // pass in as many parameters as required
+    Update newUpdate = new Update(val); // may change
+    update(0, n - 1, 1, left, right, newUpdate);
+  }
+
+  public Node makeQuery(int left, int right) {
+    return query(0, n - 1, 1, left, right);
   }
 }

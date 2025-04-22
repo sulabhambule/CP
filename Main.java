@@ -15,7 +15,8 @@ public class Main {
   }
 
   static void solve() {
-
+    int n = in.nextInt();
+    
   }
 
   static class FastReader {
