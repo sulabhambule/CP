@@ -185,7 +185,7 @@ public class Utility {
     } else {
       map.put(key, map.get(key) - 1);
     }
-  }s
+  }
 
   public static long nCr(int n, int r) {
     if (r > n)
@@ -914,48 +914,48 @@ class DSU {
 
 }
 
-  // MST using DSU (Krushkal ALgorythm)
+// MST using DSU (Krushkal ALgorythm)
 
-  public static void main(String[] args) {
-    int n;// Nodes
-    int m; // Edges
-    Edge[] edges = new Edge[m];
+public static void main(String[] args) {
+  int n;// Nodes
+  int m; // Edges
+  Edge[] edges = new Edge[m];
 
-    for (int i = 0; i < m; i++) {
-      int u = in.nextInt();
-      int v = in.nextInt();
-      int w = in.nextInt();
-      edges[i] = new Edge(u, v, w);
-    }
-
-    Arrays.sort(edges); // Sort edges by weight
-    DSU dsu = new DSU(n);
-    long mstWeight = 0;
-    ArrayList<Edge> mstEdges = new ArrayList<>();
-
-    for (Edge e : edges) {
-      if (dsu.union(e.u, e.v)) { // If u and v are in different sets
-        mstWeight += e.w;
-        mstEdges.add(e);
-      }
-    }
+  for (int i = 0; i < m; i++) {
+    int u = in.nextInt();
+    int v = in.nextInt();
+    int w = in.nextInt();
+    edges[i] = new Edge(u, v, w);
   }
 
-  static class Edge implements Comparable<Edge> {
-    int u, v, w;
+  Arrays.sort(edges); // Sort edges by weight
+  DSU dsu = new DSU(n);
+  long mstWeight = 0;
+  ArrayList<Edge> mstEdges = new ArrayList<>();
 
-    Edge(int u, int v, int w) {
-      this.u = u;
-      this.v = v;
-      this.w = w;
-    }
-
-    public int compareTo(Edge o) {
-      return Integer.compare(this.w, o.w);
+  for (Edge e : edges) {
+    if (dsu.union(e.u, e.v)) { // If u and v are in different sets
+      mstWeight += e.w;
+      mstEdges.add(e);
     }
   }
+}
 
-  // MST using PriorityQueue Prims Algorythm
+static class Edge implements Comparable<Edge> {
+  int u, v, w;
+
+  Edge(int u, int v, int w) {
+    this.u = u;
+    this.v = v;
+    this.w = w;
+  }
+
+  public int compareTo(Edge o) {
+    return Integer.compare(this.w, o.w);
+  }
+}
+
+// MST using PriorityQueue Prims Algorythm
 static long primsMST(int n, List<List<int[]>> adj) {
   boolean[] visited = new boolean[n + 1];
   PriorityQueue<int[]> pq = new PriorityQueue<>((x, y) -> (x[1] - y[1]));

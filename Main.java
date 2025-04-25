@@ -15,7 +15,38 @@ public class Main {
   }
 
   static void solve() {
-    
+    int n = in.nextInt();
+    int x = in.nextInt();
+    int[] a = new int[n];
+    for (int i = 0; i < n; i++) {
+      a[i] = in.nextInt();
+    }
+    int[] max = new int[n + 1];
+    Arrays.fill(max, Integer.MIN_VALUE);
+    max[0] = 0;
+
+    for (int i = 0; i < n; i++) {
+      int sum = 0;
+      for (int j = i; j < n; j++) {
+        sum += a[j];
+        int len = j - i + 1;
+        max[len] = Math.max(max[len], sum);
+      }
+    }
+
+    int[] ans = new int[n + 1];
+    for (int i = 0; i <= n; i++) {
+      int best = 0;
+      for (int j = 0; j <= n; j++) {
+        best = Math.max(best, max[j] + Math.min(i, j) * x);
+      }
+      ans[i] = best;
+    }
+
+    for (int i : ans) {
+      out.print(i + " ");
+    }
+    out.println();     
   }
 
   static class FastReader {
