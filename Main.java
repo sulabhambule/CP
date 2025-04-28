@@ -5,9 +5,11 @@ public class Main {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FastReader in = new FastReader();
   static int mod = (int) 1e9 + 7;
+  static final int inf = (int) 1e9;
+  static final long INF = (long) 1e18;
 
   public static void main(String[] args) {
-    int t = in.nextInt();
+    int t = 1;
     while (t-- > 0) {
       solve();
     }
@@ -15,38 +17,16 @@ public class Main {
   }
 
   static void solve() {
-    int n = in.nextInt();
-    int x = in.nextInt();
-    int[] a = new int[n];
-    for (int i = 0; i < n; i++) {
-      a[i] = in.nextInt();
-    }
-    int[] max = new int[n + 1];
-    Arrays.fill(max, Integer.MIN_VALUE);
-    max[0] = 0;
 
-    for (int i = 0; i < n; i++) {
-      int sum = 0;
-      for (int j = i; j < n; j++) {
-        sum += a[j];
-        int len = j - i + 1;
-        max[len] = Math.max(max[len], sum);
-      }
-    }
+  }
 
-    int[] ans = new int[n + 1];
-    for (int i = 0; i <= n; i++) {
-      int best = 0;
-      for (int j = 0; j <= n; j++) {
-        best = Math.max(best, max[j] + Math.min(i, j) * x);
-      }
-      ans[i] = best;
+  static long gcd(long a, long b) {
+    while (b != 0) {
+      long t = b;
+      b = a % b;
+      a = t;
     }
-
-    for (int i : ans) {
-      out.print(i + " ");
-    }
-    out.println();     
+    return a;
   }
 
   static class FastReader {

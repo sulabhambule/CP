@@ -701,8 +701,12 @@ public class Utility {
     while (!pq.isEmpty()) {
       Pair p = pq.poll();
       int u = p.node;
+      if (p.weight > dist[u])
+        continue;
+
       for (Pair neighbor : graph.get(u)) {
-        int v = neighbor.node, weight = neighbor.weight;
+        int v = neighbor.node;
+        int weight = neighbor.weight;
         if (dist[u] + weight < dist[v]) {
           dist[v] = dist[u] + weight;
           pq.add(new Pair(v, dist[v]));
