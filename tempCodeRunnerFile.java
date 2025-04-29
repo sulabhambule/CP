@@ -1,3 +1,3 @@
-rAt(0) == '1') {
-      // ans--;
+f (i + 1 > primes.length) {
+      // break;
       // }

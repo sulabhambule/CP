@@ -2,6 +2,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class TLE {
@@ -10,9 +11,11 @@ public class TLE {
   static final int MOD = (int) 1e9 + 7;
   // static final int MOD = 998244353;
   static final int inf = (int) 1e9;
+  static int[][] next;
+  static int[] dp;
 
   public static void main(String[] Hi) throws IOException {
-    int cp = in.nextInt();
+    int cp = 1;
     while (cp-- > 0) {
       solve();
     }
@@ -21,7 +24,47 @@ public class TLE {
   }
 
   static void solve() {
-      
+    int n = in.nextInt();
+    int k = in.nextInt();
+    String s = in.next();
+    next = new int[n + 1][k];
+    dp = new int[n + 1];
+    dp[n] = 1;
+    for (int i = 0; i < k; i++) {
+      next[n][i] = n;
+    }
+    for (int i = n - 1; i >= 0; i--) {
+      for (int j = 0; j < k; j++) {
+        next[i][j] = next[i + 1][j];
+      }
+      next[i][s.charAt(i) - 'a'] = i;
+    }
+    for (int i = n - 1; i >= 0; i--) {
+      dp[i] = n + 2;
+      for (int j = 0; j < k; j++) {
+        if (next[i][j] == n) {
+          dp[i] = 1;
+        } else {
+          dp[i] = Math.min(dp[i], dp[next[i][j] + 1] + 1);
+        }
+      }
+    }
+    int q = in.nextInt();
+    while (q-- > 0) {
+      String t = in.next();
+      int index = 0;
+      int i;
+      for (i = 0; i < n && index < t.length(); i++) {
+        if (s.charAt(i) == t.charAt(index)) {
+          index++;
+        }
+      }
+      if (index == t.length()) {
+        println(dp[i]);
+      } else {
+        println(0);
+      }
+    }
   }
 
   /*---------------------------------------------------------------------------------------------------------*/

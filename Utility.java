@@ -716,6 +716,32 @@ public class Utility {
     return dist;
   }
 
+  public static int[] bellmanFord(int n, int[][] edges, int src) {
+    int[] dist = new int[n + 1];
+    Arrays.fill(dist, (int) 1e9);
+    dist[src] = 0;
+
+    // Relax all edges (n - 1) times
+    for (int i = 1; i <= n - 1; i++) {
+      boolean any = false;
+      for (int[] edge : edges) {
+        int u = edge[0];
+        int v = edge[1];
+        int wt = edge[2];
+        if (dist[u] != (int) 1e9 && dist[u] + wt < dist[v]) {
+          dist[v] = dist[u] + wt;
+          any = true;
+        }
+      }
+      if (!any)
+        break;
+      if (i == n - 1) {
+        return new int[] {};
+      }
+    }
+    return dist;
+  }
+
   static void bfs(List<List<Integer>> graph, int start) {
     int n = graph.size();
     boolean[] vis = new boolean[n];
@@ -979,4 +1005,64 @@ static long primsMST(int n, List<List<int[]>> adj) {
     }
   }
   return mstWeight;
+}
+
+// KMP
+
+class KMP {
+  private int n, m;
+  private String text, pattern;
+  private int[] LPS;
+
+  public KMP(String text, String pattern) {
+    this.text = text;
+    this.pattern = pattern;
+    this.n = text.length();
+    this.m = pattern.length();
+    this.LPS = new int[m];
+    generateLPS();
+  }
+
+  private void generateLPS() {
+    int len = 0;
+    int i = 1;
+    while (i < m) {
+      if (pattern.charAt(i) == pattern.charAt(len)) {
+        LPS[i++] = ++len;
+      } else {
+        if (len != 0) {
+          len = LPS[len - 1];
+        } else {
+          LPS[i++] = 0;
+        }
+      }
+    }
+  }
+
+  public List<int[]> countOccurrences() {
+    List<int[]> result = new ArrayList<>();
+    int i = 0, j = 0;
+
+    while (i < n) {
+      if (text.charAt(i) == pattern.charAt(j)) {
+        i++;
+        j++;
+      }
+
+      if (j == m) {
+        int start = i - m;
+        int end = i - 1;
+        result.add(new int[] { start, end });
+        j = LPS[j - 1];
+      } else if (i < n && text.charAt(i) != pattern.charAt(j)) {
+        if (j != 0) {
+          j = LPS[j - 1];
+        } else {
+          i++;
+        }
+      }
+    }
+
+    return result;
+  }
 }

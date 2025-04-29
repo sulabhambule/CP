@@ -9,7 +9,7 @@ public class Main {
   static final long INF = (long) 1e18;
 
   public static void main(String[] args) {
-    int t = 1;
+    int t = in.nextInt();
     while (t-- > 0) {
       solve();
     }
@@ -17,16 +17,8 @@ public class Main {
   }
 
   static void solve() {
-
-  }
-
-  static long gcd(long a, long b) {
-    while (b != 0) {
-      long t = b;
-      b = a % b;
-      a = t;
-    }
-    return a;
+    int n = in.nextInt();
+    
   }
 
   static class FastReader {
