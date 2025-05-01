@@ -21,22 +21,7 @@ public class TLE {
   }
 
   static void solve() {
-    int n = in.nextInt();
-    int k = in.nextInt();
-    String s = in.next();
-    if (k == 0) {
-      println(1);
-      return;
-    }
 
-
-    
-    String s2 = new StringBuffer(s).reverse().toString();
-    if (s.equals(s2)) {
-      println(1);
-    } else {
-      println(2);
-    }
   }
 
   /*---------------------------------------------------------------------------------------------------------*/

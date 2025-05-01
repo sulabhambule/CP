@@ -17,7 +17,12 @@ public class Main {
   }
 
   static void solve() {
-    
+    String x = in.next();
+    int[] arr = new int[x.length()];
+    for (int i = 0; i < x.length(); i++) {
+      arr[i] = (x.charAt(i) - '0');
+    }
+
   }
 
   static class FastReader {
