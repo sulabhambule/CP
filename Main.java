@@ -17,12 +17,62 @@ public class Main {
   }
 
   static void solve() {
-    String x = in.next();
-    int[] arr = new int[x.length()];
-    for (int i = 0; i < x.length(); i++) {
-      arr[i] = (x.charAt(i) - '0');
+    int n = in.nextInt();
+    long[] a = new long[n];
+    List<List<Integer>> ls = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      a[i] = in.nextLong();
     }
 
+    int ans = 0;
+    int[] left = new int[n];
+    fun(a, left);
+    int index = 0;
+    int r = -1;
+    int[] right = new int[n];
+    right[n - 1] = n - 1;
+    for (int i = n - 2; i >= 0; i--) {
+      if (a[i + 1] > a[i]) {
+        right[i] = i;
+      } else {
+        right[i] = right[i + 1];
+      }
+    }
+    int l = 0;
+
+    for (int i = 0; i < n; i++) {
+      ls.add(new ArrayList<>());
+    }
+    for (int i = 0; i < n; i++) {
+      ls.get(left[i]).add(right[i]);
+    }
+
+    while (index < n) {
+      while (l <= index) {
+        for (int e : ls.get(l)) {
+          if (e > r) {
+            r = e;
+          }
+        }
+        l++;
+      }
+      ans++;
+      index = r + 2 - 1;
+    }
+
+    out.println(ans);
+  }
+
+  static void fun(long[] a, int[] left) {
+    left[0] = 0;
+    int n = a.length;
+    for (int i = 1; i < n; i++) {
+      if (a[i - 1] > a[i]) {
+        left[i] = i;
+      } else {
+        left[i] = left[i - 1];
+      }
+    }
   }
 
   static class FastReader {
