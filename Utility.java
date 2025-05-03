@@ -175,6 +175,20 @@ public class Utility {
     return result;
   }
 
+  static long modMul(long a, long b, long mod) {
+    long result = 0;
+    a %= mod;
+    b %= mod;
+    while (b > 0) {
+      if ((b & 1) == 1) {
+        result = (result + a) % mod;
+      }
+      a = (a << 1) % mod; // a = (a * 2) % mod
+      b >>= 1; // b = b / 2
+    }
+    return result;
+  }
+
   static void addOne(TreeMap<Long, Integer> map, long key) {
     map.put(key, map.getOrDefault(key, 0) + 1);
   }

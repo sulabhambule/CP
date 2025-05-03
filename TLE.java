@@ -21,8 +21,56 @@ public class TLE {
   }
 
   static void solve() {
-    
+    int n = in.nextInt();
+    HashSet<String> set = new HashSet<>();
+    boolean flag = false;
+    for (int i = 0; i < n; i++) {
+      String s = in.next();
+      if (flag) {
+        continue;
+      }
+      if (s.length() == 1) {
+        flag = true;
+        continue;
+      }
+      StringBuilder s1 = new StringBuilder(s);
+      if (s.equals(s1.reverse().toString())) {
+        flag = true;
+        continue;
+      }
+
+      s1 = new StringBuilder(s);
+      if (set.contains(s1.reverse().toString())) {
+        flag = true;
+        continue;
+      }
+      if (s.length() == 3) {
+        String ss = s.substring(1);
+        String suffix = new StringBuilder(ss).reverse().toString();
+        if (set.contains(suffix)) {
+          flag = true;
+          continue;
+        }
+      }
+      if (s.length() == 2) {
+        String ss = new StringBuilder(s).reverse().toString();
+        for (char ch = 'a'; ch <= 'z'; ch++) {
+          String nr = ss + ch;
+          if (set.contains(new StringBuilder(nr).toString())) {
+            flag = true;
+            continue;
+          }
+        }
+      }
+      set.add(s);
+    }
+    if (flag) {
+      yes();
+    } else {
+      no();
+    }
   }
+
   /*---------------------------------------------------------------------------------------------------------*/
 
   static class FASTIO {
