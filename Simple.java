@@ -12,6 +12,8 @@ public class Simple {
   }
 
   static void solve() {
+    int n = in.nextInt();
+    int m = in.nextInt();
     
   }
 }

@@ -27,7 +27,7 @@ class CodeChef {
     for (int i = 0; i < m; i++) {
       int num = in.nextInt();
       if (num == 1) {
-        cc += length; 
+        cc += length;
         ans += length;
         length++;
       }

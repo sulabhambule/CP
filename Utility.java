@@ -795,6 +795,12 @@ public class Utility {
         }
       }
     }
+
+    for (int i = 0; i < n; i++) {
+      if (dist[i][i] < 0) {
+        // negative cycle
+      }
+    }
   }
 
   // TOPOSORT and all that stuff
