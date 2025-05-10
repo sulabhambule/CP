@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.util.*;
 
@@ -18,18 +19,6 @@ public class Main {
 
   static void solve() {
 
-  }
-  
-  static void fun(long[] a, int[] left) {
-    left[0] = 0;
-    int n = a.length;
-    for (int i = 1; i < n; i++) {
-      if (a[i - 1] > a[i]) {
-        left[i] = i;
-      } else {
-        left[i] = left[i - 1];
-      }
-    }
   }
 
   static class FastReader {
