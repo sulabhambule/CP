@@ -18,7 +18,43 @@ public class Main {
   }
 
   static void solve() {
+    int n = in.nextInt();
+    List<node> cells = new ArrayList<>(n * n);
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        cells.add(new node(i, j, n));
+      }
+    }
+    Collections.sort(cells);
+    int[][] ans = new int[n][n];
+    for (int v = 0; v < n * n; v++) {
+      node c = cells.get(v);
+      ans[c.i][c.j] = v;
+    }
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        out.print(ans[i][j]);
+        if (j + 1 < n)
+          out.print(' ');
+      }
+      out.println();
+    }
+  }
 
+  static class node implements Comparable<node> {
+    int i, j;
+    long value;
+
+    node(int i, int j, int n) {
+      this.i = i;
+      this.j = j;
+      this.value = 1L * (i + 1) * (j + 1) * (n - i) * (n - j);
+    }
+
+    @Override
+    public int compareTo(node o) {
+      return Long.compare(o.value, this.value);
+    }
   }
 
   static class FastReader {
