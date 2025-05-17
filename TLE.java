@@ -22,7 +22,6 @@ public class TLE {
   }
 
   static void solve() {
-    int n = in.nextInt();
     
   }
 
@@ -245,7 +244,6 @@ public class TLE {
         out.print(i + " ");
       out.println();
     }
-    out.println();
   }
 
   static void print(long[][] arr) {
