@@ -22,7 +22,7 @@ public class TLE {
   }
 
   static void solve() {
-    
+
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
@@ -97,6 +97,14 @@ public class TLE {
   static long modDiv(long x, long y, long mod) {
     // x * y^(MOD-2) % MOD
     return (x * modPow(y, mod - 2, mod)) % mod;
+  }
+
+  static long accurateFloor(long a, long b) {
+    // when a or b can be negative.
+    long val = a / b;
+    while (val * b > a)
+      val--;
+    return val;
   }
 
   static void reverse(long[] a, int l, int r) {

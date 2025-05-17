@@ -18,7 +18,14 @@ public class Main {
   }
 
   static void solve() {
-    
+
+  }
+
+  static long accurateFloor(long a, long b) {
+    long val = a / b;
+    while (val * b > a)
+      val--;
+    return val;
   }
 
   static class FastReader {
