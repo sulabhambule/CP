@@ -18,14 +18,11 @@ public class Main {
   }
 
   static void solve() {
-
-  }
-
-  static long accurateFloor(long a, long b) {
-    long val = a / b;
-    while (val * b > a)
-      val--;
-    return val;
+    int n = in.nextInt();
+    int k = in.nextInt();
+    long x = in.nextLong();
+    String s = in.next();
+    
   }
 
   static class FastReader {
