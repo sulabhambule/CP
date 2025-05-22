@@ -19,10 +19,64 @@ public class Main {
 
   static void solve() {
     int n = in.nextInt();
-    int k = in.nextInt();
-    long x = in.nextLong();
-    String s = in.next();
-    
+    long[] a = new long[n];
+    for (int i = 0; i < n; i++)
+      a[i] = in.nextLong();
+    long[] b = new long[n];
+    for (int i = 0; i < n; i++)
+      b[i] = in.nextLong();
+
+    List<List<Integer>> adj = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      adj.add(new ArrayList<>());
+    }
+    Integer[] idxA = new Integer[n];
+    for (int i = 0; i < n; i++)
+      idxA[i] = i;
+    Arrays.sort(idxA, (i, j) -> Long.compare(a[j], a[i]));
+    for (int i = 0; i < n - 1; i++) {
+      int u = idxA[i + 1];
+      int v = idxA[i];
+      adj.get(u).add(v);
+    }
+    Integer[] idxB = new Integer[n];
+    for (int i = 0; i < n; i++)
+      idxB[i] = i;
+    Arrays.sort(idxB, (i, j) -> Long.compare(b[j], b[i]));
+    for (int i = 0; i < n - 1; i++) {
+      int u = idxB[i + 1];
+      int v = idxB[i];
+      adj.get(u).add(v);
+    }
+    boolean[] vis = new boolean[n + 1];
+    int maxIndex = 0;
+    for (int i = 1; i < n; i++) {
+      if (a[i] > a[maxIndex]) {
+        maxIndex = i;
+      }
+    }
+
+    String ans = "";
+    dfs(maxIndex, adj, vis);
+
+    for (int i = 0; i < n; i++) {
+      if (vis[i]) {
+        ans += '1';
+      } else {
+        ans += '0';
+      }
+    }
+
+    out.println(ans);
+  }
+
+  static void dfs(int index, List<List<Integer>> adj, boolean[] vis) {
+    vis[index] = true;
+    for (int adjNode : adj.get(index)) {
+      if (!vis[adjNode]) {
+        dfs(adjNode, adj, vis);
+      }
+    }
   }
 
   static class FastReader {
