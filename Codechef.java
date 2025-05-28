@@ -20,28 +20,7 @@ class CodeChef {
   }
 
   static void solve() {
-    int m = in.nextInt();
-    long ans = 0;
-    int length = 1;
-    long cc = 0;
-    for (int i = 0; i < m; i++) {
-      int num = in.nextInt();
-      if (num == 1) {
-        cc += length;
-        ans += length;
-        length++;
-      }
-      if (num == 2) {
-        length += length;
-        ans *= 2;
-        ans += cc;
-        cc = (cc + cc + cc + cc);
-      }
-      print(ans + " ");
-      if (i == m - 1) {
-        out.println();
-      }
-    }
+    
   }
 
   private static void swap2(char[] array, int i, int j) {
