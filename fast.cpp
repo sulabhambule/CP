@@ -1,80 +1,62 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define int long long
 const int MOD = 1e9 + 7;
+const int INF = 1e9;
+const long long LINF = 1e18;
 
 vector<vector<int>> adj;
-vector<long long> segTree;
-int timeCounter = 0;
+vector<vector<int>> dp;
 
-// Segment Tree functions
-void build(int node, int start, int end, const vector<long long> &euler)
+void dfs(int node, int parent)
 {
-    if (start == end)
+    for (int adjNode : adj[node])
     {
-        segTree[node] = euler[start];
-        return;
-    }
-    int mid = (start + end) / 2;
-    build(2 * node + 1, start, mid, euler);
-    build(2 * node + 2, mid + 1, end, euler);
-    segTree[node] = segTree[2 * node + 1] + segTree[2 * node + 2];
-}
-
-void update(int node, int start, int end, int idx, long long value)
-{
-    if (start == end)
-    {
-        segTree[node] = value;
-        return;
-    }
-    int mid = (start + end) / 2;
-    if (idx <= mid)
-        update(2 * node + 1, start, mid, idx, value);
-    else
-        update(2 * node + 2, mid + 1, end, idx, value);
-    segTree[node] = segTree[2 * node + 1] + segTree[2 * node + 2];
-}
-
-long long query(int node, int start, int end, int l, int r)
-{
-    if (r < start || l > end)
-        return 0;
-    if (l <= start && end <= r)
-        return segTree[node];
-    int mid = (start + end) / 2;
-    return query(2 * node + 1, start, mid, l, r) +
-           query(2 * node + 2, mid + 1, end, l, r);
-}
-
-// DFS for Euler Tour
-void dfs(int node, int parent, vector<int> &inTime, vector<int> &outTime)
-{
-    inTime[node] = timeCounter++;
-    for (int neighbor : adj[node])
-    {
-        if (neighbor != parent)
+        if (adjNode != parent)
         {
-            dfs(neighbor, node, inTime, outTime);
+            dfs(adjNode, node);
         }
     }
-    outTime[node] = timeCounter++;
+
+    int total = 0;
+    for (int adjNode : adj[node])
+    {
+        if (adjNode != parent)
+        {
+            total += max(dp[adjNode][0], dp[adjNode][1]);
+        }
+    }
+    dp[node][0] = total;
+
+    for (int adjNode : adj[node])
+    {
+        if (adjNode == parent)
+            continue;
+
+        int current = 1 + dp[adjNode][0];
+        for (int v : adj[node])
+        {
+            if (v == parent || v == adjNode)
+                continue;
+            current += max(dp[v][0], dp[v][1]);
+        }
+
+        dp[node][1] = max(dp[node][1], current);
+    }
 }
 
-int32_t main()
+int main()
 {
     ios::sync_with_stdio(false);
-    cin.tie(0);
+    cin.tie(nullptr);
 
-    int n, q;
-    cin >> n >> q;
-    vector<long long> v(n);
-    for (int i = 0; i < n; i++)
-        cin >> v[i];
+    int n;
+    cin >> n;
 
-    adj.assign(n + 1, {});
-    for (int i = 0; i < n - 1; i++)
+    adj.assign(n + 1, vector<int>());
+    dp.assign(n + 1, vector<int>(2, 0));
+
+    for (int i = 0; i < n - 1; ++i)
     {
         int a, b;
         cin >> a >> b;
@@ -82,39 +64,9 @@ int32_t main()
         adj[b].push_back(a);
     }
 
-    vector<long long> euler(2 * n);
-    vector<int> inTime(n + 1), outTime(n + 1);
-    timeCounter = 0;
-    dfs(1, -1, inTime, outTime);
+    dfs(1, 0);
 
-    for (int i = 1; i <= n; i++)
-    {
-        euler[inTime[i]] = v[i - 1];
-        euler[outTime[i]] = -v[i - 1];
-    }
-
-    segTree.assign(8 * n, 0);
-    build(0, 0, 2 * n - 1, euler);
-
-    while (q--)
-    {
-        int type;
-        cin >> type;
-        if (type == 1)
-        {
-            int s;
-            long long x;
-            cin >> s >> x;
-            update(0, 0, 2 * n - 1, inTime[s], x);
-            update(0, 0, 2 * n - 1, outTime[s], -x);
-        }
-        else
-        {
-            int s;
-            cin >> s;
-            cout << query(0, 0, 2 * n - 1, 0, inTime[s]) << "\n";
-        }
-    }
+    cout << max(dp[1][0], dp[1][1]) << '\n';
 
     return 0;
 }
