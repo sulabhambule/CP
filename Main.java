@@ -18,20 +18,6 @@ public class Main {
   }
 
   static void solve() {
-    int x1 = in.nextInt();
-    int p1 = in.nextInt();
-    int x2 = in.nextInt();
-    int p2 = in.nextInt();
-
-    if (p1 > p2 && x1 >= x2) {
-      out.println(">");
-      return;
-    }
-
-    if (p1 < p2 && x1 <= x2) {
-      out.println("<");
-      return;
-    }
     
   }
 
