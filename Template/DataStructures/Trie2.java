@@ -5,7 +5,7 @@ import java.util.*;
 public class Trie2 {
     private Node root;
 
-    public Trie() {
+    public Trie2() {
         root = new Node();
     }
 
