@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class CycleinDGPrint {
   static List<Integer>[] adj;
   static boolean[] visited, onStack;
   static int[] parent;
