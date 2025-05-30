@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.util.*;
 
@@ -5,6 +6,8 @@ public class Main {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FASTIO in = new FASTIO();
   static int INF = (int) 1e9;
+  static int[] dx = { -1, 0, +1, 0 };
+  static int[] dy = { 0, +1, 0, -1 };
 
   public static void main(String[] args) throws IOException {
     int t = 1;
