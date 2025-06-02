@@ -10,20 +10,18 @@ public class TLE {
   static final int MOD = (int) 1e9 + 7;
   // static final int MOD = 998244353;
   static final int inf = (int) 1e9;
-  static final long NEG = (long) 1e18;
+  static final long NEG = (long) -1e18;
 
   public static void main(String[] Hi) throws IOException {
     int cp = in.nextInt();
     while (cp-- > 0) {
       solve();
     }
-
     out.close();
   }
 
   static void solve() {
-    int n = in.nextInt();
-
+    
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
@@ -60,8 +58,12 @@ public class TLE {
     }
 
   }
-
   /*----------------------------------------------------------------------------------------------------------- */
+
+  static int[] getCoordinateMatrix(int x, int n) {
+    int row = (x - 1) / 2, col = (x - 1) % n;
+    return new int[] { row, col };
+  }
 
   static void addOne(TreeMap<Long, Integer> map, long key) {
     map.put(key, map.getOrDefault(key, 0) + 1);
