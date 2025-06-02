@@ -4,11 +4,9 @@ import java.util.*;
 public class Main {
   static PrintWriter out = new PrintWriter(System.out);
   static FastReader in = new FastReader();
- 
 
   public static void main(String[] args) {
     int t = in.nextInt();
-   
     while (t-- > 0) {
       solve();
     }
@@ -16,11 +14,6 @@ public class Main {
   }
 
   static void solve() {
-    int n = in.nextInt();
-    int[] a = new int[n];
-    for (int i = 0; i < n; i++) {
-      a[i] = in.nextInt();
-    }
 
   }
 

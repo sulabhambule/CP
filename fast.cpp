@@ -1,105 +1,65 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define int long long
-const int INF = 1e9;
+const int MAXN = 2e5 + 5;
 
-struct Edge
+vector<int> adj[MAXN];
+int subSize[MAXN];
+int N;
+
+// Calculate subtree size
+int subtreeSize(int node, int parent)
 {
-    int u, v, w;
-    bool operator<(const Edge &other) const
+    int res = 1;
+    for (int next : adj[node])
     {
-        return w < other.w;
+        if (next == parent)
+            continue;
+        res += subtreeSize(next, node);
     }
-};
-
-struct DSU
-{
-    vector<int> parent, rank, size;
-
-    DSU(int n)
-    {
-        parent.resize(n);
-        rank.resize(n, 0);
-        size.resize(n, 1);
-        for (int i = 0; i < n; ++i)
-            parent[i] = i;
-    }
-
-    int find(int x)
-    {
-        if (parent[x] != x)
-            parent[x] = find(parent[x]);
-        return parent[x];
-    }
-
-    bool unite(int u, int v)
-    {
-        int rootU = find(u);
-        int rootV = find(v);
-        if (rootU == rootV)
-            return false;
-
-        if (rank[rootU] > rank[rootV])
-        {
-            parent[rootV] = rootU;
-            size[rootU] += size[rootV];
-        }
-        else if (rank[rootU] < rank[rootV])
-        {
-            parent[rootU] = rootV;
-            size[rootV] += size[rootU];
-        }
-        else
-        {
-            parent[rootV] = rootU;
-            rank[rootU]++;
-            size[rootU] += size[rootV];
-        }
-        return true;
-    }
-
-    int getSize(int x)
-    {
-        return size[find(x)];
-    }
-};
-
-void solve()
-{
-    int n, m;
-    cin >> n >> m;
-    vector<Edge> edges(m);
-    for (int i = 0; i < m; ++i)
-    {
-        cin >> edges[i].u >> edges[i].v >> edges[i].w;
-    }
-
-    sort(edges.begin(), edges.end());
-
-    DSU dsu(n + 1); // if 1-based indexing
-    int comp = n;
-    long long total = 0;
-
-    for (auto &e : edges)
-    {
-        if (dsu.unite(e.u, e.v))
-        {
-            total += e.w;
-            comp--;
-        }
-    }
-
-    if (comp > 1)
-        cout << "IMPOSSIBLE\n";
-    else
-        cout << total << '\n';
+    return subSize[node] = res;
 }
 
-int32_t main()
+// Find centroid (node such that all subtrees are ≤ N/2)
+int getCentroid(int node, int parent)
+{
+    for (int next : adj[node])
+    {
+        if (next == parent)
+            continue;
+        if (subSize[next] * 2 > N)
+        {
+            return getCentroid(next, node);
+        }
+    }
+    return node;
+}
+
+int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    solve();
+
+    cin >> N;
+    for (int i = 0; i < N; ++i)
+    {
+        adj[i].clear();
+        subSize[i] = 0;
+    }
+
+    for (int i = 0; i < N - 1; ++i)
+    {
+        int a, b;
+        cin >> a >> b;
+        --a;
+        --b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+    }
+
+    subtreeSize(0, -1);
+    int centroid = getCentroid(0, -1);
+    cout << (centroid + 1) << "\n";
+
     return 0;
 }
