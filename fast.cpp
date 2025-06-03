@@ -1,38 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int MAXN = 2e5 + 5;
+const int MAX_N = 2e5 + 5;
 
-vector<int> adj[MAXN];
-int subSize[MAXN];
-int N;
+vector<int> adj[MAX_N];
+set<long long> color[MAX_N];
+int ans[MAX_N];
 
-// Calculate subtree size
-int subtreeSize(int node, int parent)
+void processColors(int node, int parent)
 {
-    int res = 1;
-    for (int next : adj[node])
+    for (int neighbor : adj[node])
     {
-        if (next == parent)
+        if (neighbor == parent)
             continue;
-        res += subtreeSize(next, node);
-    }
-    return subSize[node] = res;
-}
+        processColors(neighbor, node);
 
-// Find centroid (node such that all subtrees are ≤ N/2)
-int getCentroid(int node, int parent)
-{
-    for (int next : adj[node])
-    {
-        if (next == parent)
-            continue;
-        if (subSize[next] * 2 > N)
+        // Always merge smaller set into larger one
+        if (color[node].size() < color[neighbor].size())
         {
-            return getCentroid(next, node);
+            swap(color[node], color[neighbor]);
+        }
+
+        for (auto val : color[neighbor])
+        {
+            color[node].insert(val);
         }
     }
-    return node;
+    ans[node] = color[node].size();
 }
 
 int main()
@@ -40,26 +34,30 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    cin >> N;
-    for (int i = 0; i < N; ++i)
+    int n;
+    cin >> n;
+
+    for (int i = 1; i <= n; ++i)
     {
-        adj[i].clear();
-        subSize[i] = 0;
+        long long c;
+        cin >> c;
+        color[i].insert(c);
     }
 
-    for (int i = 0; i < N - 1; ++i)
+    for (int i = 1; i < n; ++i)
     {
-        int a, b;
-        cin >> a >> b;
-        --a;
-        --b;
-        adj[a].push_back(b);
-        adj[b].push_back(a);
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
     }
 
-    subtreeSize(0, -1);
-    int centroid = getCentroid(0, -1);
-    cout << (centroid + 1) << "\n";
+    processColors(1, 0);
+
+    for (int i = 1; i <= n; ++i)
+    {
+        cout << ans[i] << " \n"[i == n];
+    }
 
     return 0;
 }
