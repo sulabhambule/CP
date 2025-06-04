@@ -2,42 +2,38 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-  static PrintWriter out = new PrintWriter(System.out);
-  static FastReader in = new FastReader();
+  static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+  static StringTokenizer st;
+  static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
 
-  public static void main(String[] args) {
-    int t = in.nextInt();
+  public static void main(String[] args) throws IOException {
+    int t = nextInt();
     while (t-- > 0) {
       solve();
     }
     out.flush();
   }
 
-  static void solve() {
+  static void solve() throws IOException {
 
   }
 
-  static class FastReader {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    StringTokenizer st;
-
-    String next() {
-      while (st == null || !st.hasMoreTokens()) {
-        try {
-          st = new StringTokenizer(br.readLine());
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-      }
-      return st.nextToken();
+  // Fast input routines
+  static String next() throws IOException {
+    while (st == null || !st.hasMoreTokens()) {
+      String line = br.readLine();
+      if (line == null)
+        return null;
+      st = new StringTokenizer(line);
     }
+    return st.nextToken();
+  }
 
-    int nextInt() {
-      return Integer.parseInt(next());
-    }
+  static int nextInt() throws IOException {
+    return Integer.parseInt(next());
+  }
 
-    long nextLong() {
-      return Long.parseLong(next());
-    }
+  static long nextLong() throws IOException {
+    return Long.parseLong(next());
   }
 }

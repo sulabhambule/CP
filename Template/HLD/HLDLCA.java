@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Simple {
+public class HLDLCA {
   static final long INF = (long) 1e18;
   static final int MOD = (int) 1e9 + 7;
   static final int inf = (int) 1e9;
@@ -13,9 +13,7 @@ public class Simple {
 
   public static void main(String[] args) {
     int t = in.nextInt();
-    int num = 1;
     while (t-- > 0) {
-      out.println("Case " + num++ + ":");
       solve();
     }
     in.close();

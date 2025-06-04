@@ -21,7 +21,24 @@ public class TLE {
   }
 
   static void solve() {
-    
+    long x = in.nextLong();
+    long[] val = { 0, 0, 0 };
+    PriorityQueue<Long> q = new PriorityQueue<>();
+    q.add(0L);
+    q.add(0L);
+    q.add(0L);
+    x++;
+    int f = 63 - Long.numberOfLeadingZeros(x);
+    int k = 0;
+    if (((x & (x - 1)) == 0)) {
+      k = f;
+    } else {
+      k = f;
+      k++;
+    }
+    long ans = k;
+    ans *= 2;
+    println(ans + 1);
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
