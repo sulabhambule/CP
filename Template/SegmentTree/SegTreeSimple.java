@@ -15,13 +15,13 @@ class SegmentTree {
 
   private void build(int[] arr, int node, int start, int end) {
     if (start == end) {
-      tree[node] = arr[start]; 
+      tree[node] = arr[start];
       return;
     }
     int mid = (start + end) / 2;
     build(arr, 2 * node + 1, start, mid);
     build(arr, 2 * node + 2, mid + 1, end);
-    tree[node] = tree[2 * node + 1] + tree[2 * node + 2]; 
+    tree[node] = tree[2 * node + 1] + tree[2 * node + 2];
   }
 
   public void update(int index, int value) {
@@ -30,7 +30,7 @@ class SegmentTree {
 
   private void update(int node, int start, int end, int idx, int value) {
     if (start == end) {
-      tree[node] = value; 
+      tree[node] = value;
       return;
     }
     int mid = (start + end) / 2;
@@ -39,7 +39,7 @@ class SegmentTree {
     } else {
       update(2 * node + 2, mid + 1, end, idx, value);
     }
-    tree[node] = tree[2 * node + 1] + tree[2 * node + 2]; 
+    tree[node] = tree[2 * node + 1] + tree[2 * node + 2];
   }
 
   public int query(int left, int right) {
@@ -65,7 +65,7 @@ class SegmentTree {
   private int query(int node, int start, int end, int l, int r) {
     if (r < start || l > end)
       return 0; // Completely outside
-    if (l <= start && end <= r)
+    if (l <= start && end >= r)
       return tree[node]; // Completely inside
     int mid = (start + end) / 2;
     int leftSum = query(2 * node + 1, start, mid, l, r);

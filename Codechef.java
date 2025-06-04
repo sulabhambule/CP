@@ -2,7 +2,6 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 class CodeChef {
@@ -20,41 +19,7 @@ class CodeChef {
   }
 
   static void solve() {
-    int n = in.nextInt();
-    String s = in.next();
-    long ans = 0;
-    int[] prefixA = new int[n], suffixC = new int[n];
-    int countA = 0, countC = 0;
-    for (int i = 0; i < n; i++) {
-      if (s.charAt(i) == 'A') {
-        countA++;
-      }
-      if (s.charAt(i) == 'C') {
-        countA = 0;
-      }
-      prefixA[i] = countA;
-    }
-    for (int i = n - 1; i >= 0; i--) {
-      if (s.charAt(i) == 'C') {
-        countC++;
-      }
-      if (s.charAt(i) == 'A') {
-        countC = 0;
-      }
-      suffixC[i] = countC;
-    }
-    for (int i = 0; i < n; i++) {
-      if (s.charAt(i) == 'B') {
-        int a = prefixA[i], c = suffixC[i];
-        if (a >= c) {
-          ans += a;
-        } else {
-          ans += c;
-        }
-      }
-    }
-
-    println(ans);
+    
   }
 
   private static void swap2(char[] array, int i, int j) {
