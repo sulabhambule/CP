@@ -2,25 +2,61 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-  public static void main(String[] args) throws IOException {
-    Scanner in = new Scanner(System.in);
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    StringTokenizer st = new StringTokenizer(br.readLine());
-    int t = Integer.parseInt(st.nextToken());
-    while (t-- > 0) {
+  public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
+  static FASTIO in = new FASTIO();
 
-      int n = in.nextInt();
-      long answer = 0;
-      for (int i = 0; i < n; i++) {
-        for (int jj = 1; i + jj - 1 < n; jj++) {
-          int j = i + jj - 1;
-          if (a[j] < jj) {
-            break;
-          }
-          answer++;
+  public static void main(String[] args) throws IOException {
+    int t = in.nextInt();
+    while (t-- > 0) {
+      solve();
+    }
+    out.flush();
+    out.close();
+  }
+
+  static void solve() {
+    
+  }
+
+  static class FASTIO {
+    BufferedReader br;
+    StringTokenizer st;
+
+    public FASTIO() {
+      br = new BufferedReader(new InputStreamReader(System.in));
+    }
+
+    String next() {
+      while (st == null || !st.hasMoreElements()) {
+        try {
+          st = new StringTokenizer(br.readLine());
+        } catch (IOException e) {
+          e.printStackTrace();
         }
       }
-      System.out.println(answer);
+      return st.nextToken();
+    }
+
+    int nextInt() {
+      return Integer.parseInt(next());
+    }
+
+    long nextLong() {
+      return Long.parseLong(next());
+    }
+
+    String nextLine() {
+      try {
+        st = null;
+        return br.readLine();
+      } catch (IOException e) {
+        e.printStackTrace();
+        return null;
+      }
+    }
+
+    double nextDouble() {
+      return Double.parseDouble(next());
     }
   }
 }

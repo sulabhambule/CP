@@ -6,6 +6,7 @@ public class Simple {
   static FASTIO in = new FASTIO();
 
   public static void main(String[] hi) {
+
     out.flush();
     out.close();
   }
@@ -39,7 +40,7 @@ public class Simple {
 
     String nextLine() {
       try {
-        st = null; // clear the tokenizer so next() doesn't use old tokens
+        st = null;
         return br.readLine();
       } catch (IOException e) {
         e.printStackTrace();
