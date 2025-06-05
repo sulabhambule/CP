@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Simple {
+public class MaxInPathTree {
   static Scanner in = new Scanner(System.in);
   static PrintWriter out = new PrintWriter(System.out);
   static int[] pos, head, heavy, depth, size, parent;

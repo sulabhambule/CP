@@ -2,38 +2,25 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-  static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-  static StringTokenizer st;
-  static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
-
   public static void main(String[] args) throws IOException {
-    int t = nextInt();
+    Scanner in = new Scanner(System.in);
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringTokenizer st = new StringTokenizer(br.readLine());
+    int t = Integer.parseInt(st.nextToken());
     while (t-- > 0) {
-      solve();
+
+      int n = in.nextInt();
+      long answer = 0;
+      for (int i = 0; i < n; i++) {
+        for (int jj = 1; i + jj - 1 < n; jj++) {
+          int j = i + jj - 1;
+          if (a[j] < jj) {
+            break;
+          }
+          answer++;
+        }
+      }
+      System.out.println(answer);
     }
-    out.flush();
-  }
-
-  static void solve() throws IOException {
-
-  }
-
-  // Fast input routines
-  static String next() throws IOException {
-    while (st == null || !st.hasMoreTokens()) {
-      String line = br.readLine();
-      if (line == null)
-        return null;
-      st = new StringTokenizer(line);
-    }
-    return st.nextToken();
-  }
-
-  static int nextInt() throws IOException {
-    return Integer.parseInt(next());
-  }
-
-  static long nextLong() throws IOException {
-    return Long.parseLong(next());
   }
 }

@@ -1,160 +1,478 @@
+// Ayush Chavan
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+
 using namespace std;
+using namespace chrono;
+using namespace __gnu_pbds;
 
-int n, q, index_ptr = 0;
-vector<vector<int>> adj;
-vector<int> pos, head, heavy, depth, size, parent;
-vector<long long> value, ltree, segTree;
+#define fastio()                      \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);                    \
+    cout.tie(NULL)
+#define MOD 1000000007
+#define MOD1 998244353
+#define INF 1e18
+#define endl "\n"
+#define pb push_back
+#define ppb pop_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define PI 3.141592653589793238462
+#define set_bits __builtin_popcountll
+#define sz(x) ((int)(x).size())
+#define all(x) (x).begin(), (x).end()
 
-void build(int node, int start, int end)
+#ifndef ONLINE_JUDGE
+#define debug(x)       \
+    cerr << #x << " "; \
+    _print(x);         \
+    cerr << endl;
+#else
+#define debug(x) ;
+#endif
+
+typedef long long ll;
+typedef unsigned long long ull;
+typedef long double lld;
+typedef tree<pair<ll, ll>, null_type, less<pair<ll, ll>>, rb_tree_tag, tree_order_statistics_node_update> pbds; // find_by_order, order_of_key
+
+void _print(ll t) { cerr << t; }
+void _print(int t) { cerr << t; }
+void _print(string t) { cerr << t; }
+void _print(char t) { cerr << t; }
+void _print(lld t) { cerr << t; }
+void _print(double t) { cerr << t; }
+void _print(ull t) { cerr << t; }
+
+template <class T, class V>
+void _print(pair<T, V> p);
+template <class T>
+void _print(vector<T> v);
+template <class T>
+void _print(set<T> v);
+template <class T, class V>
+void _print(map<T, V> v);
+template <class T>
+void _print(multiset<T> v);
+template <class T, class V>
+void _print(pair<T, V> p)
 {
-    if (start == end)
+    cerr << "{";
+    _print(p.ff);
+    cerr << ",";
+    _print(p.ss);
+    cerr << "}";
+}
+template <class T>
+void _print(vector<T> v)
+{
+    cerr << "[ ";
+    for (T i : v)
     {
-        segTree[node] = ltree[start];
-        return;
+        _print(i);
+        cerr << " ";
     }
-    int mid = (start + end) / 2;
-    build(2 * node + 1, start, mid);
-    build(2 * node + 2, mid + 1, end);
-    segTree[node] = max(segTree[2 * node + 1], segTree[2 * node + 2]);
+    cerr << "]";
+}
+template <class T>
+void _print(set<T> v)
+{
+    cerr << "[ ";
+    for (T i : v)
+    {
+        _print(i);
+        cerr << " ";
+    }
+    cerr << "]";
+}
+template <class T>
+void _print(multiset<T> v)
+{
+    cerr << "[ ";
+    for (T i : v)
+    {
+        _print(i);
+        cerr << " ";
+    }
+    cerr << "]";
+}
+template <class T, class V>
+void _print(map<T, V> v)
+{
+    cerr << "[ ";
+    for (auto i : v)
+    {
+        _print(i);
+        cerr << " ";
+    }
+    cerr << "]";
+}
+void _print(pbds v)
+{
+    cerr << "[ ";
+    for (auto i : v)
+    {
+        _print(i);
+        cerr << " ";
+    }
+    cerr << "]";
 }
 
-void update(int node, int start, int end, int idx, long long val)
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+/*---------------------------------------------------------------------------------------------------------------------------*/
+ll gcd(ll a, ll b)
 {
-    if (start == end)
+    if (b > a)
     {
-        segTree[node] = val;
-        return;
+        return gcd(b, a);
     }
-    int mid = (start + end) / 2;
-    if (idx <= mid)
-        update(2 * node + 1, start, mid, idx, val);
-    else
-        update(2 * node + 2, mid + 1, end, idx, val);
-    segTree[node] = max(segTree[2 * node + 1], segTree[2 * node + 2]);
-}
-
-long long query(int node, int start, int end, int l, int r)
-{
-    if (r < start || l > end)
-        return LLONG_MIN;
-    if (l <= start && end <= r)
-        return segTree[node];
-    int mid = (start + end) / 2;
-    return max(query(2 * node + 1, start, mid, l, r),
-               query(2 * node + 2, mid + 1, end, l, r));
-}
-
-long long pathQuery(int u, int v)
-{
-    long long res = LLONG_MIN;
-    while (head[u] != head[v])
+    if (b == 0)
     {
-        if (depth[head[u]] < depth[head[v]])
-            swap(u, v);
-        res = max(res, query(0, 0, index_ptr - 1, pos[head[u]], pos[u]));
-        u = parent[head[u]];
+        return a;
     }
-    if (depth[u] > depth[v])
-        swap(u, v);
-    res = max(res, query(0, 0, index_ptr - 1, pos[u], pos[v]));
+    return gcd(b, a % b);
+}
+ll expo(ll a, ll b, ll mod)
+{
+    ll res = 1;
+    while (b > 0)
+    {
+        if (b & 1)
+            res = (res * a) % mod;
+        a = (a * a) % mod;
+        b = b >> 1;
+    }
     return res;
 }
-
-void dfs(int u, int p)
+void extendgcd(ll a, ll b, ll *v)
 {
-    parent[u] = p;
-    size[u] = 1;
-    depth[u] = depth[p] + 1;
-    int max_subtree = 0;
-    for (int v : adj[u])
+    if (b == 0)
     {
-        if (v != p)
+        v[0] = 1;
+        v[1] = 0;
+        v[2] = a;
+        return;
+    }
+    extendgcd(b, a % b, v);
+    ll x = v[1];
+    v[1] = v[0] - v[1] * (a / b);
+    v[0] = x;
+    return;
+} // pass an arry of size1 3
+ll mminv(ll a, ll b)
+{
+    ll arr[3];
+    extendgcd(a, b, arr);
+    return arr[0];
+} // for non prime b
+ll mminvprime(ll a, ll b) { return expo(a, b - 2, b); }
+bool revsort(ll a, ll b) { return a > b; }
+ll combination(ll n, ll r, ll m, ll *fact, ll *ifact)
+{
+    ll val1 = fact[n];
+    ll val2 = ifact[n - r];
+    ll val3 = ifact[r];
+    return (((val1 * val2) % m) * val3) % m;
+}
+void google(int t) { cout << "Case #" << t << ": "; }
+vector<ll> sieve(int n)
+{
+    int *arr = new int[n + 1]();
+    vector<ll> vect;
+    for (int i = 2; i <= n; i++)
+        if (arr[i] == 0)
         {
-            dfs(v, u);
-            size[u] += size[v];
-            if (size[v] > max_subtree)
-            {
-                max_subtree = size[v];
-                heavy[u] = v;
-            }
+            vect.push_back(i);
+            for (int j = 2 * i; j <= n; j += i)
+                arr[j] = 1;
+        }
+    return vect;
+}
+ll mod_add(ll a, ll b, ll m)
+{
+    a = a % m;
+    b = b % m;
+    return (((a + b) % m) + m) % m;
+}
+ll mod_mul(ll a, ll b, ll m)
+{
+    a = a % m;
+    b = b % m;
+    return (((a * b) % m) + m) % m;
+}
+ll mod_sub(ll a, ll b, ll m)
+{
+    a = a % m;
+    b = b % m;
+    return (((a - b) % m) + m) % m;
+}
+ll mod_div(ll a, ll b, ll m)
+{
+    a = a % m;
+    b = b % m;
+    return (mod_mul(a, mminvprime(b, m), m) + m) % m;
+} // only for prime m
+ll phin(ll n)
+{
+    ll number = n;
+    if (n % 2 == 0)
+    {
+        number /= 2;
+        while (n % 2 == 0)
+            n /= 2;
+    }
+    for (ll i = 3; i <= sqrt(n); i += 2)
+    {
+        if (n % i == 0)
+        {
+            while (n % i == 0)
+                n /= i;
+            number = (number / i * (i - 1));
         }
     }
+    if (n > 1)
+        number = (number / n * (n - 1));
+    return number;
+} // O(sqrt(N))
+ll getRandomNumber(ll l, ll r) { return uniform_int_distribution<ll>(l, r)(rng); }
+/*--------------------------------------------------------------------------------------------------------------------------*/
+
+vector<vector<int>> g;
+vector<int> parent, depth, subtree_size, heavy_node, light_tree, head, pos, values;
+int idx = 0;
+
+// Credits to Priyansh31dec for the template
+// Segment Tree with Point Updates and Range Queries
+// Supports multiple Segment Trees with just a change in the Node and Update
+// Very few changes required everytime
+template <typename Node, typename Update>
+struct SegTree
+{
+    vector<Node> tree;
+    vector<int> arr; // type may change
+    int n;
+    int s;
+    SegTree(int a_len, vector<int> &a)
+    { // change if type updated
+        arr = a;
+        n = a_len;
+        s = 1;
+        while (s < 2 * n)
+        {
+            s = s << 1;
+        }
+        tree.resize(s);
+        fill(all(tree), Node());
+        build(0, n - 1, 1);
+    }
+    void build(int start, int end, int index) // Never change this
+    {
+        if (start == end)
+        {
+            tree[index] = Node(arr[start]);
+            return;
+        }
+        int mid = (start + end) / 2;
+        build(start, mid, 2 * index);
+        build(mid + 1, end, 2 * index + 1);
+        tree[index].merge(tree[2 * index], tree[2 * index + 1]);
+    }
+    void update(int start, int end, int index, int query_index, Update &u) // Never Change this
+    {
+        if (start == end)
+        {
+            u.apply(tree[index]);
+            return;
+        }
+        int mid = (start + end) / 2;
+        if (mid >= query_index)
+            update(start, mid, 2 * index, query_index, u);
+        else
+            update(mid + 1, end, 2 * index + 1, query_index, u);
+        tree[index].merge(tree[2 * index], tree[2 * index + 1]);
+    }
+    Node query(int start, int end, int index, int left, int right)
+    { // Never change this
+        if (start > right || end < left)
+            return Node();
+        if (start >= left && end <= right)
+            return tree[index];
+        int mid = (start + end) / 2;
+        Node l, r, ans;
+        l = query(start, mid, 2 * index, left, right);
+        r = query(mid + 1, end, 2 * index + 1, left, right);
+        ans.merge(l, r);
+        return ans;
+    }
+    void make_update(int index, ll val)
+    {                                    // pass in as many parameters as required
+        Update new_update = Update(val); // may change
+        update(0, n - 1, 1, index, new_update);
+    }
+    Node make_query(int left, int right)
+    {
+        return query(0, n - 1, 1, left, right);
+    }
+};
+
+struct Node1
+{
+    int val; // may change
+    Node1()
+    {               // Identity element
+        val = -1e9; // may change
+    }
+    Node1(int p1)
+    {             // Actual Node
+        val = p1; // may change
+    }
+    void merge(Node1 &l, Node1 &r)
+    {
+        val = max(l.val, r.val);
+    }
+};
+
+struct Update1
+{
+    int val; // may change
+    Update1(ll p1)
+    {             // Actual Update
+        val = p1; // may change
+    }
+    void apply(Node1 &a)
+    {
+        a.val = val;
+    }
+};
+
+void dfs(int node, int par)
+{
+    parent[node] = par;
+    depth[node] = depth[par] + 1;
+
+    for (auto &child : g[node])
+    {
+        if (child == par)
+        {
+            continue;
+        }
+
+        dfs(child, node);
+        subtree_size[node] += subtree_size[child];
+        if (subtree_size[heavy_node[node]] < subtree_size[child])
+        {
+            heavy_node[node] = child;
+        }
+    }
+
+    subtree_size[node] += 1;
 }
 
-void hld(int u, int h)
+void dfsHLD(int node, int par, int chain)
 {
-    head[u] = h;
-    pos[u] = index_ptr;
-    ltree[index_ptr++] = value[u];
-    if (heavy[u] != 0)
-        hld(heavy[u], h);
-    for (int v : adj[u])
+    head[node] = chain;
+    light_tree[idx] = values[node];
+    pos[node] = idx++;
+
+    if (heavy_node[node] != 0)
     {
-        if (v != parent[u] && v != heavy[u])
-            hld(v, v);
+        dfsHLD(heavy_node[node], node, head[node]);
+    }
+
+    for (auto &child : g[node])
+    {
+        if (child == par || child == heavy_node[node])
+        {
+            continue;
+        }
+
+        dfsHLD(child, node, child);
     }
 }
 
-int main()
+void solve(int tt)
 {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
+    int n, q;
     cin >> n >> q;
 
-    adj.resize(n + 1);
-    pos.resize(n + 1);
-    head.resize(n + 1);
-    heavy.assign(n + 1, 0);
-    depth.resize(n + 1);
-    size.resize(n + 1);
-    parent.resize(n + 1);
-    value.resize(n + 1);
-    ltree.resize(n + 1);
-    segTree.resize(4 * n); // Safe upper bound for segment tree
+    g.assign(n + 1, vector<int>());
+    parent.assign(n + 1, 0);
+    depth.assign(n + 1, 0);
+    subtree_size.assign(n + 1, 0);
+    heavy_node.assign(n + 1, 0);
+    pos.assign(n + 1, 0);
+    light_tree.assign(n + 1, 0);
+    head.assign(n + 1, 0);
+    values.assign(n + 1, 0);
 
     for (int i = 1; i <= n; ++i)
     {
-        cin >> value[i];
+        cin >> values[i];
     }
 
-    for (int i = 1; i < n; ++i)
+    for (int i = 2; i <= n; ++i)
     {
         int u, v;
         cin >> u >> v;
-        adj[u].push_back(v);
-        adj[v].push_back(u);
+        g[u].push_back(v);
+        g[v].push_back(u);
     }
 
     dfs(1, 0);
-    hld(1, 1);
-    build(0, 0, index_ptr - 1);
+    dfsHLD(1, 0, 1);
 
-    vector<long long> results;
+    SegTree<Node1, Update1> sgt(n, light_tree);
 
     while (q--)
     {
         int type;
         cin >> type;
+
         if (type == 1)
         {
-            int s;
-            long long x;
+            int s, x;
             cin >> s >> x;
-            update(0, 0, index_ptr - 1, pos[s], x);
+            sgt.make_update(pos[s], x);
+            values[s] = x;
         }
         else
         {
-            int a, b;
-            cin >> a >> b;
-            results.push_back(pathQuery(a, b));
+            int u, v;
+            cin >> u >> v;
+            int ans = -1e9;
+            while (head[u] != head[v])
+            {
+                if (depth[head[u]] < depth[head[v]])
+                    swap(u, v);
+                ans = max(ans, sgt.make_query(pos[head[u]], pos[u]).val);
+                u = parent[head[u]];
+            }
+            if (depth[u] > depth[v])
+                swap(u, v);
+            ans = max(ans, sgt.make_query(pos[u], pos[v]).val);
+            cout << ans << " ";
         }
     }
+    cout << endl;
+}
 
-    for (auto x : results)
-        cout << x << " ";
-    cout << '\n';
-
-    return 0;
+int main()
+{
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+    fastio();
+    auto start1 = high_resolution_clock::now();
+    int T = 1; // cin >> T;
+    for (int i = 1; i <= T; ++i)
+        solve(i);
+    auto stop1 = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop1 - start1);
+#ifndef ONLINE_JUDGE
+    cerr << "Time: " << duration.count() / 1000 << endl;
+#endif
 }

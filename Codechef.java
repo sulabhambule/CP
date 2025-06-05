@@ -19,7 +19,7 @@ class CodeChef {
   }
 
   static void solve() {
-    
+  
   }
 
   private static void swap2(char[] array, int i, int j) {
@@ -69,7 +69,6 @@ class CodeChef {
     double nextDouble() {
       return Double.parseDouble(next());
     }
-
   }
 
   /*----------------------------------------------------------------------------- */
