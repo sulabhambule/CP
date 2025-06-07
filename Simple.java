@@ -4,11 +4,19 @@ import java.util.*;
 public class Simple {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FASTIO in = new FASTIO();
+  static int mod = (int) 1e9 + 7;
 
   public static void main(String[] hi) {
-
+    int t = 1;
+    while (t-- > 0) {
+      solve();
+    }
     out.flush();
     out.close();
+  }
+
+  static void solve() {
+    
   }
 
   static class FASTIO {
