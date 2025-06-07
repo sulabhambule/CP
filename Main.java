@@ -6,7 +6,7 @@ public class Main {
   static FASTIO in = new FASTIO();
 
   public static void main(String[] args) throws IOException {
-    int t = in.nextInt();
+    int t = 1;
     while (t-- > 0) {
       solve();
     }
