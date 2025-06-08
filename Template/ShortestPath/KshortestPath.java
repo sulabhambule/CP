@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Simple {
+public class KshortestPath {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FASTIO in = new FASTIO();
   static List<long[]>[] adj;
@@ -16,7 +16,7 @@ public class Simple {
     int n = in.nextInt(), m = in.nextInt();
     int k = in.nextInt();
     adj = new ArrayList[n + 1];
-    for (int i = 0; i <= n; i++) {
+    for (int i = 0; i <= n; i++) {s
       adj[i] = new ArrayList<>();
     }
     for (int i = 0; i < m; i++) {
