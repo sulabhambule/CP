@@ -75,7 +75,7 @@ public class Sliding_Advance {
         deque.pollFirst();
       }
 
-      while (!deque.isEmpty() && nums[deque.getLast()] < nums[i]) {
+      while (!deque.isEmpty() && nums[deque.getLast()] <= nums[i]) {
         deque.pollLast();
       }
 

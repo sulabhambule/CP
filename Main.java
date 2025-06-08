@@ -15,7 +15,7 @@ public class Main {
   }
 
   static void solve() {
-    
+
   }
 
   static class FASTIO {
