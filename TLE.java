@@ -21,24 +21,66 @@ public class TLE {
   }
 
   static void solve() {
-    long x = in.nextLong();
-    long[] val = { 0, 0, 0 };
-    PriorityQueue<Long> q = new PriorityQueue<>();
-    q.add(0L);
-    q.add(0L);
-    q.add(0L);
-    x++;
-    int f = 63 - Long.numberOfLeadingZeros(x);
-    int k = 0;
-    if (((x & (x - 1)) == 0)) {
-      k = f;
-    } else {
-      k = f;
-      k++;
+    int n = in.nextInt();
+    int[] a = inputIntArr(n);
+    int[] b = inputIntArr(n);
+    int index = -1;
+    for (int i = n - 1; i >= 0; i--) {
+      if (a[i] == b[i]) {
+        index = i;
+        break;
+      }
     }
-    long ans = k;
-    ans *= 2;
-    println(ans + 1);
+    int ans = 0;
+    if (index != -1) {
+      ans = (index + 1);
+    }
+    HashSet<Integer> set1 = new HashSet<>(), set2 = new HashSet<>();
+    boolean f1 = true;
+    for (int i = n - 2; i > index; i--) {
+      if (f1) {
+        if (set1.contains(a[i])) {
+          ans = Math.max(ans, (i + 1));
+          break;
+        }
+        if (set2.contains(b[i])) {
+          ans = Math.max(ans, i + 1);
+          break;
+        }
+        set2.add(a[i + 1]);
+        set1.add(b[i + 1]);
+        if (set2.contains(a[i])) {
+          ans = Math.max(ans, (i + 1));
+          break;
+        }
+        if (set1.contains(b[i])) {
+          ans = Math.max(ans, i + 1);
+          break;
+        }
+      } else {
+        if (set2.contains(a[i])) {
+          ans = Math.max(ans, (i + 1));
+          break;
+        }
+        if (set1.contains(b[i])) {
+          ans = Math.max(ans, i + 1);
+          break;
+        }
+        set1.add(a[i + 1]);
+        set2.add(b[i + 1]);
+        if (set1.contains(a[i])) {
+          ans = Math.max(ans, (i + 1));
+          break;
+        }
+        if (set2.contains(b[i])) {
+          ans = Math.max(ans, i + 1);
+          break;
+        }
+      }
+      f1 = !f1;
+    }
+
+    out.println(ans);
   }
 
   /*---------------------------------------------------------------------------------------------------------*/

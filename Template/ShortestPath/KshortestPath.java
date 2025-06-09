@@ -16,7 +16,7 @@ public class KshortestPath {
     int n = in.nextInt(), m = in.nextInt();
     int k = in.nextInt();
     adj = new ArrayList[n + 1];
-    for (int i = 0; i <= n; i++) {s
+    for (int i = 0; i <= n; i++) {
       adj[i] = new ArrayList<>();
     }
     for (int i = 0; i < m; i++) {
