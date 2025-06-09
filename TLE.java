@@ -21,66 +21,7 @@ public class TLE {
   }
 
   static void solve() {
-    int n = in.nextInt();
-    int[] a = inputIntArr(n);
-    int[] b = inputIntArr(n);
-    int index = -1;
-    for (int i = n - 1; i >= 0; i--) {
-      if (a[i] == b[i]) {
-        index = i;
-        break;
-      }
-    }
-    int ans = 0;
-    if (index != -1) {
-      ans = (index + 1);
-    }
-    HashSet<Integer> set1 = new HashSet<>(), set2 = new HashSet<>();
-    boolean f1 = true;
-    for (int i = n - 2; i > index; i--) {
-      if (f1) {
-        if (set1.contains(a[i])) {
-          ans = Math.max(ans, (i + 1));
-          break;
-        }
-        if (set2.contains(b[i])) {
-          ans = Math.max(ans, i + 1);
-          break;
-        }
-        set2.add(a[i + 1]);
-        set1.add(b[i + 1]);
-        if (set2.contains(a[i])) {
-          ans = Math.max(ans, (i + 1));
-          break;
-        }
-        if (set1.contains(b[i])) {
-          ans = Math.max(ans, i + 1);
-          break;
-        }
-      } else {
-        if (set2.contains(a[i])) {
-          ans = Math.max(ans, (i + 1));
-          break;
-        }
-        if (set1.contains(b[i])) {
-          ans = Math.max(ans, i + 1);
-          break;
-        }
-        set1.add(a[i + 1]);
-        set2.add(b[i + 1]);
-        if (set1.contains(a[i])) {
-          ans = Math.max(ans, (i + 1));
-          break;
-        }
-        if (set2.contains(b[i])) {
-          ans = Math.max(ans, i + 1);
-          break;
-        }
-      }
-      f1 = !f1;
-    }
-
-    out.println(ans);
+    
   }
 
   /*---------------------------------------------------------------------------------------------------------*/

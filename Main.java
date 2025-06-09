@@ -6,7 +6,7 @@ public class Main {
   static FASTIO in = new FASTIO();
 
   public static void main(String[] args) throws IOException {
-    int t = 1;
+    int t = in.nextInt();
     while (t-- > 0) {
       solve();
     }
@@ -15,6 +15,18 @@ public class Main {
   }
 
   static void solve() {
+    int n = in.nextInt();
+    int[] a = new int[n];
+    int one = 0, zero = 0;
+    for (int i = 0; i < n; i++) {
+      a[i] = in.nextInt();
+      if (a[i] == 1) {
+        one++;
+      } else {
+        zero++;
+      }
+    }
+    Arrays.sort(a);
 
   }
 
