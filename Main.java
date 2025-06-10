@@ -17,30 +17,11 @@ public class Main {
 
   static void solve() {
     int n = in.nextInt();
-    int[] a = new int[n];
+    long[] a = new long[n];
     for (int i = 0; i < n; i++) {
-      a[i] = in.nextInt();
-    }
-    if (n == 1) {
-      out.println(a[0]);
-      return;
+      a[i] = in.nextLong();
     }
 
-    int[][] dp = new int[n + 1][2];
-    // dp[i][who] = number of hard points till the index i and the person is who.
-
-    // dp[i][1] - my turn on the ith index.
-    // dp[i][0] - friends turn on the ith index.
-    dp[0][0] = a[0];
-    dp[0][1] = (int) 1e9;
-    dp[1][0] = a[0] + a[1];
-    dp[1][1] = dp[0][0];
-
-    for (int i = 2; i < n; i++) {
-      dp[i][0] = Math.min(a[i] + dp[i - 1][1], a[i] + a[i - 1] + dp[i - 2][1]);
-      dp[i][1] = Math.min(dp[i - 1][0], dp[i - 2][0]);
-    }
-    out.println(Math.min(dp[n - 1][0], dp[n - 1][1]));
   }
 
   static class FASTIO {
