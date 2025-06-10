@@ -1,13 +1,14 @@
+
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class HamilTonianWays {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FASTIO in = new FASTIO();
   static int MOD = (int) 1e9 + 7;
 
   public static void main(String[] args) throws IOException {
-    int t = in.nextInt();
+    int t = 1;
     while (t-- > 0) {
       solve();
     }
@@ -15,32 +16,36 @@ public class Main {
     out.close();
   }
 
+  // dp[mask][u] = number of ways to reach the node u such that the node in the
+  // mask are already visited.
+
   static void solve() {
-    int n = in.nextInt();
-    int[] a = new int[n];
-    for (int i = 0; i < n; i++) {
-      a[i] = in.nextInt();
-    }
-    if (n == 1) {
-      out.println(a[0]);
-      return;
+    int n = in.nextInt(), m = in.nextInt();
+    List<Integer>[] graph = new ArrayList[n];
+    for (int i = 0; i < n; i++)
+      graph[i] = new ArrayList<>();
+
+    for (int i = 0; i < m; i++) {
+      int a = in.nextInt() - 1;
+      int b = in.nextInt() - 1;
+      graph[a].add(b);
     }
 
-    int[][] dp = new int[n + 1][2];
-    // dp[i][who] = number of hard points till the index i and the person is who.
+    long[][] dp = new long[1 << n][n];
+    dp[1][0] = 1;
+    for (int mask = 1; mask < (1 << n); mask++) {
+      for (int u = 0; u < n; u++) {
+        if ((mask & (1 << u)) == 0 || dp[mask][u] == 0)
+          continue;
 
-    // dp[i][1] - my turn on the ith index.
-    // dp[i][0] - friends turn on the ith index.
-    dp[0][0] = a[0];
-    dp[0][1] = (int) 1e9;
-    dp[1][0] = a[0] + a[1];
-    dp[1][1] = dp[0][0];
-
-    for (int i = 2; i < n; i++) {
-      dp[i][0] = Math.min(a[i] + dp[i - 1][1], a[i] + a[i - 1] + dp[i - 2][1]);
-      dp[i][1] = Math.min(dp[i - 1][0], dp[i - 2][0]);
+        for (int v : graph[u]) {
+          if ((mask & (1 << v)) != 0)
+            continue;
+          dp[mask | (1 << v)][v] = (dp[mask | (1 << v)][v] + dp[mask][u]) % MOD;
+        }
+      }
     }
-    out.println(Math.min(dp[n - 1][0], dp[n - 1][1]));
+    out.println(dp[(1 << n) - 1][n - 1]);
   }
 
   static class FASTIO {

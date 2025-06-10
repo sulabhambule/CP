@@ -1,72 +1,43 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-using ll = long long;
+const int MOD = 1e9 + 7;
 
 int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int n, m, k;
-    cin >> n >> m >> k;
+    int n, m;
+    cin >> n >> m;
 
-    vector<vector<pair<int, ll>>> adj(n + 1);
+    vector<vector<int>> graph(n);
     for (int i = 0; i < m; i++)
     {
         int a, b;
-        ll c;
-        cin >> a >> b >> c;
-        adj[a].emplace_back(b, c);
+        cin >> a >> b;
+        a--, b--; // 0-indexing
+        graph[a].push_back(b);
     }
 
-    // For each node, store k shortest distances found so far in a max heap
-    vector<priority_queue<ll>> dist(n + 1);
-    priority_queue<pair<ll, int>, vector<pair<ll, int>>, greater<pair<ll, int>>> pq;
+    vector<vector<long long>> dp(1 << n, vector<long long>(n, 0));
+    dp[1][0] = 1; // start from city 0 (Syrjälä)
 
-    pq.push({0, 1});
-    dist[1].push(0);
-
-    while (!pq.empty())
+    for (int mask = 1; mask < (1 << n); ++mask)
     {
-        auto [cost, node] = pq.top();
-        pq.pop();
-
-        // If we already have k shortest distances for node and cost is bigger than
-        // the largest stored, we can skip
-        if (dist[node].size() == k && cost > dist[node].top())
-            continue;
-
-        for (auto &[nextNode, edgeCost] : adj[node])
+        for (int u = 0; u < n; ++u)
         {
-            ll nextCost = cost + edgeCost;
-
-            if ((int)dist[nextNode].size() < k)
+            if (!(mask & (1 << u)) || dp[mask][u] == 0)
+                continue;
+            for (int v : graph[u])
             {
-                dist[nextNode].push(nextCost);
-                pq.push({nextCost, nextNode});
-            }
-            else if (dist[nextNode].top() > nextCost)
-            {
-                dist[nextNode].pop();
-                dist[nextNode].push(nextCost);
-                pq.push({nextCost, nextNode});
+                if (mask & (1 << v))
+                    continue;
+                dp[mask | (1 << v)][v] = (dp[mask | (1 << v)][v] + dp[mask][u]) % MOD;
             }
         }
     }
 
-    // Extract k shortest distances to node n (max heap - largest on top)
-    vector<ll> ans;
-    while (!dist[n].empty())
-    {
-        ans.push_back(dist[n].top());
-        dist[n].pop();
-    }
-    sort(ans.begin(), ans.end());
-
-    for (ll x : ans)
-        cout << x << " ";
-    cout << "\n";
-
+    cout << dp[(1 << n) - 1][n - 1] << "\n";
     return 0;
 }
