@@ -7,13 +7,22 @@ public class Simple {
     static int MOD = (int) 1e9 + 7;
 
     public static void main(String[] args) {
-        solve();
+        int t = in.nextInt();
+        while (t-- > 0) {
+            solve();
+        }
         out.flush();
         out.close();
     }
 
     static void solve() {
-
+        int n = in.nextInt();
+        long k = in.nextLong();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = in.nextInt();
+        }
+        
     }
 
     static class FASTIO {
