@@ -1,7 +1,83 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-const int MOD = 1e9 + 7;
+struct Node
+{
+    long long sum, prefix, suffix, maxSubarray;
+
+    Node(long long value)
+    {
+        sum = prefix = suffix = maxSubarray = value;
+    }
+
+    Node()
+    {
+        sum = prefix = suffix = maxSubarray = 0;
+    }
+
+    void merge(const Node &left, const Node &right)
+    {
+        sum = left.sum + right.sum;
+        prefix = max(left.prefix, left.sum + right.prefix);
+        suffix = max(right.suffix, right.sum + left.suffix);
+        maxSubarray = max({left.maxSubarray, right.maxSubarray, left.suffix + right.prefix});
+    }
+};
+
+class SegTree
+{
+private:
+    vector<Node> tree;
+    vector<long long> arr;
+    int n;
+
+    void build(int start, int end, int index)
+    {
+        if (start == end)
+        {
+            tree[index] = Node(arr[start]);
+            return;
+        }
+        int mid = (start + end) / 2;
+        build(start, mid, 2 * index);
+        build(mid + 1, end, 2 * index + 1);
+        tree[index] = Node();
+        tree[index].merge(tree[2 * index], tree[2 * index + 1]);
+    }
+
+    Node query(int start, int end, int index, int left, int right)
+    {
+        if (start > right || end < left)
+            return Node();
+        if (start >= left && end <= right)
+            return tree[index];
+        int mid = (start + end) / 2;
+        Node l = query(start, mid, 2 * index, left, right);
+        Node r = query(mid + 1, end, 2 * index + 1, left, right);
+        Node res;
+        res.merge(l, r);
+        return res;
+    }
+
+public:
+    SegTree(const vector<long long> &a)
+    {
+        arr = a;
+        n = a.size();
+        int size = 1;
+        while (size < 2 * n)
+            size <<= 1;
+        tree.assign(size, Node());
+        build(0, n - 1, 1);
+    }
+
+    Node makeQuery(int left, int right)
+    {
+        return query(0, n - 1, 1, left, right);
+    }
+};
 
 int main()
 {
@@ -10,34 +86,19 @@ int main()
 
     int n, m;
     cin >> n >> m;
+    vector<long long> arr(n);
+    for (int i = 0; i < n; ++i)
+        cin >> arr[i];
 
-    vector<vector<int>> graph(n);
-    for (int i = 0; i < m; i++)
+    SegTree segTree(arr);
+
+    for (int i = 0; i < m; ++i)
     {
         int a, b;
         cin >> a >> b;
-        a--, b--; // 0-indexing
-        graph[a].push_back(b);
+        --a, --b; // 0-based indexing
+        cout << max(0LL, segTree.makeQuery(a, b).maxSubarray) << '\n';
     }
 
-    vector<vector<long long>> dp(1 << n, vector<long long>(n, 0));
-    dp[1][0] = 1; // start from city 0 (Syrjälä)
-
-    for (int mask = 1; mask < (1 << n); ++mask)
-    {
-        for (int u = 0; u < n; ++u)
-        {
-            if (!(mask & (1 << u)) || dp[mask][u] == 0)
-                continue;
-            for (int v : graph[u])
-            {
-                if (mask & (1 << v))
-                    continue;
-                dp[mask | (1 << v)][v] = (dp[mask | (1 << v)][v] + dp[mask][u]) % MOD;
-            }
-        }
-    }
-
-    cout << dp[(1 << n) - 1][n - 1] << "\n";
     return 0;
 }

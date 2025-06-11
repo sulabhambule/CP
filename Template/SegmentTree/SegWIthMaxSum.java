@@ -11,11 +11,11 @@ public class SegWIthMaxSum {
       arr[i] = in.nextLong();
     }
     SegTree segTree = new SegTree(n, arr);
-    System.out.println(Math.max(0, segTree.makeQuery(0, n - 1).maxSubarray));
+    // System.out.println(Math.max(0, segTree.makeQuery(0, n - 1).maxSubarray));
     for (int i = 0; i < m; i++) {
       int index = in.nextInt();
       long value = in.nextLong();
-      segTree.makeUpdate(index, value);
+      segTree.makeUpdate(index - 1, value);
       System.out.println(Math.max(0, segTree.makeQuery(0, n - 1).maxSubarray));
     }
     in.close();
