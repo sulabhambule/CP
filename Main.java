@@ -16,11 +16,6 @@ public class Main {
   }
 
   static void solve() {
-    int n = in.nextInt();
-    long[] a = new long[n];
-    for (int i = 0; i < n; i++) {
-      a[i] = in.nextLong();
-    }
 
   }
 

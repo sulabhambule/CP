@@ -21,7 +21,7 @@ public class TLE {
   }
 
   static void solve() {
-    
+
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
@@ -268,25 +268,25 @@ public class TLE {
 
   static void print(int[] a) {
     for (int i : a)
-      out.print(i + " ");
+      print(i + " ");
     out.println();
   }
 
   static void print(char[] a) {
     for (char i : a)
-      out.print(i + " ");
+      print(i + " ");
     out.println();
   }
 
   static void print(long[] a) {
     for (long i : a)
-      out.print(i + " ");
+      print(i + " ");
     out.println();
   }
 
   static <T extends Number> void print(ArrayList<T> ls) {
     for (T i : ls)
-      out.print(i + " ");
+      print(i + " ");
     out.println();
   }
 
