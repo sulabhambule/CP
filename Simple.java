@@ -7,7 +7,7 @@ public class Simple {
     static int MOD = (int) 1e9 + 7;
 
     public static void main(String[] args) {
-        int t = 1;
+        int t = in.nextInt();
         while (t-- > 0) {
             solve();
         }
@@ -17,26 +17,36 @@ public class Simple {
 
     static void solve() {
         int n = in.nextInt();
-        for (int i = 0; i < n; i++) {
-            long a = in.nextLong(), b = in.nextLong();
-            out.println(modPow(a, b));
-        }
-    }
-
-    static long modPow(long a, long b) {
-        // a power b
-        if (a == 0 && b == 0)
-            return 1;
-        long res = 1;
-        a %= MOD;
-        while (b > 0) {
-            if (b % 2 == 1) {
-                res = (res * a) % MOD;
+        String s = in.next();
+        int ans = -1;
+        for (char ch = 'a'; ch <= 'z'; ch++) {
+            int count = 0;
+            int i = 0, j = n - 1;
+            while (i <= j) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    i++;
+                    j--;
+                } else if (s.charAt(i) == ch) {
+                    count++;
+                    i++;
+                } else if (s.charAt(j) == ch) {
+                    j--;
+                    count++;
+                } else {
+                    count = -1;
+                    break;
+                }
             }
-            b >>= 1;
-            a = (a * a) % MOD;
+            if (count != -1) {
+                if (ans == -1) {
+                    ans = count;
+                } else {
+                    ans = Math.min(ans, count);
+                }
+            }
         }
-        return res;
+
+        out.println(ans);
     }
 
     static class FASTIO {
