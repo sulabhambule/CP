@@ -16,37 +16,7 @@ public class Simple {
     }
 
     static void solve() {
-        int n = in.nextInt();
-        String s = in.next();
-        int ans = -1;
-        for (char ch = 'a'; ch <= 'z'; ch++) {
-            int count = 0;
-            int i = 0, j = n - 1;
-            while (i <= j) {
-                if (s.charAt(i) == s.charAt(j)) {
-                    i++;
-                    j--;
-                } else if (s.charAt(i) == ch) {
-                    count++;
-                    i++;
-                } else if (s.charAt(j) == ch) {
-                    j--;
-                    count++;
-                } else {
-                    count = -1;
-                    break;
-                }
-            }
-            if (count != -1) {
-                if (ans == -1) {
-                    ans = count;
-                } else {
-                    ans = Math.min(ans, count);
-                }
-            }
-        }
-
-        out.println(ans);
+        
     }
 
     static class FASTIO {

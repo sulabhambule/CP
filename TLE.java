@@ -3,6 +3,7 @@ import static java.lang.Math.min;
 import static java.lang.Math.abs;
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collector;
 
 public class TLE {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
@@ -21,7 +22,31 @@ public class TLE {
   }
 
   static void solve() {
-    
+    int n = in.nextInt();
+    long k = in.nextLong();
+    long[] a = inputLongArr(n);
+    // sort_(a);
+    long ans = 0;
+    List<Integer> ls = new ArrayList<>();
+    for (long num : a) {
+      for (int bit = 0; bit < 60; bit++) {
+        if (((1L << bit) & num) != 0) {
+          ans++;
+        } else {
+          ls.add(bit);
+        }
+      }
+    }
+    Collections.sort(ls);
+    for (
+
+    int i : ls) {
+      if ((1L << i) <= k) {
+        ans++;
+        k -= (1L << i);
+      }
+    }
+    out.println(ans);
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
