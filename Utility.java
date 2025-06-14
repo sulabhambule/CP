@@ -1,3 +1,5 @@
+import static java.util.Collections.max;
+
 import java.util.*;
 
 public class Utility {
@@ -54,6 +56,35 @@ public class Utility {
    * LCM contains the maximum powers of primes
    * -----------------------------------------------------
    */
+
+  // for each possible value x in the array, the minimum prefix length k such that
+  // in every prefix of length ≥ k, the value x appears at least once
+
+  {
+    int n = 100000;
+    int[] a = new int[n + 1];
+    int[] gap = new int[n + 1], last = new int[n + 1], ans = new int[n + 1];
+    Arrays.fill(ans, -1);
+
+    for (int i = 1; i <= n; i++) {
+      int x = a[i];
+      gap[x] = Math.max(gap[x], i - last[x]);
+      last[x] = i;
+    }
+
+    // now we will calculate for each number from 1 to n, what will be the min value
+    // of prefix. If lets say for num = 1 min prefix is 3 then for all prfix > 3
+    // have ans is 1 because we need to deal with the minimum value that in all the
+    // subarray of the lenghr k from 1 to n.
+
+    for (int x = 1; x <= n; x++) {
+      gap[x] = Math.max(gap[x], n - last[x] + 1);
+      // so for x the max gap is gap[x].
+      for (int j = gap[x]; j <= n && ans[j] == -1; j++) {
+        ans[j] = x;
+      }
+    }
+  }
 
   static class Pair {
     int first, second;
