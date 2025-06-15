@@ -6,7 +6,7 @@ public class Simple {
     static PrintWriter out = new PrintWriter(System.out);
 
     public static void main(String[] args) {
-        
+
     }
 
     static class FastReader {

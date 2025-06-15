@@ -3,7 +3,6 @@ import static java.lang.Math.min;
 import static java.lang.Math.abs;
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collector;
 
 public class TLE {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
