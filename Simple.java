@@ -3,10 +3,14 @@ import java.util.*;
 
 public class Simple {
     static FastReader in = new FastReader();
-    static PrintWriter out = new PrintWriter(System.out);
+    public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
 
     public static void main(String[] args) {
+        int t = in.nextInt();
+        while (t-- > 0) {
 
+        }
+        out.flush();
     }
 
     static class FastReader {

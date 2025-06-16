@@ -57,9 +57,43 @@ public class Utility {
    * -----------------------------------------------------
    */
 
+  /*
+   * we have greed and we need to calcullate the sum of some x * y grid, 0 and 1
+   * are there in the grid
+   * 
+   */
+
+  {
+    int[][] prefix = new int[n + 2][m + 2];
+    for (int i = 1; i <= n; i++) {
+      for (int j = 1; j <= m; j++) {
+        int g = (s[i - 1][j - 1] == 1) ? 1 : 0;
+        prefix[i][j] = prefix[i - 1][j] + prefix[i][j - 1] - prefix[i - 1][j - 1] + g;
+      }
+    }
+    int totalG = 0;
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        totalG += (s[i][j] == 1) ? 1 : 0;
+      }
+    }
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        // checking for the sum of 2k * 2k grid.
+
+        int r1 = Math.max(0, i - k + 1); // top row
+        int c1 = Math.max(0, j - k + 1); // left col
+        int r2 = Math.min(n, i + k); // bottom row (exclusive)
+        int c2 = Math.min(m, j + k); // right col (exclusive)
+
+        // Number of 1s in the rec. (r1, c1) to (r2-1, c2-1)
+        int count = prefix[r2][c2] - prefix[r2][c1] - prefix[r1][c2] + prefix[r1][c1];
+      }
+    }
+  }
+
   // for each possible value x in the array, the minimum prefix length k such that
   // in every prefix of length ≥ k, the value x appears at least once
-
   {
     int n = 100000;
     int[] a = new int[n + 1];
