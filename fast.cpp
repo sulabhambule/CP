@@ -1,83 +1,24 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-struct Node
+const int MAX = 1e6 + 5;
+vector<pair<int, int>> adj[MAX]; // {neighbor, edge id}
+vector<int> path;
+bool visited[MAX];
+
+void dfs(int node)
 {
-    long long sum, prefix, suffix, maxSubarray;
-
-    Node(long long value)
+    while (!adj[node].empty())
     {
-        sum = prefix = suffix = maxSubarray = value;
+        auto [to, id] = adj[node].back();
+        adj[node].pop_back();
+        if (visited[id])
+            continue;
+        visited[id] = true;
+        dfs(to);
     }
-
-    Node()
-    {
-        sum = prefix = suffix = maxSubarray = 0;
-    }
-
-    void merge(const Node &left, const Node &right)
-    {
-        sum = left.sum + right.sum;
-        prefix = max(left.prefix, left.sum + right.prefix);
-        suffix = max(right.suffix, right.sum + left.suffix);
-        maxSubarray = max({left.maxSubarray, right.maxSubarray, left.suffix + right.prefix});
-    }
-};
-
-class SegTree
-{
-private:
-    vector<Node> tree;
-    vector<long long> arr;
-    int n;
-
-    void build(int start, int end, int index)
-    {
-        if (start == end)
-        {
-            tree[index] = Node(arr[start]);
-            return;
-        }
-        int mid = (start + end) / 2;
-        build(start, mid, 2 * index);
-        build(mid + 1, end, 2 * index + 1);
-        tree[index] = Node();
-        tree[index].merge(tree[2 * index], tree[2 * index + 1]);
-    }
-
-    Node query(int start, int end, int index, int left, int right)
-    {
-        if (start > right || end < left)
-            return Node();
-        if (start >= left && end <= right)
-            return tree[index];
-        int mid = (start + end) / 2;
-        Node l = query(start, mid, 2 * index, left, right);
-        Node r = query(mid + 1, end, 2 * index + 1, left, right);
-        Node res;
-        res.merge(l, r);
-        return res;
-    }
-
-public:
-    SegTree(const vector<long long> &a)
-    {
-        arr = a;
-        n = a.size();
-        int size = 1;
-        while (size < 2 * n)
-            size <<= 1;
-        tree.assign(size, Node());
-        build(0, n - 1, 1);
-    }
-
-    Node makeQuery(int left, int right)
-    {
-        return query(0, n - 1, 1, left, right);
-    }
-};
+    path.push_back(node);
+}
 
 int main()
 {
@@ -86,18 +27,41 @@ int main()
 
     int n, m;
     cin >> n >> m;
-    vector<long long> arr(n);
-    for (int i = 0; i < n; ++i)
-        cin >> arr[i];
 
-    SegTree segTree(arr);
-
+    int edgeId = 0;
     for (int i = 0; i < m; ++i)
     {
         int a, b;
         cin >> a >> b;
-        --a, --b; // 0-based indexing
-        cout << max(0LL, segTree.makeQuery(a, b).maxSubarray) << '\n';
+        adj[a].emplace_back(b, edgeId);
+        adj[b].emplace_back(a, edgeId);
+        ++edgeId;
+    }
+
+    // Check for odd degree
+    for (int i = 1; i <= n; ++i)
+    {
+        if (adj[i].size() % 2 != 0)
+        {
+            cout << "IMPOSSIBLE\n";
+            return 0;
+        }
+    }
+
+    dfs(1);
+
+    if (path.size() != m + 1)
+    {
+        cout << "IMPOSSIBLE\n";
+    }
+    else
+    {
+        reverse(path.begin(), path.end());
+        for (int node : path)
+        {
+            cout << node << " ";
+        }
+        cout << "\n";
     }
 
     return 0;

@@ -13,7 +13,7 @@ public class TLE {
   static final long NEG = (long) -1e18;
 
   public static void main(String[] Hi) throws IOException {
-    int cp = in.nextInt();
+    int cp = 1;
     while (cp-- > 0) {
       solve();
     }
