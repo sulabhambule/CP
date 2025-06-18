@@ -1,127 +1,72 @@
-
+import java.io.*;
 import java.util.*;
 
 public class Main {
+  static FastReader in = new FastReader();
+  static PrintWriter out = new PrintWriter(System.out);
+  static String L, R;
+  static int n;
+  static Integer[][][] dp;
+
   public static void main(String[] args) {
-    Scanner in = new Scanner(System.in);
-    int n = in.nextInt();
-    int m = in.nextInt();
-    long[] arr = new long[n];
-    for (int i = 0; i < n; i++) {
-      arr[i] = in.nextLong();
+    int t = in.nextInt();
+    while (t-- > 0) {
+      L = in.next();
+      R = in.next();
+      n = L.length();
+      dp = new Integer[n + 1][2][2];
+      int ans = solve(0, 1, 1);
+      out.println(ans);
+      out.flush();
     }
-    SegTree segTree = new SegTree(n, arr);
-    // System.out.println(Math.max(0, segTree.makeQuery(0, n - 1).maxSubarray));
-    for (int i = 0; i < m; i++) {
-      int type = in.nextInt();
-      if (type == 1) {
-        int index = in.nextInt();
-        long value = in.nextLong();
-        segTree.makeUpdate(index - 1, value);
-      } else {
-        int a = in.nextInt(), b = in.nextInt();
-        System.out.println(Math.max(0, segTree.makeQuery(a - 1, b - 1).maxPrefix));
+  }
+
+  static int solve(int pos, int tightL, int tightH) {
+    if (pos == n)
+      return 0;
+    if (dp[pos][tightL][tightH] != null)
+      return dp[pos][tightL][tightH];
+    int best = Integer.MAX_VALUE;
+    int low = tightL == 1 ? L.charAt(pos) - '0' : 0;
+    int high = tightH == 1 ? R.charAt(pos) - '0' : 9;
+    for (int d = low; d <= high; d++) {
+      int cost = 0;
+      if (d == R.charAt(pos) - '0')
+        cost++;
+      if (d == L.charAt(pos) - '0')
+        cost++;
+      int nHigh = tightH == 1 && d == high ? 1 : 0;
+      int nLow = tightL == 1 && d == low ? 1 : 0;
+      best = Math.min(best, cost + solve(pos + 1, nLow, nHigh));
+    }
+    return dp[pos][tightL][tightH] = best;
+  }
+
+  static class FastReader {
+    BufferedReader br;
+    StringTokenizer st;
+
+    FastReader() {
+      br = new BufferedReader(new InputStreamReader(System.in));
+    }
+
+    String next() {
+      while (st == null || !st.hasMoreTokens()) {
+        try {
+          st = new StringTokenizer(br.readLine());
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
       }
+      return st.nextToken();
     }
-    in.close();
-  }
-}
 
-class SegTree {
-  private Node[] tree;
-  private long[] arr;
-  private int n;
-  private int s;
-
-  public SegTree(int a_len, long[] a) {
-    this.arr = a;
-    this.n = a_len;
-    this.s = 1;
-    while (s < 2 * n) {
-      s = s << 1;
+    int nextInt() {
+      return Integer.parseInt(next());
     }
-    tree = new Node[s];
-    Arrays.fill(tree, new Node());
-    build(0, n - 1, 1);
-  }
 
-  private void build(int start, int end, int index) {
-    if (start == end) {
-      tree[index] = new Node(arr[start]);
-      return;
+    long nextLong() {
+      return Long.parseLong(next());
     }
-    int mid = (start + end) / 2;
-    build(start, mid, 2 * index);
-    build(mid + 1, end, 2 * index + 1);
-    tree[index] = new Node();
-    tree[index].merge(tree[2 * index], tree[2 * index + 1]);
-  }
-
-  private void update(int start, int end, int index, int queryIndex, Update u) {
-    if (start == end) {
-      u.apply(tree[index]);
-      return;
-    }
-    int mid = (start + end) / 2;
-    if (mid >= queryIndex) {
-      update(start, mid, 2 * index, queryIndex, u);
-    } else {
-      update(mid + 1, end, 2 * index + 1, queryIndex, u);
-    }
-    tree[index].merge(tree[2 * index], tree[2 * index + 1]);
-  }
-
-  private Node query(int start, int end, int index, int left, int right) {
-    if (start > right || end < left) {
-      return new Node();
-    }
-    if (start >= left && end <= right) {
-      return tree[index];
-    }
-    int mid = (start + end) / 2;
-    Node l = query(start, mid, 2 * index, left, right);
-    Node r = query(mid + 1, end, 2 * index + 1, left, right);
-    Node ans = new Node();
-    ans.merge(l, r);
-    return ans;
-  }
-
-  public void makeUpdate(int index, long val) {
-    Update newUpdate = new Update(val);
-    update(0, n - 1, 1, index, newUpdate);
-  }
-
-  public Node makeQuery(int left, int right) {
-    return query(0, n - 1, 1, left, right);
-  }
-}
-
-class Node {
-  long sum, prefix, maxPrefix;
-
-  Node(long value) {
-    sum = prefix = maxPrefix = value;
-  }
-
-  Node() {
-    sum = prefix = maxPrefix = 0;
-  }
-
-  public void merge(Node left, Node right) {
-    sum = left.sum + right.sum;
-    prefix = Math.max(left.prefix, left.sum + right.prefix);
-    maxPrefix = Math.max(Math.max(left.sum + right.sum, left.prefix), left.sum + right.prefix);
-  }
-}
-
-class Update {
-  long val;
-
-  public Update(long p1) {
-    this.val = p1;
-  }
-
-  public void apply(Node a) {
-    a.sum = a.prefix = a.maxPrefix = val;
   }
 }

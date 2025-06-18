@@ -13,7 +13,7 @@ public class TLE {
   static final long NEG = (long) -1e18;
 
   public static void main(String[] Hi) throws IOException {
-    int cp = 1;
+    int cp = in.nextInt();
     while (cp-- > 0) {
       solve();
     }
@@ -21,7 +21,48 @@ public class TLE {
   }
 
   static void solve() {
-    
+    int n = in.nextInt();
+    int m = in.nextInt();
+    int max = 0;
+    int[][] a = new int[n][m];
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        a[i][j] = in.nextInt();
+        max = max(max, a[i][j]);
+      }
+    }
+    List<int[]> ls = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        if (a[i][j] == max) {
+          ls.add(new int[] { i, j });
+        }
+      }
+    }
+    int row = -1, col = -1;
+    boolean okR = true, okC = true;
+    for (var arr : ls) {
+      int x = arr[0], y = arr[1];
+      if (x != ls.get(0)[0]) {
+        if (col == -1) {
+          col = y;
+        } else if (col != y) {
+          okC = false;
+        }
+      }
+      if (y != ls.get(0)[1]) {
+        if (row == -1) {
+          row = x;
+        } else if (row != x) {
+          okR = false;
+        }
+      }
+    }
+    if (okC || okR) {
+      println(max - 1);
+    } else {
+      println(max);
+    }
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
@@ -113,6 +154,16 @@ public class TLE {
   static void reverse(long[] a, int l, int r) {
     while (l < r) {
       long t = a[l];
+      a[l] = a[r];
+      a[r] = t;
+      l++;
+      r--;
+    }
+  }
+
+  static void reverse(int[] a, int l, int r) {
+    while (l < r) {
+      int t = a[l];
       a[l] = a[r];
       a[r] = t;
       l++;
