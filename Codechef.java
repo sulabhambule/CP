@@ -19,7 +19,45 @@ class CodeChef {
   }
 
   static void solve() {
-  
+    int n = in.nextInt();
+    int Q = in.nextInt();
+    String s = in.next();
+    String t = in.next();
+    String tt = new StringBuilder(t).reverse().toString();
+
+    List<Integer> ls1 = new ArrayList<>();
+    List<Integer> ls2 = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      if (s.charAt(i) == '1')
+        ls1.add(i + 1);
+      if (tt.charAt(i) == '1')
+        ls2.add(i + 1);
+    }
+
+    long[] dp1 = new long[ls1.size() + 1];
+    long[] dp2 = new long[ls2.size() + 1];
+
+    dp1[0] = 0;
+    for (int k = 1; k <= ls1.size(); k++) {
+      dp1[k] = dp1[k - 1] + Math.abs(ls1.get(k - 1) - k);
+    }
+
+    dp2[0] = 0;
+    for (int i = 1; i <= ls2.size(); i++) {
+      dp2[i] = dp2[i - 1] + Math.abs(ls2.get(i - 1) - i);
+    }
+
+    long ans = Long.MAX_VALUE;
+    for (int j = 1; j <= n; j++) {
+      int need1 = j;
+      int need2 = n - j + 1;
+      if (need1 <= ls1.size() && need2 <= ls2.size()) {
+        long cost = dp1[need1] + dp2[need2];
+        if (cost < ans)
+          ans = cost;
+      }
+    }
+    println(ans == Long.MAX_VALUE ? -1 : ans);
   }
 
   private static void swap2(char[] array, int i, int j) {

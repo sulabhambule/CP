@@ -20,48 +20,66 @@ public class TLE {
     out.close();
   }
 
+  static List<Integer>[] adj;
+  static long[] xor;
+
   static void solve() {
-    int n = in.nextInt();
-    int m = in.nextInt();
-    int max = 0;
-    int[][] a = new int[n][m];
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-        a[i][j] = in.nextInt();
-        max = max(max, a[i][j]);
-      }
+    int n = in.nextInt(), k = in.nextInt();
+    long[] a = new long[n + 1];
+    for (int i = 1; i <= n; i++) {
+      a[i] = in.nextLong();
     }
-    List<int[]> ls = new ArrayList<>();
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-        if (a[i][j] == max) {
-          ls.add(new int[] { i, j });
-        }
-      }
+
+    adj = new ArrayList[n + 1];
+    xor = new long[n + 1];
+    for (int i = 0; i <= n; i++) {
+      adj[i] = new ArrayList<>();
     }
-    int row = -1, col = -1;
-    boolean okR = true, okC = true;
-    for (var arr : ls) {
-      int x = arr[0], y = arr[1];
-      if (x != ls.get(0)[0]) {
-        if (col == -1) {
-          col = y;
-        } else if (col != y) {
-          okC = false;
-        }
-      }
-      if (y != ls.get(0)[1]) {
-        if (row == -1) {
-          row = x;
-        } else if (row != x) {
-          okR = false;
-        }
-      }
+
+    for (int i = 1; i < n; i++) {
+      int u = in.nextInt(), v = in.nextInt();
+      adj[u].add(v);
+      adj[v].add(u);
     }
-    if (okC || okR) {
-      println(max - 1);
+
+    dfs1(1, 0, a);
+    if (xor[1] == 0) {
+      out.println("YES");
+      return;
+    }
+
+    long[] count = { 0 };
+    dfs2(1, 0, a, xor[1], count);
+
+    if (count[0] >= 2 && k >= 3) {
+      out.println("YES");
     } else {
-      println(max);
+      out.println("NO");
+    }
+
+  }
+
+  static void dfs1(int node, int parent, long[] a) {
+    xor[node] = a[node];
+    for (int child : adj[node]) {
+      if (child != parent) {
+        dfs1(child, node, a);
+        xor[node] ^= xor[child];
+      }
+    }
+  }
+
+  static void dfs2(int node, int parent, long[] a, long lan, long[] count) {
+    xor[node] = a[node];
+    for (int child : adj[node]) {
+      if (child == parent)
+        continue;
+      dfs2(child, node, a, lan, count);
+      xor[node] ^= xor[child];
+    }
+    if (xor[node] == lan) {
+      count[0]++;
+      xor[node] = 0;
     }
   }
 
@@ -100,6 +118,12 @@ public class TLE {
 
   }
   /*----------------------------------------------------------------------------------------------------------- */
+
+  static void swap(int[] arr, int i, int j) {
+    int tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+  }
 
   static int[] getCoordinateMatrix(int x, int n) {
     int row = (x - 1) / 2, col = (x - 1) % n;
