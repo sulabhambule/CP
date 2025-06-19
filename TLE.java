@@ -20,67 +20,8 @@ public class TLE {
     out.close();
   }
 
-  static List<Integer>[] adj;
-  static long[] xor;
-
   static void solve() {
-    int n = in.nextInt(), k = in.nextInt();
-    long[] a = new long[n + 1];
-    for (int i = 1; i <= n; i++) {
-      a[i] = in.nextLong();
-    }
 
-    adj = new ArrayList[n + 1];
-    xor = new long[n + 1];
-    for (int i = 0; i <= n; i++) {
-      adj[i] = new ArrayList<>();
-    }
-
-    for (int i = 1; i < n; i++) {
-      int u = in.nextInt(), v = in.nextInt();
-      adj[u].add(v);
-      adj[v].add(u);
-    }
-
-    dfs1(1, 0, a);
-    if (xor[1] == 0) {
-      out.println("YES");
-      return;
-    }
-
-    long[] count = { 0 };
-    dfs2(1, 0, a, xor[1], count);
-
-    if (count[0] >= 2 && k >= 3) {
-      out.println("YES");
-    } else {
-      out.println("NO");
-    }
-
-  }
-
-  static void dfs1(int node, int parent, long[] a) {
-    xor[node] = a[node];
-    for (int child : adj[node]) {
-      if (child != parent) {
-        dfs1(child, node, a);
-        xor[node] ^= xor[child];
-      }
-    }
-  }
-
-  static void dfs2(int node, int parent, long[] a, long lan, long[] count) {
-    xor[node] = a[node];
-    for (int child : adj[node]) {
-      if (child == parent)
-        continue;
-      dfs2(child, node, a, lan, count);
-      xor[node] ^= xor[child];
-    }
-    if (xor[node] == lan) {
-      count[0]++;
-      xor[node] = 0;
-    }
   }
 
   /*---------------------------------------------------------------------------------------------------------*/

@@ -120,6 +120,53 @@ public class Utility {
     }
   }
 
+  // hashing function for the string.
+  long computeHash(String s) {
+    final int p = 31;
+    final int m = (int) 1e9 + 9;
+    long hashValue = 0;
+    long pPower = 1;
+
+    for (int i = 0; i < s.length(); i++) {
+      char c = s.charAt(i);
+      hashValue = (hashValue + (c - 'a' + 1) * pPower) % m;
+      pPower = (pPower * p) % m;
+    }
+
+    return hashValue;
+  }
+
+  public static int countUniqueSubstrings(String s) {
+    int n = s.length();
+    final int p = 31;
+    final int m = (int) 1e9 + 9;
+
+    long[] pPow = new long[n];
+    pPow[0] = 1;
+    for (int i = 1; i < n; i++) {
+      pPow[i] = (pPow[i - 1] * p) % m;
+    }
+
+    // Compute prefix hashes
+    long[] h = new long[n + 1];
+    for (int i = 0; i < n; i++) {
+      h[i + 1] = (h[i] + (s.charAt(i) - 'a' + 1) * pPow[i]) % m;
+    }
+
+    int count = 0;
+    for (int len = 1; len <= n; len++) {
+      Set<Long> hashSet = new HashSet<>();
+      for (int i = 0; i <= n - len; i++) {
+        long curHash = (h[i + len] - h[i] + m) % m;
+        curHash = (curHash * pPow[n - i - 1]) % m;
+        hashSet.add(curHash);
+      }
+      count += hashSet.size();
+    }
+
+    return count;
+  }
+
   static class Pair {
     int first, second;
 
