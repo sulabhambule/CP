@@ -21,6 +21,7 @@ public class TLE {
   }
 
   static void solve() {
+    int n = in.nextInt(), m = in.nextInt();
 
   }
 
