@@ -1,5 +1,4 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Main {
@@ -8,7 +7,7 @@ public class Main {
   static int mod = (int) 1e9 + 7;
 
   public static void main(String[] args) {
-    int t = in.nextInt();
+    int t = 1;
     while (t-- > 0) {
       solve();
     }
@@ -16,7 +15,25 @@ public class Main {
   }
 
   static void solve() {
+    
+  }
 
+  static long modDiv(long x, long y, long mod) {
+    // x * y^(MOD-2) % MOD
+    return (x * modPow(y, mod - 2, mod)) % mod;
+  }
+
+  static long modPow(long base, long exp, long mod) {
+    long result = 1;
+    base = base % mod;
+    while (exp > 0) {
+      if ((exp & 1) == 1) {
+        result = (result * base) % mod;
+      }
+      base = (base * base) % mod;
+      exp >>= 1;
+    }
+    return result;
   }
 
   static class FastReader {

@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.util.*;
 
@@ -16,7 +15,8 @@ public class Simple {
     }
 
     static void solve() {
-
+        int n = in.nextInt(), m = in.nextInt();
+        
     }
 
     static class FastReader {
