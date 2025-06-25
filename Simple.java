@@ -3,20 +3,13 @@ import java.util.*;
 
 public class Simple {
     static FastReader in = new FastReader();
-    public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
-    static int mod = (int) 1e9 + 7;
+    static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
 
-    public static void main(String[] Hi) throws IOException {
-        int cp = in.nextInt();
-        while (cp-- > 0) {
-            solve();
-        }
-        out.close();
-    }
-
-    static void solve() {
-        int n = in.nextInt(), m = in.nextInt();
+    public static void main(String[] args) throws IOException {
+        String s = in.next();
+        String t = in.next();
         
+        out.close();
     }
 
     static class FastReader {

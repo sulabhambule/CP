@@ -122,7 +122,7 @@ public class TLE {
       a[l] = a[r];
       a[r] = t;
       l++;
-      r--;
+      r--;  
     }
   }
 
