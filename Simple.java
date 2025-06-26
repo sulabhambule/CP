@@ -4,11 +4,13 @@ import java.util.*;
 public class Simple {
     static FastReader in = new FastReader();
     static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
+    static int MOD = (int) 1e9 + 7;
 
     public static void main(String[] args) throws IOException {
-        String s = in.next();
-        String t = in.next();
-        
+        int t = in.nextInt();
+        while (t-- > 0) {
+            
+        }
         out.close();
     }
 

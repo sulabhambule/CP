@@ -385,6 +385,32 @@ public class Utility {
     return res;
   }
 
+  static long nCr_(int n, int k) {
+    if (k > n)
+      return 0;
+    long numerator = fact[n];
+    long denominator = (fact[k] * fact[n - k]) % MOD;
+    return (numerator * modInverse(denominator, MOD)) % MOD;
+  }
+
+  public static long nCr(int n, int r) {
+    if (r > n)
+      return 0;
+    if (r == 0 || r == n)
+      return 1;
+    r = Math.min(r, n - r);
+    long result = 1;
+    for (int i = 0; i < r; i++) {
+      result = (result * (n - i)) % MOD;
+      result = (modDiv(result, (i + 1), MOD));
+    }
+    return result;
+  }
+
+  static long modInverse(long a, long mod) {
+    return modPow(a, mod - 2, mod);
+  }
+
   static long modDiv(long x, long y, long mod) {
     // x * y^(MOD-2) % MOD
     return (x * modPow(y, mod - 2, mod)) % mod;
@@ -427,20 +453,6 @@ public class Utility {
     } else {
       map.put(key, map.get(key) - 1);
     }
-  }
-
-  public static long nCr(int n, int r) {
-    if (r > n)
-      return 0;
-    if (r == 0 || r == n)
-      return 1;
-    r = Math.min(r, n - r);
-    long result = 1;
-    for (int i = 0; i < r; i++) {
-      result = (result * (n - i)) % MOD;
-      result = (modDiv(result, (i + 1), MOD));
-    }
-    return result;
   }
 
   static long binpow(long a, long b) {
