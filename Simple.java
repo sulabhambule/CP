@@ -2,21 +2,26 @@ import java.io.*;
 import java.util.*;
 
 public class Simple {
-    static FastReader in = new FastReader();
-    static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
-    static int MOD = (int) 1e9 + 7;
+    static final int INF = (int) 1e9;
 
     public static void main(String[] args) throws IOException {
+        FastReader in = new FastReader();
+        PrintWriter out = new PrintWriter(System.out);
         int t = in.nextInt();
         while (t-- > 0) {
-            
+
         }
-        out.close();
+        out.flush();
+
     }
 
     static class FastReader {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader br;
         StringTokenizer st;
+
+        public FastReader() {
+            br = new BufferedReader(new InputStreamReader(System.in));
+        }
 
         String next() {
             while (st == null || !st.hasMoreTokens()) {

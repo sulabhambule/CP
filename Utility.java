@@ -82,8 +82,8 @@ public class Utility {
         // checking for the sum of 2k * 2k grid.
 
         int r1 = Math.max(0, i - k + 1); // top row
-        int c1 = Math.max(0, j - k + 1); // left col
         int r2 = Math.min(n, i + k); // bottom row (exclusive)
+        int c1 = Math.max(0, j - k + 1); // left col
         int c2 = Math.min(m, j + k); // right col (exclusive)
 
         // Number of 1s in the rec. (r1, c1) to (r2-1, c2-1)
