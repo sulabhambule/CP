@@ -1,46 +1,56 @@
 #include <iostream>
-#include <vector>
-#include <string>
 #include <algorithm>
-
 using namespace std;
+
+void solve()
+{
+    int a, b, x, y;
+    cin >> a >> b >> x >> y;
+
+    int ans = 0;
+
+    if (a == b)
+    {
+        cout << 0 << '\n';
+        return;
+    }
+
+    if (a - b == 1 && a % 2 == 1)
+    {
+        cout << y << '\n';
+        return;
+    }
+
+    if (a > b)
+    {
+        cout << -1 << '\n';
+        return;
+    }
+
+    while (a < b)
+    {
+        if (a % 2 == 1)
+        {
+            ans += x;
+            a++;
+        }
+        else
+        {
+            a++;
+            ans += min(x, y);
+        }
+    }
+
+    cout << ans << '\n';
+}
 
 int main()
 {
-    string s;
-    cin >> s;
-    int n = s.size();
-    vector<int> pi(n);
-
-    for (int i = 1; i < n; ++i)
+    int t;
+    cin >> t;
+    while (t--)
     {
-        int j = pi[i - 1];
-        while (j > 0 && s[i] != s[j])
-        {
-            j = pi[j - 1];
-        }
-        if (s[i] == s[j])
-        {
-            ++j;
-        }
-        pi[i] = j;
+        solve();
     }
-
-    vector<int> periods;
-    int k = pi[n - 1];
-    while (k > 0)
-    {
-        periods.push_back(n - k);
-        k = pi[k - 1];
-    }
-    periods.push_back(n);
-    sort(periods.begin(), periods.end());
-
-    for (int p : periods)
-    {
-        cout << p << " ";
-    }
-    cout << endl;
-
     return 0;
 }

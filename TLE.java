@@ -21,7 +21,7 @@ public class TLE {
   }
 
   static void solve() {
-
+    
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
@@ -59,6 +59,14 @@ public class TLE {
 
   }
   /*----------------------------------------------------------------------------------------------------------- */
+
+  static int msb(int num) {
+    return 31 - Integer.numberOfLeadingZeros(num);
+  }
+
+  static int msb(long num) {
+    return 63 - Long.numberOfLeadingZeros(num);
+  }
 
   static void swap(int[] arr, int i, int j) {
     int tmp = arr[i];
@@ -103,6 +111,10 @@ public class TLE {
     return true;
   }
 
+  static long modInverse(long a, long mod) {
+    return modPow(a, mod - 2, mod);
+  }
+
   static long modDiv(long x, long y, long mod) {
     // x * y^(MOD-2) % MOD
     return (x * modPow(y, mod - 2, mod)) % mod;
@@ -122,7 +134,7 @@ public class TLE {
       a[l] = a[r];
       a[r] = t;
       l++;
-      r--;  
+      r--;
     }
   }
 
@@ -144,9 +156,8 @@ public class TLE {
     long r = 1;
     b = b % mod;
     while (e > 0) {
-      if ((e & 1) == 1) {
+      if ((e & 1) == 1)
         r = (r * b) % mod;
-      }
       b = (b * b) % mod;
       e >>= 1;
     }
