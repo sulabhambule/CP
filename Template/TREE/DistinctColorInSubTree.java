@@ -3,7 +3,6 @@ import java.io.*;
 import java.util.*;
 
 public class DistinctColorInSubTree {
-
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FASTIO in = new FASTIO();
   static List<Integer>[] adj;

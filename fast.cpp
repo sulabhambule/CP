@@ -4,50 +4,36 @@ using namespace std;
 
 void solve()
 {
-    int a, b, x, y;
-    cin >> a >> b >> x >> y;
-
-    int ans = 0;
-
-    if (a == b)
+    string s;
+    getline(cin, s);
+    int counter = 0;
+    string ans;
+    int n = s.size();
+    for (int i = 0; i < n; i++)
     {
-        cout << 0 << '\n';
-        return;
-    }
-
-    if (a - b == 1 && a % 2 == 1)
-    {
-        cout << y << '\n';
-        return;
-    }
-
-    if (a > b)
-    {
-        cout << -1 << '\n';
-        return;
-    }
-
-    while (a < b)
-    {
-        if (a % 2 == 1)
+        if (s[i] == '$' || s[i] == '#' || s[i] == '*')
         {
-            ans += x;
-            a++;
+            counter++;
+            continue;
+        }
+        if (counter > 0 && s[i] != ' ')
+        {
+            counter--;
         }
         else
         {
-            a++;
-            ans += min(x, y);
+            ans.push_back(s[i]);
         }
     }
 
-    cout << ans << '\n';
+    cout << ans;
 }
 
 int main()
 {
     int t;
     cin >> t;
+    cin.ignore();
     while (t--)
     {
         solve();

@@ -12,10 +12,8 @@ public class MaxEdgeCostOnPath {
     int t = in.nextInt();
     int p = 1;
     while (t-- > 0) {
-
       index = 0;
       int n = in.nextInt();
-
       depth = new int[n + 1];
       heavy = new int[n + 1];
       Arrays.fill(heavy, -1); // Initialize heavy to -1

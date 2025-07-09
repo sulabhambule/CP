@@ -8,6 +8,9 @@ public class Utility {
 
   }
 
+  // GCD contains the minimum powers of primes
+  // LCM contains the maximum powers of primes
+
   /*
    * The formula (x+k)+(y+k)=(x+k)⊕(y+k) is equivalent to (x+k)&(y+k)=0, where &
    * denotes the bitwise AND operation.
