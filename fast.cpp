@@ -1,42 +1,58 @@
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-void solve()
+// Author : Sulabh Ambule
+
+#define int long long
+const int MOD = 1e9 + 7;
+// const int MOD = 998244353;
+
+void Accepted()
 {
     string s;
-    getline(cin, s);
-    int counter = 0;
-    string ans;
-    int n = s.size();
-    for (int i = 0; i < n; i++)
+    cin >> s;
+    int n = s.length();
+    int maxLength = 0;
+
+    for (int len = 2; len <= n; len += 2)
     {
-        if (s[i] == '$' || s[i] == '#' || s[i] == '*')
+        for (int i = 0; i + len <= n; i++)
         {
-            counter++;
-            continue;
-        }
-        if (counter > 0 && s[i] != ' ')
-        {
-            counter--;
-        }
-        else
-        {
-            ans.push_back(s[i]);
+            int start = i;
+            int end = i + len - 1;
+            int mid = (start + end) / 2;
+            bool valid = true;
+
+            for (int j = start; j <= mid; j++)
+            {
+                char c1 = s[j];
+                char c2 = s[mid + 1 + (j - start)];
+                if (c1 != '?' && c2 != '?' && c1 != c2)
+                {
+                    valid = false;
+                    break;
+                }
+            }
+
+            if (valid)
+                maxLength = max(maxLength, len);
         }
     }
 
-    cout << ans;
+    cout << maxLength << '\n';
 }
 
-int main()
+int32_t main()
 {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int t;
     cin >> t;
-    cin.ignore();
     while (t--)
     {
-        solve();
+        Accepted();
     }
+
     return 0;
 }

@@ -66,6 +66,26 @@ public class Utility {
    * 
    */
 
+  public static int lowerBound(List<Integer> list, int val) {
+    int pos = Collections.binarySearch(list, val);
+    return (pos >= 0) ? pos : -pos - 1; // First index >= val
+  }
+
+  public static int upperBound(List<Integer> list, int val) {
+    int pos = Collections.binarySearch(list, val);
+    return (pos >= 0) ? pos + 1 : -pos - 1; // First index > val
+  }
+
+  public static int floorIndex(List<Integer> list, int val) {
+    int pos = Collections.binarySearch(list, val);
+    return (pos >= 0) ? pos : -pos - 2; // Last index <= val
+  }
+
+  public static int lowerThanIndex(List<Integer> list, int val) {
+    int pos = Collections.binarySearch(list, val);
+    return (pos >= 0) ? pos - 1 : -pos - 2; // Last index < val
+  }
+
   {
     int[][] prefix = new int[n + 2][m + 2];
     for (int i = 1; i <= n; i++) {
@@ -1163,6 +1183,7 @@ public class Utility {
 // DSU (both by size and by rank)
 class DSU {
   private int[] parent, rank, size;
+  int component;
 
   public DSU(int n) {
     parent = new int[n];
@@ -1172,6 +1193,7 @@ class DSU {
       parent[i] = i;
       size[i] = 1;//
     }
+    component = n;
   }
 
   public int find(int x) {
@@ -1186,7 +1208,7 @@ class DSU {
     int rootV = find(v);
     if (rootU == rootV)
       return false;
-
+    component--;
     if (rank[rootU] > rank[rootV]) {
       parent[rootV] = rootU;
       size[rootU] += size[rootV];//
@@ -1201,10 +1223,13 @@ class DSU {
     return true;
   }
 
+  public int getComp() {
+    return component;
+  }
+
   public int getSize(int x) {
     return size[find(x)];
   }
-
 }
 
 // MST using DSU (Krushkal ALgorythm)

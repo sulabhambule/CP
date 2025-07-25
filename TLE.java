@@ -2,6 +2,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class TLE {
@@ -21,7 +22,7 @@ public class TLE {
   }
 
   static void solve() {
-    
+
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
@@ -72,6 +73,26 @@ public class TLE {
     int tmp = arr[i];
     arr[i] = arr[j];
     arr[j] = tmp;
+  }
+
+  public static int lowerBound(List<Integer> list, int val) {
+    int pos = Collections.binarySearch(list, val);
+    return (pos >= 0) ? pos : -pos - 1; // First index >= val
+  }
+
+  public static int upperBound(List<Integer> list, int val) {
+    int pos = Collections.binarySearch(list, val);
+    return (pos >= 0) ? pos + 1 : -pos - 1; // First index > val
+  }
+
+  public static int floorIndex(List<Integer> list, int val) {
+    int pos = Collections.binarySearch(list, val);
+    return (pos >= 0) ? pos : -pos - 2; // Last index <= val
+  }
+
+  public static int lowerThanIndex(List<Integer> list, int val) {
+    int pos = Collections.binarySearch(list, val);
+    return (pos >= 0) ? pos - 1 : -pos - 2; // Last index < val
   }
 
   static int[] getCoordinateMatrix(int x, int n) {
@@ -164,28 +185,42 @@ public class TLE {
     return r;
   }
 
-  static long maxA(long[] arr) {
+  static long max_(long[] arr) {
     long m = 0;
     for (long i : arr)
       m = Math.max(m, i);
     return m;
   }
 
-  static int minA(int[] arr) {
+  static int max_(int[] arr) {
+    int m = 0;
+    for (int i : arr)
+      m = max(m, i);
+    return m;
+  }
+
+  static long min_(long[] arr) {
+    long m = Long.MIN_VALUE;
+    for (long i : arr)
+      m = min(m, i);
+    return m;
+  }
+
+  static int min_(int[] arr) {
     int m = Integer.MAX_VALUE;
     for (int i : arr)
       m = min(m, i);
     return m;
   }
 
-  static long sum(long[] a) {
+  static long sum_(long[] a) {
     long s = 0;
     for (long i : a)
       s += i;
     return s;
   }
 
-  static int sum(int[] a) {
+  static int sum_(int[] a) {
     int s = 0;
     for (int i : a)
       s += i;
