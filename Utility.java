@@ -54,9 +54,6 @@ public class Utility {
    * leftMex[i] = currentMex;
    * }
    * 
-   * 
-   * GCD contains the minimum powers of primes
-   * LCM contains the maximum powers of primes
    * -----------------------------------------------------
    */
 

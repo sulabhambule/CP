@@ -30,7 +30,7 @@ public class first1fromNode1toB {
       adj[a].add(b);
       adj[b].add(a);
     }
-    dfs(1, 0); // calculate the parentm size heavy
+    dfs(1, 0); // calculate the parent size heavy
     hld(1, 1); // calculate the head of the node.
 
     build(0, 0, index - 1);

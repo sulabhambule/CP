@@ -10,7 +10,8 @@ public class LIS {
       arr[i] = in.nextInt();
     List<Integer> lis = new ArrayList<>();
     List<Integer> ans = new ArrayList<>();
-    int[] insertedat = new int[n]; // insertedat[i] is gonna be store the length at which the number arr[i] is inserted.
+    int[] insertedat = new int[n]; // insertedat[i] is gonna be store the length at which the number arr[i] is
+                                   // inserted.
     for (int i = 0; i < n; i++) {
       if (lis.isEmpty() || lis.get(lis.size() - 1) < arr[i]) {
         lis.add(arr[i]);
