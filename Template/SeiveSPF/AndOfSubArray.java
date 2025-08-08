@@ -2,21 +2,6 @@ package Template.SeiveSPF;
 
 import java.util.*;
 
-// Author : Sulabh Ambule
-/*
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- */
-
 // the arr is given , a1, a2,a3,a4,a5,a6, a7, a8, a9...
 // now if we have to find the and for the query l --> r
 // we will precompute 
@@ -52,7 +37,7 @@ public class AndOfSubArray {
       }
     }
 
-    // id the bit is not set then we are storing 1 in that perticualr position
+    // if the bit is not set then we are storing 1 in that perticualr position
     // because if any bit gets unset then it never be going to set so the bit is set
     // we store 0 so if we use pefix sum then sum will not change as the sum of 0 +
     // 0 + 0 + 0 = 0

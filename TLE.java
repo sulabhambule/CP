@@ -7,8 +7,8 @@ import java.util.*;
 public class TLE {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FASTIO in = new FASTIO();
-  static final int MOD = (int) 1e9 + 7;
-  // static final int MOD = 998244353;
+  // static final int MOD = (int) 1e9 + 7;
+  static final int MOD = 998244353;
   static final int inf = (int) 1e9;
   static final long NEG = (long) -1e18;
 
@@ -21,7 +21,18 @@ public class TLE {
   }
 
   static void solve() {
-    
+    long x = in.nextLong();
+    long a = x + x / 2;
+    long b = x / 2;
+    if (x % 2 == 1) {
+      println(-1);
+      return;
+    }
+    if ((a ^ b) == (a + b) / 2) {
+      println(a + " " + b);
+    } else {
+      println(-1);
+    }
   }
 
   /*---------------------------------------------------------------------------------------------------------*/

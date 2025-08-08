@@ -20,14 +20,74 @@ class CodeChef {
 
   static void solve() {
     int n = in.nextInt();
-    String s = in.next();
-    if (n == 2 || n == 1 || n == 3) {
+    int[] a = inputIntArr(n);
+    int[] b = inputIntArr(n);
+    int[][] na = new int[n][2];
+    for (int i = 0; i < n; i++) {
+      na[i] = new int[] { a[i], b[i] };
+    }
+
+    Arrays.sort(na, (x, y) -> x[0] - y[0]);
+
+    int index = -1;
+
+    for (int i = 0; i < n; i++) {
+      if (a[i] == i && b[i] == i) {
+        continue;
+      }
+      index = i;
+      if (na[i][0] != index && na[i][1] != index) {
+        println(index);
+        return;
+      }
+    }
+    if (index == -1) {
       println(n);
       return;
     }
 
-  }
+    // if (na[index][0] == index) {
+    int mex = index;
+    for (int i = index; i < n; i++) {
+      if (na[i][0] == mex) {
+        int t = na[i][0];
+        na[i][0] = na[i][1];
+        na[i][1] = t;
+      }
+    }
 
+    boolean[] seen = new boolean[n + 1];
+    for (int i = 0; i < n; i++) {
+      seen[na[i][1]] = true;
+    }
+    for (int i = 0; i < n; i++) {
+      if (!seen[i]) {
+        mex = max(mex, i);
+        break;
+      }
+    }
+
+    for (int i = index; i < n; i++) {
+      if (na[i][1] == mex) {
+        int t = na[i][0];
+        na[i][0] = na[i][1];
+        na[i][1] = t;
+      }
+    }
+
+    seen = new boolean[n + 1];
+    for (int i = 0; i < n; i++) {
+      seen[na[i][0]] = true;
+    }
+    for (int i = 0; i < n; i++) {
+      if (!seen[i]) {
+        mex = max(mex, i);
+        break;
+      }
+      // }
+    }
+
+    println(mex);
   }
 
   private static void swap2(char[] array, int i, int j) {

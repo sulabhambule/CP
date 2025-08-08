@@ -65,7 +65,7 @@ class SegmentTree {
   private int query(int node, int start, int end, int l, int r) {
     if (r < start || l > end)
       return 0; // Completely outside
-    if (l <= start && end >= r)
+    if (l <= start && end <= r)
       return tree[node]; // Completely inside
     int mid = (start + end) / 2;
     int leftSum = query(2 * node + 1, start, mid, l, r);
@@ -73,3 +73,4 @@ class SegmentTree {
     return leftSum + rightSum;
   }
 }
+ 

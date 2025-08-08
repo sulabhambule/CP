@@ -1,8 +1,12 @@
+
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
-public class Main {
+// link : https://www.spoj.com/problems/PR003004/
+
+// For a pair of integers a and b, the digit sum of the interval [a, b] is defined as the sum of all digits occurring in all numbers between (and including) a and b. 
+
+public class Sum {
   static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static Scanner in = new Scanner(System.in);
 
