@@ -1,4 +1,3 @@
-import static java.util.Collections.max;
 
 import java.util.*;
 
@@ -209,6 +208,33 @@ public class Utility {
     public int hashCode() {
       return Objects.hash(first, second);
     }
+  }
+
+  // Funciton that Returns minimum swaps required to sort arr[] in ascending order
+  static int minSwaps(int[] arr) {
+    int n = arr.length;
+    int[][] paired = new int[n][2];
+    for (int i = 0; i < n; i++) {
+      paired[i][0] = arr[i];
+      paired[i][1] = i;
+    }
+    Arrays.sort(paired, (a, b) -> Integer.compare(a[0], b[0]));
+    boolean[] visited = new boolean[n];
+    int swaps = 0;
+    for (int i = 0; i < n; i++) {
+      if (visited[i] || paired[i][1] == i)
+        continue;
+      int cycleSize = 0;
+      int j = i;
+      while (!visited[j]) {
+        visited[j] = true;
+        j = paired[j][1];
+        cycleSize++;
+      }
+      if (cycleSize > 1)
+        swaps += (cycleSize - 1);
+    }
+    return swaps;
   }
 
   // Function to find the minimum in each subarray of size k

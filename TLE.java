@@ -21,18 +21,7 @@ public class TLE {
   }
 
   static void solve() {
-    long x = in.nextLong();
-    long a = x + x / 2;
-    long b = x / 2;
-    if (x % 2 == 1) {
-      println(-1);
-      return;
-    }
-    if ((a ^ b) == (a + b) / 2) {
-      println(a + " " + b);
-    } else {
-      println(-1);
-    }
+
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
@@ -412,4 +401,32 @@ public class TLE {
       ls.add(in.nextLong());
     return ls;
   }
+
+  // Returns minimum swaps required to sort arr[] in ascending order
+  static int minSwaps(int[] arr) {
+    int n = arr.length;
+    int[][] paired = new int[n][2];
+    for (int i = 0; i < n; i++) {
+      paired[i][0] = arr[i];
+      paired[i][1] = i;
+    }
+    Arrays.sort(paired, (a, b) -> Integer.compare(a[0], b[0]));
+    boolean[] visited = new boolean[n];
+    int swaps = 0;
+    for (int i = 0; i < n; i++) {
+      if (visited[i] || paired[i][1] == i)
+        continue;
+      int cycleSize = 0;
+      int j = i;
+      while (!visited[j]) {
+        visited[j] = true;
+        j = paired[j][1];
+        cycleSize++;
+      }
+      if (cycleSize > 1)
+        swaps += (cycleSize - 1);
+    }
+    return swaps;
+  }
+
 }

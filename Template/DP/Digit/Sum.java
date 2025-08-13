@@ -41,9 +41,8 @@ public class Sum {
   }
 
   public static long fun(int pos, int tight, int sum, String str) {
-    if (pos == str.length()) {
+    if (pos == str.length()) 
       return sum;
-    }
     if (dp[pos][tight][sum] != -1)
       return dp[pos][tight][sum];
     long ans = 0;
