@@ -52,7 +52,6 @@ public class diameter2 {
         } else {
             level[curr] = level[parent] + 1;
         }
-
         for (int neighbor : edges.get(curr)) {
             if (neighbor != parent) {
                 dfs(neighbor, edges, curr, level);

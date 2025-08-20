@@ -1,62 +1,35 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Main {
-  static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
-  static Scanner in = new Scanner(System.in);
+  public static void main(String[] args) throws Exception {
 
-  static long[][][] dp;
-
-  static void solve() {
-    long a = in.nextLong();
-    long b = in.nextLong();
-    if (a != 0) {
-      a--;
-    }
-    String L = Long.toString(a);
-    String R = Long.toString(b);
-
-    dp = new long[R.length() + 1][2][3000];
-    for (long[][] row : dp) {
-      for (long[] inner : row) {
-        Arrays.fill(inner, -1);
-      }
-    }
-    long sumR = fun(0, 1, 0, R);
-
-    dp = new long[L.length() + 1][2][3000];
-    for (long[][] row : dp) {
-      for (long[] inner : row) {
-        Arrays.fill(inner, -1);
-      }
-    }
-    long sumL = fun(0, 1, 0, L);
-
-    out.println(sumR - sumL);
   }
 
-  public static long fun(int pos, int tight, int sum, String str) {
-    if (pos == str.length()) {
-      return sum;
-    }
-    if (dp[pos][tight][sum] != -1)
-      return dp[pos][tight][sum];
-    long ans = 0;
-    int limit = (tight == 1) ? str.charAt(pos) - '0' : 9;
-    for (int d = 0; d <= limit; d++) {
-      int newTight = (tight == 1 && d == limit) ? 1 : 0;
-      ans += fun(pos + 1, newTight, sum + d, str);
-    }
-    return dp[pos][tight][sum] = ans;
-  }
+  static class FastScanner {
+    private final BufferedReader br;
+    private StringTokenizer st;
 
-  public static void main(String[] args) {
-    int t = in.nextInt();
-
-    while (t-- > 0) {
-      solve();
+    FastScanner(InputStream is) {
+      br = new BufferedReader(new InputStreamReader(is));
     }
-    out.close();
+
+    String next() throws IOException {
+      while (st == null || !st.hasMoreElements()) {
+        String line = br.readLine();
+        if (line == null)
+          return null;
+        st = new StringTokenizer(line);
+      }
+      return st.nextToken();
+    }
+
+    int nextInt() throws IOException {
+      return Integer.parseInt(next());
+    }
+
+    long nextLong() throws IOException {
+      return Long.parseLong(next());
+    }
   }
 }
