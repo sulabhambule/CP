@@ -1,58 +1,70 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// Author : Sulabh Ambule
+struct Fenwick {
+    int n;
+    vector<int> bit;
+    Fenwick(int n) : n(n), bit(n + 1, 0) {}
 
-#define int long long
-const int MOD = 1e9 + 7;
-// const int MOD = 998244353;
-
-void Accepted()
-{
-    string s;
-    cin >> s;
-    int n = s.length();
-    int maxLength = 0;
-
-    for (int len = 2; len <= n; len += 2)
-    {
-        for (int i = 0; i + len <= n; i++)
-        {
-            int start = i;
-            int end = i + len - 1;
-            int mid = (start + end) / 2;
-            bool valid = true;
-
-            for (int j = start; j <= mid; j++)
-            {
-                char c1 = s[j];
-                char c2 = s[mid + 1 + (j - start)];
-                if (c1 != '?' && c2 != '?' && c1 != c2)
-                {
-                    valid = false;
-                    break;
-                }
-            }
-
-            if (valid)
-                maxLength = max(maxLength, len);
+    void update(int idx, int val) {
+        while (idx <= n) {
+            bit[idx] += val;
+            idx += idx & -idx;
         }
     }
 
-    cout << maxLength << '\n';
-}
+    int prefix(int idx) {
+        int sum = 0;
+        while (idx > 0) {
+            sum += bit[idx];
+            idx -= idx & -idx;
+        }
+        return sum;
+    }
 
-int32_t main()
-{
+    int query(int l, int r) {
+        return prefix(r) - prefix(l - 1);
+    }
+};
+
+int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int t;
-    cin >> t;
-    while (t--)
-    {
-        Accepted();
+    int n, q;
+    cin >> n >> q;
+    vector<long long> x(n + 1);
+    for (int i = 1; i <= n; i++) cin >> x[i];
+
+    vector<vector<pair<int, int>>> queries(n + 1);
+    for (int i = 0; i < q; i++) {
+        int a, b;
+        cin >> a >> b;
+        queries[a].push_back({b, i});
     }
+
+    vector<int> ans(q);
+    Fenwick ft(n);
+    unordered_map<long long, int> last;
+
+    for (int i = n; i >= 1; i--) {
+        long long val = x[i];
+        if (last.count(val)) {
+            ft.update(last[val], -1); // remove previous occurrence
+        }
+        last[val] = i;
+        ft.update(i, 1); // add current occurrence
+
+        for (auto &qu : queries[i]) {
+            int r = qu.first, idx = qu.second;
+            ans[idx] = ft.query(i, r);
+        }
+    }
+
+    for (int i = 0; i < q; i++) {
+        cout << ans[i] << " ";
+    }
+    cout << "\n";
 
     return 0;
 }

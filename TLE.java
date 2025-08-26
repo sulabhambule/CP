@@ -21,7 +21,7 @@ public class TLE {
   }
 
   static void solve() {
-
+    
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
@@ -57,6 +57,16 @@ public class TLE {
       return Double.parseDouble(next());
     }
 
+    String nextLine() {
+      String str = "";
+      try {
+        st = null;
+        str = br.readLine();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      return str;
+    }
   }
 
   // see the intput for T

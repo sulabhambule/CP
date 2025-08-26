@@ -11,11 +11,9 @@ public class FT {
     for (int i = 1; i <= n; i++) {
       arr[i] = in.nextInt();
     }
-
     for (int i = 0; i < n; i++) {
       System.out.print(arr[i] + " ");
     }
-
   }
 
   // the arr is taked as the 1 based indexing in case of 0 do arr[i - 1].
