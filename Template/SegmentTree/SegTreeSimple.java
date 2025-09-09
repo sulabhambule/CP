@@ -73,4 +73,3 @@ class SegmentTree {
     return leftSum + rightSum;
   }
 }
- 

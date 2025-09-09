@@ -2,68 +2,62 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-  static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-  static PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)), true);
+  public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
+  static FASTIO in = new FASTIO();
+  static int inf = Integer.MAX_VALUE / 2;
 
-  static int n;
-
-  static int query(int x, List<Integer> S) throws IOException {
-    out.print("?" + " " + x + " " + S.size());
-    for (int v : S)
-      out.print(" " + v);
-    out.println();
-    out.flush();
-    return Integer.parseInt(br.readLine().trim());
+  public static void main(String[] args) {
+    int t = in.nextInt();
+    while (t-- > 0) {
+      solve();
+    }
+    out.close();
   }
 
-  public static void main(String[] args) throws Exception {
-    int t = Integer.parseInt(br.readLine().trim());
-    while (t-- > 0) {
-      n = Integer.parseInt(br.readLine().trim());
+  static void solve() {
 
-      int[] dp = new int[n + 1];
+  }
 
-      List<Integer> all = new ArrayList<>();
-      for (int i = 1; i <= n; i++)
-        all.add(i);
+  static class FASTIO {
+    BufferedReader br;
+    StringTokenizer st;
 
-      for (int i = 1; i <= n; i++) {
-        dp[i] = query(i, all);
-      }
+    public FASTIO() {
+      br = new BufferedReader(new InputStreamReader(System.in));
+    }
 
-      int start = 1;
-      for (int i = 2; i <= n; i++) {
-        if (dp[i] > dp[start])
-          start = i;
-      }
-
-      List<Integer> path = new ArrayList<>();
-      int u = start;
-      path.add(u);
-
-      while (dp[u] > 1) {
-        int targetLen = dp[u] - 1;
-        int next = -1;
-        for (int v = 1; v <= n; v++) {
-          if (dp[v] == targetLen) {
-            int res = query(u, Arrays.asList(u, v));
-            if (res == 2) {
-              next = v;
-              break;
-            }
-          }
+    String next() {
+      while (st == null || !st.hasMoreElements()) {
+        try {
+          st = new StringTokenizer(br.readLine());
+        } catch (IOException e) {
+          e.printStackTrace();
         }
-        if (next == -1)
-          break;
-        path.add(next);
-        u = next;
       }
+      return st.nextToken();
+    }
 
-      out.print("!" + " " + path.size());
-      for (int v : path)
-        out.print(" " + v);
-      out.println();
-      out.flush();
+    int nextInt() {
+      return Integer.parseInt(next());
+    }
+
+    long nextLong() {
+      return Long.parseLong(next());
+    }
+
+    double nextDouble() {
+      return Double.parseDouble(next());
+    }
+
+    String nextLine() {
+      String str = "";
+      try {
+        st = null;
+        str = br.readLine();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      return str;
     }
   }
 }

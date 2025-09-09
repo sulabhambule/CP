@@ -21,7 +21,63 @@ public class TLE {
   }
 
   static void solve() {
-    
+    int n = in.nextInt();
+    int k = in.nextInt();
+
+    int[] depth = new int[n];
+    int[] count = new int[n];
+    int[] leaf = new int[n];
+    int[] parent = new int[n];
+    Arrays.fill(parent, -1);
+    Arrays.fill(leaf, 1);
+
+    count[0]++;
+    for (int node = 1; node < n; node++) {
+      parent[node] = in.nextInt() - 1;
+      depth[node] = depth[parent[node]] + 1;
+      count[depth[node]]++;
+      leaf[parent[node]] = 0; // this is not a leaf node because the parent has a child for sure.
+    }
+
+    int minDepth = inf;
+    int rem = 0;
+    int total = 0;
+    for (int i = 0; i < n; i++) {
+      if (leaf[i] == 1) {
+        minDepth = min(minDepth, depth[i]);
+      }
+    }
+
+    for (int d = 0; d < n; d++) {
+      if (count[d] == 0)
+        continue;
+      if (d > minDepth) {
+        rem += count[d];
+      } else {
+        total += count[d];
+      }
+    }
+
+    // now we need to check if till the minDepth there is subset of nodes whose sum
+    // is [k - rem, k] inclusive the the answer is minDepth else minDepth - 1.
+
+    boolean[] dp = new boolean[2005];
+    dp[0] = true;
+
+    for (int i = 0; i <= minDepth; i++) {
+      for (int sum = total - count[i]; sum >= 0; sum--) {
+        if (dp[sum])
+          dp[sum + count[i]] = true;
+      }
+    }
+    for (int i = Math.max(0, k - rem); i <= k; i++) {
+      if (dp[i]) {
+        println(minDepth + 1);
+        return;
+      }
+    }
+    println(minDepth);
+
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
