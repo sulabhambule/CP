@@ -2,7 +2,11 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+// cf link : https://codeforces.com/contest/1822/problem/F
+
+// here we are finding the max dist in subTree in down1[node] and second max leaf dist in down2[node], also the up[node] = max dist not in the subTree. and the heavy[node] give in subTree frim which node the max distance means down1[node] is comming . 
+
+public class UpDownDist {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FASTIO in = new FASTIO();
   static long INF = Long.MAX_VALUE / 2;

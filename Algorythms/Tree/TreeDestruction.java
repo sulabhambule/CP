@@ -1,14 +1,16 @@
+package Tree;
 
 import java.io.*;
 import java.util.*;
 
-public class Main {
+// cf link : https://codeforces.com/contest/2050/problem/Gs
+
+public class TreeDestruction {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FASTIO in = new FASTIO();
   static long INF = Long.MAX_VALUE / 2;
   static int inf = Integer.MAX_VALUE / 2;
   static int mod = (int) 1e9 + 7;
-  // static int mod = 998244353;
 
   public static void main(String[] args) {
     int t = in.nextInt();
@@ -20,75 +22,43 @@ public class Main {
   }
 
   static List<List<Integer>> adj;
-  static int[] depth, parent, down1, down2, heavy, up;
+  static int ans;
 
   static void solve() {
     int n = in.nextInt();
-    long k = in.nextLong(), c = in.nextLong();
-
-    depth = new int[n + 1];
+    ans = -inf;
     adj = new ArrayList<>();
-    for (int i = 0; i <= n; i++)
+    for (int i = 0; i <= n + 5; i++) {
       adj.add(new ArrayList<>());
+    }
+    int[] deg = new int[n + 5];
     for (int i = 1; i < n; i++) {
       int u = in.nextInt(), v = in.nextInt();
       adj.get(u).add(v);
       adj.get(v).add(u);
+      deg[u]++;
+      deg[v]++;
     }
-    depth = new int[n + 1];
-    down1 = new int[n + 1];
-    down2 = new int[n + 1];
-    heavy = new int[n + 1];
-    up = new int[n + 1];
-    parent = new int[n + 1];
-    dfsDepth(1, -1);
-    dfsDown(1, -1);
-    up[1] = 0;
-    dfsUp(1, -1);
-    long ans = -INF;
-    for (int node = 1; node <= n; node++) {
-      long curr = k * (long) Math.max(down1[node], up[node]) - c * (long) depth[node];
-      ans = Math.max(ans, curr);
-    }
-    out.println(ans);
+    dfs(1, -1, deg);
+    out.println(ans + 2); // this minus 2 is because at leaf there is not child node
   }
 
-  static void dfsUp(int node, int par) {
+  public static int dfs(int node, int par, int[] deg) {
+    int max1 = 0, max2 = 0;
     for (int adjNode : adj.get(node)) {
       if (adjNode == par)
         continue;
-      int curr = (heavy[node] == adjNode ? down2[node] : down1[node]);
-      up[adjNode] = 1 + Math.max(up[node], curr);
-      dfsUp(adjNode, node);
-    }
-  }
-
-  static void dfsDown(int node, int p) {
-    down1[node] = down2[node] = 0;
-    heavy[node] = -1;
-    for (int adjNode : adj.get(node)) {
-      if (adjNode == p)
-        continue;
-      dfsDown(adjNode, node);
-      int curr = 1 + down1[adjNode];
-      if (curr > down1[node]) {
-        down2[node] = down1[node];
-        down1[node] = curr;
-        heavy[node] = adjNode;
-      } else if (curr > down2[node]) {
-        down2[node] = curr;
+      int temp = dfs(adjNode, node, deg);
+      if (temp > max1) {
+        max2 = max1;
+        max1 = temp;
+      } else if (temp > max2) {
+        max2 = temp;
       }
     }
-  }
 
-  static void dfsDepth(int node, int p) {
-    parent[node] = p;
-    for (int adjNode : adj.get(node)) {
-      if (adjNode == p)
-        continue;
-      depth[adjNode] = 1 + depth[node];
-      dfsDepth(adjNode, node);
-    }
+    ans = Math.max(ans, max1 + max2 + deg[node] - 2);
+    return Math.max(max1, max2) + deg[node] - 2;
   }
 
   static class FASTIO {

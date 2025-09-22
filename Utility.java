@@ -7,6 +7,10 @@ public class Utility {
 
   }
 
+  // Swapping adjacent elements in a distinct array is basically trying to equate
+  // two permutations using adjacent swaps. When is it possible? --> if the parity
+  // of inversion in both arrays are same.
+
   // GCD contains the minimum powers of primes
   // LCM contains the maximum powers of primes
 
