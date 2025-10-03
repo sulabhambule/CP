@@ -1,3 +1,4 @@
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
@@ -21,7 +22,22 @@ public class TLE {
   }
 
   static void solve() {
-    
+    long h = in.nextLong(), d = in.nextLong();
+    long low = d, high = 2 * d - 1, ans = 2 * d;
+    while (low <= high) {
+      long mid = (low + high) / 2;
+      long x = mid - d + 1;
+      long s1 = (d / x) * (d / x + 1) / 2;
+      long s2 = (d / x + 1) * (d / x + 2) / 2;
+      long s = (d % x) * s2 + (x - d % x) * s1;
+      if (s < h + mid - d) {
+        ans = mid;
+        high = mid - 1;
+      } else {
+        low = mid + 1;
+      }
+    }
+    println(ans);
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
@@ -412,32 +428,4 @@ public class TLE {
       ls.add(in.nextLong());
     return ls;
   }
-
-  // Returns minimum swaps required to sort arr[] in ascending order
-  static int minSwaps(int[] arr) {
-    int n = arr.length;
-    int[][] paired = new int[n][2];
-    for (int i = 0; i < n; i++) {
-      paired[i][0] = arr[i];
-      paired[i][1] = i;
-    }
-    Arrays.sort(paired, (a, b) -> Integer.compare(a[0], b[0]));
-    boolean[] visited = new boolean[n];
-    int swaps = 0;
-    for (int i = 0; i < n; i++) {
-      if (visited[i] || paired[i][1] == i)
-        continue;
-      int cycleSize = 0;
-      int j = i;
-      while (!visited[j]) {
-        visited[j] = true;
-        j = paired[j][1];
-        cycleSize++;
-      }
-      if (cycleSize > 1)
-        swaps += (cycleSize - 1);
-    }
-    return swaps;
-  }
-
 }

@@ -7,6 +7,11 @@ public class Utility {
 
   }
 
+  // --> We are asked to count the number of non-decreasing sequences of length
+  // 2𝑚 where each element is between 1 and n it is same as
+  // stars and bars where there are 2m identical object and n boxes so the formula
+  // for this is 2m + n - 1 C (n - 1 or 2m)
+
   // Swapping adjacent elements in a distinct array is basically trying to equate
   // two permutations using adjacent swaps. When is it possible? --> if the parity
   // of inversion in both arrays are same.
