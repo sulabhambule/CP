@@ -22,6 +22,7 @@ public class TLE {
   }
 
   static void solve() {
+
     
   }
 
