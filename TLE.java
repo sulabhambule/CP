@@ -22,22 +22,7 @@ public class TLE {
   }
 
   static void solve() {
-    long h = in.nextLong(), d = in.nextLong();
-    long low = d, high = 2 * d - 1, ans = 2 * d;
-    while (low <= high) {
-      long mid = (low + high) / 2;
-      long x = mid - d + 1;
-      long s1 = (d / x) * (d / x + 1) / 2;
-      long s2 = (d / x + 1) * (d / x + 2) / 2;
-      long s = (d % x) * s2 + (x - d % x) * s1;
-      if (s < h + mid - d) {
-        ans = mid;
-        high = mid - 1;
-      } else {
-        low = mid + 1;
-      }
-    }
-    println(ans);
+    
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
