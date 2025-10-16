@@ -1,31 +1,118 @@
-
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static java.lang.Math.abs;
 import java.io.*;
 import java.util.*;
 
-public class TLE {
+// cf link : https://codeforces.com/contest/1915/problem/G
+
+public class Bicycle {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FASTIO in = new FASTIO();
-  static final int mod = (int) 1e9 + 7;
+  static final long INF = Long.MAX_VALUE / 2;
+  // static final int MOD = (int) 1e9 + 7;
   static final int MOD = 998244353;
-  static final int inf = (int) 1e9;
-  static final long NEG = (long) -1e18;
 
   public static void main(String[] Hi) throws IOException {
     int cp = in.nextInt();
     while (cp-- > 0) {
-      solve();
+      Subh();
     }
     out.close();
   }
 
-  static void solve() {
+  static void Subh() throws IOException {
+    int n = in.nextInt();
+    int m = in.nextInt();
+    List<List<int[]>> adj = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      adj.add(new ArrayList<>());
+    }
 
+    for (int i = 0; i < m; i++) {
+      int u = in.nextInt() - 1;
+      int v = in.nextInt() - 1;
+      int w = in.nextInt();
+      adj.get(u).add(new int[] { v, w });
+      adj.get(v).add(new int[] { u, w });
+    }
+
+    int[] bikes = new int[n];
+    for (int i = 0; i < n; i++) {
+      bikes[i] = in.nextInt();
+    }
+
+    long[][] dp = new long[n][1001]; // n nodes, bike speed up to 1000
+    for (int i = 0; i < n; i++) {
+      Arrays.fill(dp[i], INF);
+    }
+
+    PriorityQueue<Tuple> pq = new PriorityQueue<>();
+    pq.add(new Tuple(0, 0, bikes[0]));
+    dp[0][bikes[0]] = 0;
+
+    while (!pq.isEmpty()) {
+      Tuple t = pq.poll();
+      int currNode = t.node;
+      long dist = t.cost;
+      int bike = t.bikeNum;
+
+      if (dist > dp[currNode][bike])
+        continue;
+
+      for (int[] neighbour : adj.get(currNode)) {
+        int adjN = neighbour[0];
+        int len = neighbour[1];
+
+        int newBike = min(bike, bikes[adjN]);
+        long newDist = dist + (long) (bike * len);
+
+        if (newDist < dp[adjN][newBike]) {
+          dp[adjN][newBike] = newDist;
+          pq.add(new Tuple(adjN, newDist, newBike));
+        }
+      }
+    }
+
+    long minCost = INF;
+    for (int i = 0; i < 1001; i++) {
+      minCost = min(minCost, dp[n - 1][i]);
+    }
+
+    out.println(minCost == INF ? -1 : minCost);
   }
 
-  /*---------------------------------------------------------------------------------------------------------*/
+  static class Tuple implements Comparable<Tuple> {
+    int node;
+    long cost;
+    int bikeNum;
+
+    public Tuple(int node, long cost, int bikeNum) {
+      this.node = node;
+      this.cost = cost;
+      this.bikeNum = bikeNum;
+    }
+
+    @Override
+    public int compareTo(Tuple o) {
+      return Long.compare(this.cost, o.cost);
+    }
+  }
+  /*------------------------------------------------------------------------------------------------------------- */
+
+  static class Pair implements Comparable<Pair> {
+    long first;
+    int second;
+
+    Pair(long f, int s) {
+      this.first = f;
+      this.second = s;
+    }
+
+    @Override
+    public int compareTo(Pair other) {
+      return (int) (this.first - other.first);
+    }
+  }
 
   static class FASTIO {
     BufferedReader br;
@@ -58,85 +145,17 @@ public class TLE {
       return Double.parseDouble(next());
     }
 
-    String nextLine() {
-      String str = "";
-      try {
-        st = null;
-        str = br.readLine();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-      return str;
-    }
-
   }
-
-  // see the intput for T
-  // interger overflow,
-  // binary search on answer
-  // prefix sum and suffix sum,
-  // DP, PQ, BFS, DFS, DIJKSTRA
 
   /*----------------------------------------------------------------------------------------------------------- */
 
-  static int msb(int num) {
-    return 31 - Integer.numberOfLeadingZeros(num);
-  }
-
-  static int msb(long num) {
-    return 63 - Long.numberOfLeadingZeros(num);
-  }
-
-  static void swap(int[] arr, int i, int j) {
-    int tmp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = tmp;
-  }
-
-  public static int lowerBound(List<Integer> list, int val) {
-    int pos = Collections.binarySearch(list, val);
-    return (pos >= 0) ? pos : -pos - 1; // First index >= val
-  }
-
-  public static int upperBound(List<Integer> list, int val) {
-    int pos = Collections.binarySearch(list, val);
-    return (pos >= 0) ? pos + 1 : -pos - 1; // First index > val
-  }
-
-  public static int floorIndex(List<Integer> list, int val) {
-    int pos = Collections.binarySearch(list, val);
-    return (pos >= 0) ? pos : -pos - 2; // Last index <= val
-  }
-
-  public static int lowerThanIndex(List<Integer> list, int val) {
-    int pos = Collections.binarySearch(list, val);
-    return (pos >= 0) ? pos - 1 : -pos - 2; // Last index < val
-  }
-
-  static int[] getCoordinateMatrix(int x, int n) {
-    int row = (x - 1) / 2, col = (x - 1) % n;
-    return new int[] { row, col };
-  }
-
-  static void addOne(TreeMap<Long, Integer> map, long key) {
-    map.put(key, map.getOrDefault(key, 0) + 1);
-  }
-
-  static void removeOne(TreeMap<Long, Integer> map, long key) {
-    if (map.get(key) == 1) {
-      map.remove(key);
-    } else {
-      map.put(key, map.get(key) - 1);
-    }
-  }
-
-  static long gcd(long a, long a2) {
+  static int gcd(int a, int b) {
     if (a == 0)
-      return a2;
-    return gcd(a2 % a, a);
+      return b;
+    return gcd(b % a, a);
   }
 
-  static long lcm(long a, long b) {
+  static int lcm(int a, int b) {
     return Math.abs(a * b) / gcd(a, b);
   }
 
@@ -150,21 +169,14 @@ public class TLE {
     return true;
   }
 
-  static long modInverse(long a, long mod) {
-    return modPow(a, mod - 2, mod);
-  }
-
-  static long modDiv(long x, long y, long mod) {
-    // x * y^(MOD-2) % MOD
-    return (x * modPow(y, mod - 2, mod)) % mod;
-  }
-
-  static long accurateFloor(long a, long b) {
-    // when a or b can be negative.
-    long val = a / b;
-    while (val * b > a)
-      val--;
-    return val;
+  static void reverse(int[] a, int l, int r) {
+    while (l < r) {
+      int t = a[l];
+      a[l] = a[r];
+      a[r] = t;
+      l++;
+      r--;
+    }
   }
 
   static void reverse(long[] a, int l, int r) {
@@ -177,68 +189,34 @@ public class TLE {
     }
   }
 
-  static void reverse(int[] a, int l, int r) {
-    while (l < r) {
-      int t = a[l];
-      a[l] = a[r];
-      a[r] = t;
-      l++;
-      r--;
-    }
-  }
-
-  public static long mahantaDist(long x1, long y1, long x2, long y2) {
-    return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-  }
-
   static long modPow(long b, long e, long mod) {
     long r = 1;
     b = b % mod;
     while (e > 0) {
-      if ((e & 1) == 1)
+      if ((e & 1) == 1) {
         r = (r * b) % mod;
+      }
       b = (b * b) % mod;
       e >>= 1;
     }
     return r;
   }
 
-  static long max_(long[] arr) {
-    long m = 0;
-    for (long i : arr)
-      m = Math.max(m, i);
-    return m;
-  }
-
-  static int max_(int[] arr) {
-    int m = 0;
+  static int max_inArr(int[] arr) {
+    int m = Integer.MIN_VALUE;
     for (int i : arr)
       m = max(m, i);
     return m;
   }
 
-  static long min_(long[] arr) {
-    long m = Long.MIN_VALUE;
-    for (long i : arr)
-      m = min(m, i);
-    return m;
-  }
-
-  static int min_(int[] arr) {
+  static int min_inArr(int[] arr) {
     int m = Integer.MAX_VALUE;
     for (int i : arr)
       m = min(m, i);
     return m;
   }
 
-  static long sum_(long[] a) {
-    long s = 0;
-    for (long i : a)
-      s += i;
-    return s;
-  }
-
-  static int sum_(int[] a) {
+  static int sumOfArr(int[] a) {
     int s = 0;
     for (int i : a)
       s += i;
@@ -272,7 +250,7 @@ public class TLE {
       a[i] = ls.get(i);
   }
 
-  static <T extends Comparable<T>> void sort_(ArrayList<T> list) {
+  static <T extends Comparable<T>> void sort(ArrayList<T> list) {
     Collections.sort(list);
   }
 
@@ -289,52 +267,13 @@ public class TLE {
       a[i] = ls.get(i);
   }
 
-  static void yes() {
-    out.println("YES");
-  }
-
-  static void no() {
-    out.println("NO");
-  }
-
-  static void print(int x) {
-    out.print(x);
-  }
-
-  static void print(String s) {
-    out.print(s);
-  }
-
-  static void println(String s) {
-    out.println(s);
-  }
-
-  static void println(int x) {
-    out.println(x);
-  }
-
-  static void print(long x) {
-    out.print(x);
-  }
-
-  static void println(long x) {
-    out.println(x);
-  }
-
-  static void print(char x) {
-    out.print(x);
-  }
-
-  static void println(char x) {
-    out.println(x);
-  }
-
   static void print(int[][] arr) {
     for (int[] a : arr) {
       for (int i : a)
         out.print(i + " ");
       out.println();
     }
+    out.println();
   }
 
   static void print(long[][] arr) {
@@ -348,25 +287,25 @@ public class TLE {
 
   static void print(int[] a) {
     for (int i : a)
-      print(i + " ");
+      out.print(i + " ");
     out.println();
   }
 
   static void print(char[] a) {
     for (char i : a)
-      print(i + " ");
+      out.print(i + " ");
     out.println();
   }
 
   static void print(long[] a) {
     for (long i : a)
-      print(i + " ");
+      out.print(i + " ");
     out.println();
   }
 
   static <T extends Number> void print(ArrayList<T> ls) {
     for (T i : ls)
-      print(i + " ");
+      out.print(i + " ");
     out.println();
   }
 

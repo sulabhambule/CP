@@ -10,7 +10,7 @@ public class Main {
   static final long INF = (long) 1e18;
 
   public static void main(String[] args) {
-    int t = in.nextInt();
+    int t = 1;
     while (t-- > 0) {
       solve();
     }
@@ -18,15 +18,7 @@ public class Main {
   }
 
   static void solve() {
-    int l = in.nextInt();
-    int r = in.nextInt();
-    long ans = 0;
-    while (l != 0 || r != 0) {
-      ans += r - l;
-      l /= 10;
-      r /= 10;
-    }
-    out.println(ans);
+    
   }
 
   static class FASTIO {
