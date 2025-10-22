@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+// CF link : https://codeforces.com/contest/1373/problem/D
+
 public class Max_Sum_Even_Indices {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FASTIO in = new FASTIO();

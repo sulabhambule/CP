@@ -25,7 +25,7 @@ public class New_Rating {
     for (int i = 1; i <= n; i++) {
       a[i] = in.nextInt();
     }
-    // dp[i]: what will be the ans if we consider a[0....i]
+    // dp[i]: what will be ans if we consider a[0....i], & contest is skkipped
     // there are two transition if we cosider the ithindex for the r and check for
     // left l for the prefix max or we put the ith index for normal continuos range.
 
@@ -41,7 +41,7 @@ public class New_Rating {
       }
       prefix[i] = Math.max(x, prefix[i - 1]);
     }
-    // base case if there is one element that should be removed
+    // base case if there is one element that should be removed dp[0] = 0.
 
     for (int i = 2; i <= n; i++) {
       int y = dp[i - 1];
@@ -50,6 +50,8 @@ public class New_Rating {
       } else if (a[i] < y) {
         y--;
       }
+      // y if we stopped the skipped contest in i - 1 th index.
+      // prefix[i - 1] if the at ith index the skipped subarray ends.
       dp[i] = Math.max(y, prefix[i - 1]);
     }
     out.println(dp[n]);
