@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class Max_Sum_Even_Indices {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FASTIO in = new FASTIO();
   static final int MOD = 998244353;
@@ -28,7 +28,7 @@ public class Main {
     // dp[i][1] --> max possible sum if we are in reverse subarray running.
     // dp[i][2] --> max possible sum if reverse subarray, already taken.
 
-    // here the dp[i + 1] ---> store the ans till a[0...i].
+    // here the dp[i + 1] --> store the ans till a[0...i].
 
     for (int i = 0; i < n; i++) {
       // if we not start yet reversing part.
