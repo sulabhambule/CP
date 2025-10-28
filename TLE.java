@@ -1,4 +1,5 @@
 
+import com.sun.jdi.ObjectReference;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
@@ -20,6 +21,12 @@ public class TLE {
     }
     out.close();
   }
+
+  // see the intput for T
+  // interger overflow,
+  // binary search on answer
+  // prefix sum and suffix sum, MAX, MIN, LR
+  // DP, PQ, BFS, DFS, DIJKSTRA
 
   static void solve() {
 
@@ -70,12 +77,6 @@ public class TLE {
     }
 
   }
-
-  // see the intput for T
-  // interger overflow,
-  // binary search on answer
-  // prefix sum and suffix sum,
-  // DP, PQ, BFS, DFS, DIJKSTRA
 
   /*----------------------------------------------------------------------------------------------------------- */
 

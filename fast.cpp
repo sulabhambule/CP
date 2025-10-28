@@ -1,51 +1,80 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <numeric>
+#include <algorithm>
+
 using namespace std;
 
-#define int long long
-
-const int MAX_VAL = 1e6;
-
-void solve()
+// Function to solve a single test case
+int solve()
 {
     int n;
-    cin >> n;
-    vector<int> a(n);
-    vector<int> cnt(MAX_VAL + 1, 0);
+    long long k; // k can be up to n-1, cost can be up to n
+    cin >> n >> k;
 
-    for (int i = 0; i < n; i++)
+    // Use a frequency array to store counts of each number
+    vector<int> count(n + 1, 0);
+    for (int i = 0; i < n; ++i)
     {
-        cin >> a[i];
-        cnt[a[i]]++;
+        int a;
+        cin >> a;
+        count[a]++;
     }
 
-    long long ans = 0;
-
-    for (int i = 0; i < n; i++)
+    // Create a prefix sum array of the counts
+    // prefix_count[i] = total number of elements with value <= i
+    vector<long long> prefix_count(n + 1, 0);
+    for (int i = 1; i <= n; ++i)
     {
-        int val = a[i];
+        prefix_count[i] = prefix_count[i - 1] + count[i];
+    }
 
-        // (cnt[val] - 1) * (cnt[val] - 2)
-        ans += (cnt[val] - 1) * 1LL * (cnt[val] - 2);
+    // Iterate d from n down to 1
+    for (int d = n; d >= 1; --d)
+    {
+        // We need to find the cost for this d
+        // Cost is the number of elements x such that:
+        // x % d != 0 AND x < 4*d
 
-        // multiples
-        for (int b = 2; 1LL * val * b * b <= MAX_VAL; b++)
+        // We only need to check numbers up to min(n, 4*d - 1)
+        long long limit = min((long long)n, 4LL * d - 1);
+
+        // Total elements we need to consider
+        long long total_to_check = prefix_count[limit];
+
+        // Count elements that are multiples of d up to the limit
+        long long saved_multiples = 0;
+        for (long long m = d; m <= limit; m += d)
         {
-            ans += cnt[val * b] * 1LL * cnt[val * b * b];
+            saved_multiples += count[m];
+        }
+
+        // The cost is the total number of elements to check,
+        // minus the ones that are already multiples of d.
+        long long cost = total_to_check - saved_multiples;
+
+        // If this cost is affordable, d is our answer
+        if (cost <= k)
+        {
+            return d;
         }
     }
 
-    cout << ans << "\n";
+    // This line should not be reached because d=1 always has cost=0
+    return 1;
 }
 
-signed main()
+int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    // Fast I/O
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
 
     int t;
     cin >> t;
     while (t--)
     {
-        solve();
+        cout << solve() << "\n";
     }
+    return 0;
 }

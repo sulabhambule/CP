@@ -869,6 +869,12 @@ public class Utility {
   // ifact[i] = (ifact[i + 1] * (i + 1)) % MOD;
   // }
 
+  static long nCk(int n, int k) {
+    if (k > n || n < 0 || k < 0)
+      return 0;
+    return (((fact[n] * factInverse[k]) % mod) * factInverse[n - k]) % mod;
+  }
+
   static long combination(long n, long r, long[] fact, long[] ifact) {
     if (r > n || r < 0)
       return 0;

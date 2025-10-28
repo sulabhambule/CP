@@ -4,42 +4,27 @@ import java.util.*;
 public class Main {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
   static FASTIO in = new FASTIO();
-  static final int MOD = 998244353;
-  static final int mod = (int) 1e9 + 7;
   static final int inf = (int) 1e9;
   static final long INF = (long) 1e18;
+  static final int mod = (int) 1e9 + 7;
 
   public static void main(String[] args) {
-    int t = 1;
-    while (t-- > 0) {
+    int t = in.nextInt();
+    while (t-- > 0)
       solve();
-    }
     out.close();
   }
 
   static void solve() {
-    long k = in.nextLong();
-    long code = 1;
-    String s = "codeforces";
-    int[] count = new int[10];
-    Arrays.fill(count, 1);
-    int idx = 0;
-    while (code < k) {
-      code /= count[idx];
-      count[idx]++;
-      code *= 1L * count[idx];
-      idx = (idx + 1) % 10;
+    int n = in.nextInt();
+    int[] a = new int[2 * n];
+    for (int i = 0; i < 2 * n; i++) {
+      a[i] = in.nextInt();
     }
-    for (int i = 0; i < 10; i++) {
-      while (count[i]-- > 0) {
-        out.print(s.charAt(i));
-      }
-    }
-    out.println();
+    
   }
 
   static class FASTIO {
-
     BufferedReader br;
     StringTokenizer st;
 
