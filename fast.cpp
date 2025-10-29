@@ -5,63 +5,35 @@
 
 using namespace std;
 
-// Function to solve a single test case
 int solve()
 {
     int n;
-    long long k; // k can be up to n-1, cost can be up to n
-    cin >> n >> k;
-
-    // Use a frequency array to store counts of each number
-    vector<int> count(n + 1, 0);
-    for (int i = 0; i < n; ++i)
+    cin >> n;
+    vector<int> a(n);
+    for (auto &i : a)
     {
-        int a;
-        cin >> a;
-        count[a]++;
+        cin >> i;
     }
 
-    // Create a prefix sum array of the counts
-    // prefix_count[i] = total number of elements with value <= i
-    vector<long long> prefix_count(n + 1, 0);
-    for (int i = 1; i <= n; ++i)
+    vector<int> prime = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47};
+
+    int ans = 1;
+    for (auto &p : prime)
     {
-        prefix_count[i] = prefix_count[i - 1] + count[i];
-    }
-
-    // Iterate d from n down to 1
-    for (int d = n; d >= 1; --d)
-    {
-        // We need to find the cost for this d
-        // Cost is the number of elements x such that:
-        // x % d != 0 AND x < 4*d
-
-        // We only need to check numbers up to min(n, 4*d - 1)
-        long long limit = min((long long)n, 4LL * d - 1);
-
-        // Total elements we need to consider
-        long long total_to_check = prefix_count[limit];
-
-        // Count elements that are multiples of d up to the limit
-        long long saved_multiples = 0;
-        for (long long m = d; m <= limit; m += d)
+        for (auto &i : a)
         {
-            saved_multiples += count[m];
+            if (i % p)
+            {
+                ans = p;
+                break;
+            }
         }
-
-        // The cost is the total number of elements to check,
-        // minus the ones that are already multiples of d.
-        long long cost = total_to_check - saved_multiples;
-
-        // If this cost is affordable, d is our answer
-        if (cost <= k)
+        if (ans > 1)
         {
-            return d;
+            break;
         }
     }
-
-    // This line should not be reached because d=1 always has cost=0
-    return 1;
+    return ans;
 }
 
 int main()

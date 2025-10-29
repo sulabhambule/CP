@@ -6,6 +6,8 @@ public class Utility {
   public static void main(String[] args) {
 
   }
+  // If we want to case in which we want small l value and large r value such that
+  // we do -L and +R the sort the arr on the basis of li + ri
 
   // --> We are asked to count the number of non-decreasing sequences of length
   // 2𝑚 where each element is between 1 and n it is same as

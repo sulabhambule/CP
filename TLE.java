@@ -1,5 +1,3 @@
-
-import com.sun.jdi.ObjectReference;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.abs;
@@ -29,9 +27,61 @@ public class TLE {
   // DP, PQ, BFS, DFS, DIJKSTRA
 
   static void solve() {
+    int n = in.nextInt();
+    List<int[]> coordinates = new ArrayList<>();
+    int[] l = new int[n], r = new int[n];
+    for (int i = 0; i < n; i++) {
+      l[i] = in.nextInt();
+      r[i] = in.nextInt();
+      coordinates.add(new int[] { l[i], r[i] });
+    }
+    Arrays.sort(l);
+    Arrays.sort(r);
+    int ans = n - 1;
+    for (int[] c : coordinates) {
+      int L = c[0], R = c[1];
+      // we need to find the no of pairs whose l > R and r < L
+      int right = bs(l, R); // l[j] > R
+      int left = bs2(r, L); // i want r[j] < L
+      if (right == -1)
+        right = 0;
+      if (left == -1)
+        left = 0;
+      ans = Math.min(ans, (left + 1) + (n - right));
+    }
 
+    out.println(ans);
   }
 
+  static int bs2(int[] arr, int tar) {
+    int index = -1;
+    int low = 0, high = arr.length - 1;
+    while (low <= high) {
+      int mid = (low + high) / 2;
+      if (arr[mid] < tar) {
+        index = mid;
+        low = mid + 1;
+      } else {
+        high = mid - 1;
+      }
+    }
+    return index;
+  }
+
+  static int bs(int[] arr, int tar) {
+    int index = -1;
+    int low = 0, high = arr.length - 1;
+    while (low <= high) {
+      int mid = (low + high) / 2;
+      if (arr[mid] > tar) {
+        index = mid;
+        high = mid - 1;
+      } else {
+        low = mid + 1;
+      }
+    }
+    return index;
+  }
   /*---------------------------------------------------------------------------------------------------------*/
 
   static class FASTIO {
