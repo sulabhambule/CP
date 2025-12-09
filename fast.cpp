@@ -1,52 +1,162 @@
-#include <iostream>
-#include <vector>
-#include <numeric>
-#include <algorithm>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-int solve()
+#define ll long long
+#define all(x) (x).begin(), (x).end()
+const int MOD = 1e9 + 7;
+const int MOD2 = 998244353;
+const int INF = 1e9;
+const ll NEG = -1e18;
+
+struct FASTIO
+{
+    FASTIO()
+    {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+    }
+} fastio;
+
+// ---- Utility Methods ----
+
+int msb(int num) { return 31 - __builtin_clz(num); }
+int msbll(long long num) { return 63 - __builtin_clzll(num); }
+
+ll modPow(ll b, ll e, ll mod)
+{
+    ll r = 1;
+    b %= mod;
+    while (e > 0)
+    {
+        if (e & 1)
+            r = (r * b) % mod;
+        b = (b * b) % mod;
+        e >>= 1;
+    }
+    return r;
+}
+
+ll modInverse(ll a, ll mod) { return modPow(a, mod - 2, mod); }
+
+vector<int> inputIntArr(int n)
+{
+    vector<int> a(n);
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
+    return a;
+}
+
+// --------------- SOLVE FUNCTION ----------------
+
+void solve()
 {
     int n;
     cin >> n;
-    vector<int> a(n);
-    for (auto &i : a)
-    {
-        cin >> i;
-    }
 
-    vector<int> prime = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47};
+    vector<int> a = inputIntArr(2 * n);
+    vector<int> count(200005, 0);
 
-    int ans = 1;
-    for (auto &p : prime)
+    for (int x : a)
+        count[x]++;
+
+    sort(count.begin(), count.end());
+
+    int ans = 0;
+    int one = 0, two = 0;
+
+    for (int i = 1; i < 200000; i++)
     {
-        for (auto &i : a)
-        {
-            if (i % p)
+        if (count[i] == 0)
+            continue;
+
+        if (count[i] % 2 == 1)
+        { // odd frequency
+            ans++;
+            int pp = count[i] / 2;
+            int qq = pp + 1;
+
+            if (n - one >= qq && n - two >= qq)
             {
-                ans = p;
-                break;
+                if (one >= two)
+                {
+                    two += qq;
+                    one += pp;
+                }
+                else
+                {
+                    one += qq;
+                    two += pp;
+                }
+            }
+            else if (n - one >= qq)
+            {
+                one += qq;
+                two += pp;
+            }
+            else
+            {
+                two += qq;
+                one += pp;
             }
         }
-        if (ans > 1)
-        {
-            break;
+        else
+        { // even frequency
+            if ((count[i] / 2) % 2 == 1)
+            {
+                ans += 2;
+                one += count[i] / 2;
+                two += count[i] / 2;
+            }
+            else
+            {
+                int pp = count[i] / 2 - 1;
+                int qq = count[i] / 2 + 1;
+
+                if (n - one >= qq && n - two >= qq)
+                {
+                    if (one >= two)
+                    {
+                        two += qq;
+                        one += pp;
+                    }
+                    else
+                    {
+                        one += qq;
+                        two += pp;
+                    }
+                    ans += 2;
+                }
+                else if (n - one >= qq)
+                {
+                    ans += 2;
+                    one += qq;
+                    two += pp;
+                }
+                else if (n - two >= qq)
+                {
+                    ans += 2;
+                    two += qq;
+                    one += pp;
+                }
+                else
+                {
+                    one += count[i] / 2;
+                    two += count[i] / 2;
+                }
+            }
         }
     }
-    return ans;
+
+    cout << ans << "\n";
 }
+
+// ------------------ MAIN -------------------
 
 int main()
 {
-    // Fast I/O
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
     int t;
     cin >> t;
     while (t--)
-    {
-        cout << solve() << "\n";
-    }
+        solve();
     return 0;
 }
