@@ -1393,4 +1393,15 @@ class KMP {
 
     return result;
   }
+
+  {
+    // pascal triangle.
+    nCr[0][0] = 1;
+    for (int i = 1; i < 32; i++) {
+      for (int k = 0; k < 32; k++) {
+        nCr[i][k] = (k - 1 >= 0 ? nCr[i - 1][k - 1] : 0) + (i - 1 >= k ? nCr[i - 1][k] : 0);
+      }
+    }
+  }
+
 }

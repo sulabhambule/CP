@@ -1,41 +1,37 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
-  public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
-  static FASTIO in = new FASTIO();
-  static final int mod = (int) 1e9 + 7;
-  static final int MOD = 998244353;
-  static final int inf = (int) 1e9;
-  static final long NEG = (long) -1e18;
+  static final long INF = Long.MAX_VALUE / 2;
+  static FastReader in = new FastReader();
+  static PrintWriter out = new PrintWriter(System.out);
 
-  public static void main(String[] args) {
-    // int t = 1;
+  public static void main(String[] args) throws IOException {
     int t = in.nextInt();
     while (t-- > 0) {
       solve();
     }
-    out.flush();
+    out.close();
   }
 
   static void solve() {
     
   }
 
-  static class FASTIO {
+  static class FastReader {
     BufferedReader br;
     StringTokenizer st;
 
-    public FASTIO() {
+    public FastReader() {
       br = new BufferedReader(new InputStreamReader(System.in));
     }
 
     String next() {
-      while (st == null || !st.hasMoreElements()) {
+      while (st == null || !st.hasMoreTokens()) {
         try {
           st = new StringTokenizer(br.readLine());
         } catch (IOException e) {
-          e.printStackTrace();
+          throw new RuntimeException(e);
         }
       }
       return st.nextToken();
@@ -52,18 +48,5 @@ public class Main {
     double nextDouble() {
       return Double.parseDouble(next());
     }
-
-    String nextLine() {
-      String str = "";
-      try {
-        st = null;
-        str = br.readLine();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-      return str;
-    }
-
   }
-
 }

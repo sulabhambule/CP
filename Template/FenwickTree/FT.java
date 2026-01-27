@@ -1,4 +1,3 @@
-
 import java.util.*;
 
 public class FT {
@@ -7,19 +6,28 @@ public class FT {
   public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
     int n = in.nextInt();
-    int[] arr = new int[n + 1];
+
+    int[] arr = new int[n + 1]; // 1-based
     for (int i = 1; i <= n; i++) {
       arr[i] = in.nextInt();
     }
-    for (int i = 0; i < n; i++) {
+
+    preProcess(arr);
+    
+    for (int i = 1; i <= n; i++) {
       System.out.print(arr[i] + " ");
     }
+    System.out.println();
+
+    System.out.println(query(2, 4));
   }
 
-  // the arr is taked as the 1 based indexing in case of 0 do arr[i - 1].
+  // 1-based indexing
   static void preProcess(int[] arr) {
-    fTree = new int[arr.length];
-    for (int i = 1; i <= arr.length; i++) {
+    int n = arr.length - 1;
+    fTree = new int[n + 1];
+
+    for (int i = 1; i <= n; i++) {
       update(i, arr[i]);
     }
   }

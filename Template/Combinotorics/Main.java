@@ -23,7 +23,7 @@ public class Main {
       for (int i = maxN - 1; i >= 0; i--) {
         invFact[i] = (invFact[i + 1] * (i + 1)) % MOD;
       }
-    }
+    } 
 
     // NCK : no of ways to choose the k elements from n distinct element wihout
     // caring order.

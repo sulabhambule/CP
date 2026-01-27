@@ -1,8 +1,8 @@
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-import static java.lang.Math.abs;
 import java.io.*;
 import java.util.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+// import static java.lang.Math.abs;
 
 public class TLE {
   public static PrintWriter out = new PrintWriter(new BufferedOutputStream(System.out));
@@ -28,7 +28,7 @@ public class TLE {
   // DP, PQ, BFS, DFS, DIJKSTRA
 
   static void solve() {
-    
+
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
@@ -91,26 +91,6 @@ public class TLE {
     int tmp = arr[i];
     arr[i] = arr[j];
     arr[j] = tmp;
-  }
-
-  public static int lowerBound(List<Integer> list, int val) {
-    int pos = Collections.binarySearch(list, val);
-    return (pos >= 0) ? pos : -pos - 1; // First index >= val
-  }
-
-  public static int upperBound(List<Integer> list, int val) {
-    int pos = Collections.binarySearch(list, val);
-    return (pos >= 0) ? pos + 1 : -pos - 1; // First index > val
-  }
-
-  public static int floorIndex(List<Integer> list, int val) {
-    int pos = Collections.binarySearch(list, val);
-    return (pos >= 0) ? pos : -pos - 2; // Last index <= val
-  }
-
-  public static int lowerThanIndex(List<Integer> list, int val) {
-    int pos = Collections.binarySearch(list, val);
-    return (pos >= 0) ? pos - 1 : -pos - 2; // Last index < val
   }
 
   static int[] getCoordinateMatrix(int x, int n) {

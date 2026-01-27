@@ -1,162 +1,83 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define ll long long
-#define all(x) (x).begin(), (x).end()
-const int MOD = 1e9 + 7;
-const int MOD2 = 998244353;
-const int INF = 1e9;
-const ll NEG = -1e18;
-
-struct FASTIO
+struct Combinatorics
 {
-    FASTIO()
+    const int MOD;
+    vector<long long> fact, invFact;
+
+    // Constructor
+    Combinatorics(int maxN, int mod) : MOD(mod), fact(maxN + 1), invFact(maxN + 1)
     {
-        ios::sync_with_stdio(false);
-        cin.tie(nullptr);
+        precompute(maxN);
     }
-} fastio;
 
-// ---- Utility Methods ----
-
-int msb(int num) { return 31 - __builtin_clz(num); }
-int msbll(long long num) { return 63 - __builtin_clzll(num); }
-
-ll modPow(ll b, ll e, ll mod)
-{
-    ll r = 1;
-    b %= mod;
-    while (e > 0)
+    // Function to perform modular exponentiation: a^b % MOD
+    long long modpow(long long a, long long b) const
     {
-        if (e & 1)
-            r = (r * b) % mod;
-        b = (b * b) % mod;
-        e >>= 1;
-    }
-    return r;
-}
-
-ll modInverse(ll a, ll mod) { return modPow(a, mod - 2, mod); }
-
-vector<int> inputIntArr(int n)
-{
-    vector<int> a(n);
-    for (int i = 0; i < n; i++)
-        cin >> a[i];
-    return a;
-}
-
-// --------------- SOLVE FUNCTION ----------------
-
-void solve()
-{
-    int n;
-    cin >> n;
-
-    vector<int> a = inputIntArr(2 * n);
-    vector<int> count(200005, 0);
-
-    for (int x : a)
-        count[x]++;
-
-    sort(count.begin(), count.end());
-
-    int ans = 0;
-    int one = 0, two = 0;
-
-    for (int i = 1; i < 200000; i++)
-    {
-        if (count[i] == 0)
-            continue;
-
-        if (count[i] % 2 == 1)
-        { // odd frequency
-            ans++;
-            int pp = count[i] / 2;
-            int qq = pp + 1;
-
-            if (n - one >= qq && n - two >= qq)
-            {
-                if (one >= two)
-                {
-                    two += qq;
-                    one += pp;
-                }
-                else
-                {
-                    one += qq;
-                    two += pp;
-                }
-            }
-            else if (n - one >= qq)
-            {
-                one += qq;
-                two += pp;
-            }
-            else
-            {
-                two += qq;
-                one += pp;
-            }
+        long long res = 1;
+        while (b)
+        {
+            if (b & 1)
+                res = res * a % MOD;
+            a = a * a % MOD;
+            b >>= 1;
         }
-        else
-        { // even frequency
-            if ((count[i] / 2) % 2 == 1)
-            {
-                ans += 2;
-                one += count[i] / 2;
-                two += count[i] / 2;
-            }
-            else
-            {
-                int pp = count[i] / 2 - 1;
-                int qq = count[i] / 2 + 1;
+        return res;
+    }
 
-                if (n - one >= qq && n - two >= qq)
-                {
-                    if (one >= two)
-                    {
-                        two += qq;
-                        one += pp;
-                    }
-                    else
-                    {
-                        one += qq;
-                        two += pp;
-                    }
-                    ans += 2;
-                }
-                else if (n - one >= qq)
-                {
-                    ans += 2;
-                    one += qq;
-                    two += pp;
-                }
-                else if (n - two >= qq)
-                {
-                    ans += 2;
-                    two += qq;
-                    one += pp;
-                }
-                else
-                {
-                    one += count[i] / 2;
-                    two += count[i] / 2;
-                }
-            }
+    // Precomputing factorials and modular inverses
+    void precompute(int maxN)
+    {
+        fact[0] = 1;
+        for (int i = 1; i <= maxN; i++)
+        {
+            fact[i] = fact[i - 1] * i % MOD;
+        }
+        invFact[maxN] = modpow(fact[maxN], MOD - 2); // Fermat's Little Theorem
+        for (int i = maxN - 1; i >= 0; i--)
+        {
+            invFact[i] = invFact[i + 1] * (i + 1) % MOD;
         }
     }
 
-    cout << ans << "\n";
-}
+    // Function to calculate nCk % MOD
+    long long nCk(int n, int k) const
+    {
+        if (k > n || k < 0)
+            return 0;
+        return fact[n] * invFact[k] % MOD * invFact[n - k] % MOD;
+    }
 
-// ------------------ MAIN -------------------
+    // Function to calculate nPk % MOD
+    long long nPk(int n, int k) const
+    {
+        if (k > n || k < 0)
+            return 0;
+        return fact[n] * invFact[n - k] % MOD;
+    }
+
+    // Function to calculate n! % MOD
+    long long factorial(int n) const
+    {
+        return fact[n];
+    }
+};
 
 int main()
 {
-    int t;
-    cin >> t;
-    while (t--)
-        solve();
+    int maxN = 1e6 + 5; // Maximum n value for factorials and combinations
+    int mod = 1e6 + 3;  // Modulus for calculations
+
+    // Initialize combinatorics when needed
+    Combinatorics comb(maxN, mod);
+
+    // Example usage
+    int n = 1, k = 3;
+    cout << "10C3 = " << comb.nCk(n, k) << '\n';   // Output: 120
+    cout << "10P3 = " << comb.nPk(n, k) << '\n';   // Output: 720
+    cout << "10! = " << comb.factorial(n) << '\n'; // Output: 3628800
+    cout << "In = " << comb.invFact[n] << '\n';    // Output: 3628800
+
     return 0;
 }
