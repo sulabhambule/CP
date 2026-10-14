@@ -540,9 +540,9 @@ public class Utility {
   static void derangement() {
     int k = 4;
     int[] derangements = new int[k + 1];
-    derangements[0] = 1; // D(0) =
+    derangements[0] = 1; // D(0)
     if (k > 0)
-      derangements[1] = 0; // D(1) =
+      derangements[1] = 0; // D(1)
     for (int i = 2; i <= k; i++) {
       derangements[i] = (i - 1) * (derangements[i - 1] + derangements[i - 2]);
     }
@@ -875,6 +875,15 @@ public class Utility {
     if (k > n || n < 0 || k < 0)
       return 0;
     return (((fact[n] * factInverse[k]) % mod) * factInverse[n - k]) % mod;
+  }
+
+  static long nCk(int n, int k) {
+    long res = 1;
+    for (int i = 0; i < k; i++) {
+      res *= (n - i);
+      res /= (i + 1);
+    }
+    return res;
   }
 
   static long combination(long n, long r, long[] fact, long[] ifact) {
@@ -1270,128 +1279,131 @@ class DSU {
   public int getSize(int x) {
     return size[find(x)];
   }
+
 }
 
-// MST using DSU (Krushkal ALgorythm)
+  // MST using DSU (Krushkal ALgorythm)
 
-public static void main(String[] args) {
-  int n;// Nodes
-  int m; // Edges
-  Edge[] edges = new Edge[m];
+  public static void main(String[] args) {
+    int n;// Nodes
+    int m; // Edges
+    Edge[] edges = new Edge[m];
 
-  for (int i = 0; i < m; i++) {
-    int u = in.nextInt();
-    int v = in.nextInt();
-    int w = in.nextInt();
-    edges[i] = new Edge(u, v, w);
-  }
-
-  Arrays.sort(edges); // Sort edges by weight
-  DSU dsu = new DSU(n);
-  long mstWeight = 0;
-  ArrayList<Edge> mstEdges = new ArrayList<>();
-
-  for (Edge e : edges) {
-    if (dsu.union(e.u, e.v)) { // If u and v are in different sets
-      mstWeight += e.w;
-      mstEdges.add(e);
+    for (int i = 0; i < m; i++) {
+      int u = in.nextInt();
+      int v = in.nextInt();
+      int w = in.nextInt();
+      edges[i] = new Edge(u, v, w);
     }
-  }
-}
 
-static class Edge implements Comparable<Edge> {
-  int u, v, w;
+    Arrays.sort(edges); // Sort edges by weight
+    DSU dsu = new DSU(n);
+    long mstWeight = 0;
+    ArrayList<Edge> mstEdges = new ArrayList<>();
 
-  Edge(int u, int v, int w) {
-    this.u = u;
-    this.v = v;
-    this.w = w;
-  }
-
-  public int compareTo(Edge o) {
-    return Integer.compare(this.w, o.w);
-  }
-}
-
-// MST using PriorityQueue Prims Algorythm
-static long primsMST(int n, List<List<int[]>> adj) {
-  boolean[] visited = new boolean[n + 1];
-  PriorityQueue<int[]> pq = new PriorityQueue<>((x, y) -> (x[1] - y[1]));
-  pq.add(new int[] { 1, 0 }); // Start from node 1
-  long mstWeight = 0;
-  while (!pq.isEmpty()) {
-    int[] curr = pq.poll();
-    int u = curr[0], w = curr[1];
-    if (visited[u])
-      continue;
-    visited[u] = true;
-    mstWeight += w;
-    for (int[] v : adj.get(u)) {
-      if (!visited[v[0]]) {
-        pq.add(new int[] { v[0], v[1] });
+    for (Edge e : edges) {
+      if (dsu.union(e.u, e.v)) { // If u and v are in different sets
+        mstWeight += e.w;
+        mstEdges.add(e);
       }
     }
   }
-  return mstWeight;
-}
 
-// KMP
+  static class Edge implements Comparable<Edge> {
+    int u, v, w;
 
-class KMP {
-  private int n, m;
-  private String text, pattern;
-  private int[] LPS;
+    Edge(int u, int v, int w) {
+      this.u = u;
+      this.v = v;
+      this.w = w;
+    }
 
-  public KMP(String text, String pattern) {
-    this.text = text;
-    this.pattern = pattern;
-    this.n = text.length();
-    this.m = pattern.length();
-    this.LPS = new int[m];
-    generateLPS();
+    public int compareTo(Edge o) {
+      return Integer.compare(this.w, o.w);
+    }
   }
 
-  private void generateLPS() {
-    int len = 0;
-    int i = 1;
-    while (i < m) {
-      if (pattern.charAt(i) == pattern.charAt(len)) {
-        LPS[i++] = ++len;
-      } else {
-        if (len != 0) {
-          len = LPS[len - 1];
-        } else {
-          LPS[i++] = 0;
+  // MST using PriorityQueue Prims Algorythm
+  static long primsMST(int n, List<List<int[]>> adj) {
+    boolean[] visited = new boolean[n + 1];
+    PriorityQueue<int[]> pq = new PriorityQueue<>((x, y) -> (x[1] - y[1]));
+    pq.add(new int[] { 1, 0 }); // Start from node 1
+    long mstWeight = 0;
+    while (!pq.isEmpty()) {
+      int[] curr = pq.poll();
+      int u = curr[0], w = curr[1];
+      if (visited[u])
+        continue;
+      visited[u] = true;
+      mstWeight += w;
+      for (int[] v : adj.get(u)) {
+        if (!visited[v[0]]) {
+          pq.add(new int[] { v[0], v[1] });
         }
       }
     }
+    return mstWeight;
   }
 
-  public List<int[]> countOccurrences() {
-    List<int[]> result = new ArrayList<>();
-    int i = 0, j = 0;
+  // KMP
 
-    while (i < n) {
-      if (text.charAt(i) == pattern.charAt(j)) {
-        i++;
-        j++;
-      }
+  class KMP {
+    private int n, m;
+    private String text, pattern;
+    private int[] LPS;
 
-      if (j == m) {
-        int start = i - m;
-        int end = i - 1;
-        result.add(new int[] { start, end });
-        j = LPS[j - 1];
-      } else if (i < n && text.charAt(i) != pattern.charAt(j)) {
-        if (j != 0) {
-          j = LPS[j - 1];
+    public KMP(String text, String pattern) {
+      this.text = text;
+      this.pattern = pattern;
+      this.n = text.length();
+      this.m = pattern.length();
+      this.LPS = new int[m];
+      generateLPS();
+    }
+
+    private void generateLPS() {
+      int len = 0;
+      int i = 1;
+      while (i < m) {
+        if (pattern.charAt(i) == pattern.charAt(len)) {
+          LPS[i++] = ++len;
         } else {
+          if (len != 0) {
+            len = LPS[len - 1];
+          } else {
+            LPS[i++] = 0;
+          }
+        }
+      }
+    }
+
+    public List<int[]> countOccurrences() {
+      List<int[]> result = new ArrayList<>();
+      int i = 0, j = 0;
+
+      while (i < n) {
+        if (text.charAt(i) == pattern.charAt(j)) {
           i++;
+          j++;
+        }
+
+        if (j == m) {
+          int start = i - m;
+          int end = i - 1;
+          result.add(new int[] { start, end });
+          j = LPS[j - 1];
+        } else if (i < n && text.charAt(i) != pattern.charAt(j)) {
+          if (j != 0) {
+            j = LPS[j - 1];
+          } else {
+            i++;
+          }
         }
       }
+
+      return result;
     }
 
-    return result;
   }
 
   {
@@ -1404,4 +1416,28 @@ class KMP {
     }
   }
 
+class StringHash {
+  long[] hash;
+  long[] pow;
+  long base = 31; // can use 31 / 37 / 131
+  long mod = 1_000_000_007;
+
+  StringHash(String s) {
+    int n = s.length();
+    hash = new long[n + 1];
+    pow = new long[n + 1];
+
+    pow[0] = 1;
+
+    for (int i = 0; i < n; i++) {
+      pow[i + 1] = (pow[i] * base) % mod;
+      hash[i + 1] = (hash[i] * base + (s.charAt(i) - 'a' + 1)) % mod;
+    }
+  }
+
+  // get hash of substring [l, r]
+  long getHash(int l, int r) {
+    long res = (hash[r + 1] - (hash[l] * pow[r - l + 1]) % mod + mod) % mod;
+    return res;
+  }
 }

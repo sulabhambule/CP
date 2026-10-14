@@ -28,7 +28,7 @@ public class TLE {
   // DP, PQ, BFS, DFS, DIJKSTRA
 
   static void solve() {
-
+    
   }
 
   /*---------------------------------------------------------------------------------------------------------*/
@@ -167,7 +167,8 @@ public class TLE {
     }
   }
 
-  public static long mahantaDist(long x1, long y1, long x2, long y2) {
+  public static long mahantaDist(long x1,
+      long y1, long x2, long y2) {
     return Math.abs(x1 - x2) + Math.abs(y1 - y2);
   }
 

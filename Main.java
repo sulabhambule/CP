@@ -2,9 +2,9 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-  static final long INF = Long.MAX_VALUE / 2;
   static FastReader in = new FastReader();
   static PrintWriter out = new PrintWriter(System.out);
+  static final long mod = 998244353;
 
   public static void main(String[] args) throws IOException {
     int t = in.nextInt();
@@ -15,7 +15,7 @@ public class Main {
   }
 
   static void solve() {
-    
+
   }
 
   static class FastReader {

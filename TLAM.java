@@ -16,7 +16,7 @@ public class TLAM {
     }
 
     static void solve() {
-
+       
     }
 
     static class FastReader {
